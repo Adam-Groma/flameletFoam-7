@@ -22,18 +22,18 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::laminarModels::generalizedNewtonian
+    Foam::laminarModels::flameletGeneralizedNewtonian
 
 Description
     Turbulence model for shear-dependent Non-Newtonian flow.
 
 SourceFiles
-    generalizedNewtonian.C
+    flameletGeneralizedNewtonian.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef generalizedNewtonian_H
-#define generalizedNewtonian_H
+#ifndef flameletGeneralizedNewtonian_H
+#define flameletGeneralizedNewtonian_H
 
 #include "laminarModel.H"
 #include "linearViscousStress.H"
@@ -47,11 +47,11 @@ namespace laminarModels
 {
 
 /*---------------------------------------------------------------------------*\
-                    Class generalizedNewtonian Declaration
+                    Class flameletGeneralizedNewtonian Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class BasicTurbulenceModel>
-class generalizedNewtonian
+class flameletGeneralizedNewtonian
 :
     public linearViscousStress<laminarModel<BasicTurbulenceModel>>
 {
@@ -80,13 +80,13 @@ public:
 
 
     //- Runtime type information
-    TypeName("generalizedNewtonian");
+    TypeName("flameletGeneralizedNewtonian");
 
 
     // Constructors
 
         //- Construct from components
-        generalizedNewtonian
+        flameletGeneralizedNewtonian
         (
             const alphaField& alpha,
             const rhoField& rho,
@@ -101,7 +101,7 @@ public:
     // Selectors
 
         //- Return a reference to the selected turbulence model
-        static autoPtr<generalizedNewtonian> New
+        static autoPtr<flameletGeneralizedNewtonian> New
         (
             const alphaField& alpha,
             const rhoField& rho,
@@ -114,7 +114,7 @@ public:
 
 
     //- Destructor
-    virtual ~generalizedNewtonian()
+    virtual ~flameletGeneralizedNewtonian()
     {}
 
 
@@ -131,25 +131,25 @@ public:
         virtual tmp<scalarField> nut(const label patchi) const;
 
         //- Return the effective viscosity
-        //  i.e. the generalizedNewtonian viscosity
+        //  i.e. the flameletGeneralizedNewtonian viscosity
         virtual tmp<volScalarField> nuEff() const;
 
         //- Return the effective viscosity on patch
         virtual tmp<scalarField> nuEff(const label patchi) const;
 
         //- Return the turbulence kinetic energy
-        //  i.e. 0 for generalizedNewtonian flow
+        //  i.e. 0 for flameletGeneralizedNewtonian flow
         virtual tmp<volScalarField> k() const;
 
         //- Return the turbulence kinetic energy dissipation rate,
-        //  i.e. 0 for generalizedNewtonian flow
+        //  i.e. 0 for flameletGeneralizedNewtonian flow
         virtual tmp<volScalarField> epsilon() const;
 
         //- Return the Reynolds stress tensor
-        //  i.e. 0 for generalizedNewtonian flow
+        //  i.e. 0 for flameletGeneralizedNewtonian flow
         virtual tmp<volSymmTensorField> R() const;
 
-        //- Correct the generalizedNewtonian viscosity
+        //- Correct the flameletGeneralizedNewtonian viscosity
         virtual void correct();
 };
 
@@ -162,7 +162,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "generalizedNewtonian.C"
+    #include "flameletGeneralizedNewtonian.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

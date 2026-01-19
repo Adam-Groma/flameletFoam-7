@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::omegaWallFunctionFvPatchScalarField
+    Foam::flameletOmegaWallFunctionFvPatchScalarField
 
 Description
     This boundary condition provides a wall constraint on turbulnce specific
@@ -69,21 +69,21 @@ Usage
     \verbatim
     <patchName>
     {
-        type            omegaWallFunction;
+        type            flameletOmegaWallFunction;
     }
     \endverbatim
 
 See also
     Foam::fixedInternalValueFvPatchField
-    Foam::epsilonWallFunctionFvPatchScalarField
+    Foam::flameletEpsilonWallFunctionFvPatchScalarField
 
 SourceFiles
-    omegaWallFunctionFvPatchScalarField.C
+    flameletOmegaWallFunctionFvPatchScalarField.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef omegaWallFunctionFvPatchScalarField_H
-#define omegaWallFunctionFvPatchScalarField_H
+#ifndef flameletOmegaWallFunctionFvPatchScalarField_H
+#define flameletOmegaWallFunctionFvPatchScalarField_H
 
 #include "fixedValueFvPatchField.H"
 
@@ -95,10 +95,10 @@ namespace Foam
 class turbulenceModel;
 
 /*---------------------------------------------------------------------------*\
-             Class omegaWallFunctionFvPatchScalarField Declaration
+             Class flameletOmegaWallFunctionFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class omegaWallFunctionFvPatchScalarField
+class flameletOmegaWallFunctionFvPatchScalarField
 :
     public fixedValueFvPatchField<scalar>
 {
@@ -142,7 +142,7 @@ protected:
         virtual void createAveragingWeights();
 
         //- Helper function to return non-const access to an omega patch
-        virtual omegaWallFunctionFvPatchScalarField& omegaPatch
+        virtual flameletOmegaWallFunctionFvPatchScalarField& omegaPatch
         (
             const label patchi
         );
@@ -177,20 +177,20 @@ protected:
 public:
 
     //- Runtime type information
-    TypeName("omegaWallFunction");
+    TypeName("flameletOmegaWallFunction");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        omegaWallFunctionFvPatchScalarField
+        flameletOmegaWallFunctionFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        omegaWallFunctionFvPatchScalarField
+        flameletOmegaWallFunctionFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
@@ -198,20 +198,20 @@ public:
         );
 
         //- Construct by mapping given
-        // omegaWallFunctionFvPatchScalarField
+        // flameletOmegaWallFunctionFvPatchScalarField
         //  onto a new patch
-        omegaWallFunctionFvPatchScalarField
+        flameletOmegaWallFunctionFvPatchScalarField
         (
-            const omegaWallFunctionFvPatchScalarField&,
+            const flameletOmegaWallFunctionFvPatchScalarField&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Copy constructor
-        omegaWallFunctionFvPatchScalarField
+        flameletOmegaWallFunctionFvPatchScalarField
         (
-            const omegaWallFunctionFvPatchScalarField&
+            const flameletOmegaWallFunctionFvPatchScalarField&
         );
 
         //- Construct and return a clone
@@ -219,14 +219,14 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new omegaWallFunctionFvPatchScalarField(*this)
+                new flameletOmegaWallFunctionFvPatchScalarField(*this)
             );
         }
 
         //- Copy constructor setting internal field reference
-        omegaWallFunctionFvPatchScalarField
+        flameletOmegaWallFunctionFvPatchScalarField
         (
-            const omegaWallFunctionFvPatchScalarField&,
+            const flameletOmegaWallFunctionFvPatchScalarField&,
             const DimensionedField<scalar, volMesh>&
         );
 
@@ -238,7 +238,7 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new omegaWallFunctionFvPatchScalarField(*this, iF)
+                new flameletOmegaWallFunctionFvPatchScalarField(*this, iF)
             );
         }
 

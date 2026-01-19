@@ -24,4 +24,6 @@ EXE_LIBS = \
     -lFlameletturbulenceModels \
     -lFlameletcompressibleTurbulenceModels \
     -lfiniteVolume \
-    -lmeshTools
+    -lmeshTools \
+    -lOpenFOAM \
+    -lturbulenceModels

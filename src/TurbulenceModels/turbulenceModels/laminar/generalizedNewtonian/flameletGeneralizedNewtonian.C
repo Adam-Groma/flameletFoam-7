@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "generalizedNewtonian.H"
+#include "flameletGeneralizedNewtonian.H"
 #include "volFields.H"
 #include "surfaceFields.H"
 #include "fvcGrad.H"
@@ -40,7 +40,7 @@ namespace laminarModels
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template<class BasicTurbulenceModel>
-generalizedNewtonian<BasicTurbulenceModel>::generalizedNewtonian
+flameletGeneralizedNewtonian<BasicTurbulenceModel>::flameletGeneralizedNewtonian
 (
     const alphaField& alpha,
     const rhoField& rho,
@@ -75,7 +75,7 @@ generalizedNewtonian<BasicTurbulenceModel>::generalizedNewtonian
     (
         IOobject
         (
-            IOobject::groupName("generalizedNewtonian:nu", alphaRhoPhi.group()),
+            IOobject::groupName("flameletGeneralizedNewtonian:nu", alphaRhoPhi.group()),
             this->runTime_.timeName(),
             this->mesh_,
             IOobject::NO_READ,
@@ -90,7 +90,7 @@ generalizedNewtonian<BasicTurbulenceModel>::generalizedNewtonian
 
 template<class BasicTurbulenceModel>
 Foam::tmp<Foam::volScalarField>
-generalizedNewtonian<BasicTurbulenceModel>::strainRate() const
+flameletGeneralizedNewtonian<BasicTurbulenceModel>::strainRate() const
 {
     return sqrt(2.0)*mag(symm(fvc::grad(this->U())));
 }
@@ -99,7 +99,7 @@ generalizedNewtonian<BasicTurbulenceModel>::strainRate() const
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 template<class BasicTurbulenceModel>
-bool generalizedNewtonian<BasicTurbulenceModel>::read()
+bool flameletGeneralizedNewtonian<BasicTurbulenceModel>::read()
 {
     viscosityModel_->read(this->coeffDict_);
 
@@ -109,7 +109,7 @@ bool generalizedNewtonian<BasicTurbulenceModel>::read()
 
 template<class BasicTurbulenceModel>
 tmp<volScalarField>
-generalizedNewtonian<BasicTurbulenceModel>::nut() const
+flameletGeneralizedNewtonian<BasicTurbulenceModel>::nut() const
 {
     return volScalarField::New
     (
@@ -122,7 +122,7 @@ generalizedNewtonian<BasicTurbulenceModel>::nut() const
 
 template<class BasicTurbulenceModel>
 tmp<scalarField>
-generalizedNewtonian<BasicTurbulenceModel>::nut
+flameletGeneralizedNewtonian<BasicTurbulenceModel>::nut
 (
     const label patchi
 ) const
@@ -136,7 +136,7 @@ generalizedNewtonian<BasicTurbulenceModel>::nut
 
 template<class BasicTurbulenceModel>
 tmp<volScalarField>
-generalizedNewtonian<BasicTurbulenceModel>::nuEff() const
+flameletGeneralizedNewtonian<BasicTurbulenceModel>::nuEff() const
 {
     return volScalarField::New
     (
@@ -148,7 +148,7 @@ generalizedNewtonian<BasicTurbulenceModel>::nuEff() const
 
 template<class BasicTurbulenceModel>
 tmp<scalarField>
-generalizedNewtonian<BasicTurbulenceModel>::nuEff
+flameletGeneralizedNewtonian<BasicTurbulenceModel>::nuEff
 (
     const label patchi
 ) const
@@ -159,7 +159,7 @@ generalizedNewtonian<BasicTurbulenceModel>::nuEff
 
 template<class BasicTurbulenceModel>
 tmp<volScalarField>
-generalizedNewtonian<BasicTurbulenceModel>::k() const
+flameletGeneralizedNewtonian<BasicTurbulenceModel>::k() const
 {
     return volScalarField::New
     (
@@ -172,7 +172,7 @@ generalizedNewtonian<BasicTurbulenceModel>::k() const
 
 template<class BasicTurbulenceModel>
 tmp<volScalarField>
-generalizedNewtonian<BasicTurbulenceModel>::epsilon() const
+flameletGeneralizedNewtonian<BasicTurbulenceModel>::epsilon() const
 {
     return volScalarField::New
     (
@@ -185,7 +185,7 @@ generalizedNewtonian<BasicTurbulenceModel>::epsilon() const
 
 template<class BasicTurbulenceModel>
 tmp<volSymmTensorField>
-generalizedNewtonian<BasicTurbulenceModel>::R() const
+flameletGeneralizedNewtonian<BasicTurbulenceModel>::R() const
 {
     return volSymmTensorField::New
     (
@@ -197,7 +197,7 @@ generalizedNewtonian<BasicTurbulenceModel>::R() const
 
 
 template<class BasicTurbulenceModel>
-void generalizedNewtonian<BasicTurbulenceModel>::correct()
+void flameletGeneralizedNewtonian<BasicTurbulenceModel>::correct()
 {
     nu_ = viscosityModel_->nu(this->nu(), strainRate());
     laminarModel<BasicTurbulenceModel>::correct();

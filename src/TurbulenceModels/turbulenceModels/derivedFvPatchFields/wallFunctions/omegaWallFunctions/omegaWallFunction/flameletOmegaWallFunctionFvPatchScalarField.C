@@ -23,58 +23,63 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "epsilonWallFunctionFvPatchScalarField.H"
+#include "flameletOmegaWallFunctionFvPatchScalarField.H"
 #include "nutWallFunctionFvPatchScalarField.H"
 #include "turbulenceModel.H"
 #include "fvMatrix.H"
 #include "addToRunTimeSelectionTable.H"
 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
-Foam::scalar Foam::epsilonWallFunctionFvPatchScalarField::tolerance_ = 1e-6;
+scalar flameletOmegaWallFunctionFvPatchScalarField::tolerance_ = 1e-5;
 
-// * * * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * //
+// * * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * * //
 
-void Foam::epsilonWallFunctionFvPatchScalarField::setMaster()
+void flameletOmegaWallFunctionFvPatchScalarField::setMaster()
 {
     if (master_ != -1)
     {
         return;
     }
 
-    const volScalarField& epsilon =
+    const volScalarField& omega =
         static_cast<const volScalarField&>(this->internalField());
 
-    const volScalarField::Boundary& bf = epsilon.boundaryField();
+    const volScalarField::Boundary& bf = omega.boundaryField();
 
     label master = -1;
     forAll(bf, patchi)
     {
-        if (isA<epsilonWallFunctionFvPatchScalarField>(bf[patchi]))
+        if (isA<flameletOmegaWallFunctionFvPatchScalarField>(bf[patchi]))
         {
-            epsilonWallFunctionFvPatchScalarField& epf = epsilonPatch(patchi);
+            flameletOmegaWallFunctionFvPatchScalarField& opf = omegaPatch(patchi);
 
             if (master == -1)
             {
                 master = patchi;
             }
 
-            epf.master() = master;
+            opf.master() = master;
         }
     }
 }
 
 
-void Foam::epsilonWallFunctionFvPatchScalarField::createAveragingWeights()
+void flameletOmegaWallFunctionFvPatchScalarField::createAveragingWeights()
 {
-    const volScalarField& epsilon =
+    const volScalarField& omega =
         static_cast<const volScalarField&>(this->internalField());
 
-    const volScalarField::Boundary& bf = epsilon.boundaryField();
+    const volScalarField::Boundary& bf = omega.boundaryField();
 
-    const fvMesh& mesh = epsilon.mesh();
+    const fvMesh& mesh = omega.mesh();
 
-    if (initialised_)
+    if (initialised_ && !mesh.changing())
     {
         return;
     }
@@ -94,91 +99,92 @@ void Foam::epsilonWallFunctionFvPatchScalarField::createAveragingWeights()
         dimensionedScalar(dimless, 0)
     );
 
-    DynamicList<label> epsilonPatches(bf.size());
+    DynamicList<label> omegaPatches(bf.size());
     forAll(bf, patchi)
     {
-        if (isA<epsilonWallFunctionFvPatchScalarField>(bf[patchi]))
+        if (isA<flameletOmegaWallFunctionFvPatchScalarField>(bf[patchi]))
         {
-            epsilonPatches.append(patchi);
+            omegaPatches.append(patchi);
 
             const labelUList& faceCells = bf[patchi].patch().faceCells();
             forAll(faceCells, i)
             {
-                weights[faceCells[i]]++;
+                label celli = faceCells[i];
+                weights[celli]++;
             }
         }
     }
 
     cornerWeights_.setSize(bf.size());
-    forAll(epsilonPatches, i)
+    forAll(omegaPatches, i)
     {
-        label patchi = epsilonPatches[i];
+        label patchi = omegaPatches[i];
         const fvPatchScalarField& wf = weights.boundaryField()[patchi];
         cornerWeights_[patchi] = 1.0/wf.patchInternalField();
     }
 
     G_.setSize(internalField().size(), 0.0);
-    epsilon_.setSize(internalField().size(), 0.0);
+    omega_.setSize(internalField().size(), 0.0);
 
     initialised_ = true;
 }
 
 
-Foam::epsilonWallFunctionFvPatchScalarField&
-Foam::epsilonWallFunctionFvPatchScalarField::epsilonPatch(const label patchi)
+flameletOmegaWallFunctionFvPatchScalarField&
+flameletOmegaWallFunctionFvPatchScalarField::omegaPatch(const label patchi)
 {
-    const volScalarField& epsilon =
+    const volScalarField& omega =
         static_cast<const volScalarField&>(this->internalField());
 
-    const volScalarField::Boundary& bf = epsilon.boundaryField();
+    const volScalarField::Boundary& bf = omega.boundaryField();
 
-    const epsilonWallFunctionFvPatchScalarField& epf =
-        refCast<const epsilonWallFunctionFvPatchScalarField>(bf[patchi]);
+    const flameletOmegaWallFunctionFvPatchScalarField& opf =
+        refCast<const flameletOmegaWallFunctionFvPatchScalarField>(bf[patchi]);
 
-    return const_cast<epsilonWallFunctionFvPatchScalarField&>(epf);
+    return const_cast<flameletOmegaWallFunctionFvPatchScalarField&>(opf);
 }
 
 
-void Foam::epsilonWallFunctionFvPatchScalarField::calculateTurbulenceFields
+void flameletOmegaWallFunctionFvPatchScalarField::calculateTurbulenceFields
 (
-    const turbulenceModel& turbulence,
+    const turbulenceModel& turbModel,
     scalarField& G0,
-    scalarField& epsilon0
+    scalarField& omega0
 )
 {
-    // Accumulate all of the G and epsilon contributions
+    // accumulate all of the G and omega contributions
     forAll(cornerWeights_, patchi)
     {
         if (!cornerWeights_[patchi].empty())
         {
-            epsilonWallFunctionFvPatchScalarField& epf = epsilonPatch(patchi);
+            flameletOmegaWallFunctionFvPatchScalarField& opf = omegaPatch(patchi);
 
             const List<scalar>& w = cornerWeights_[patchi];
 
-            epf.calculate(turbulence, w, epf.patch(), G0, epsilon0);
+            opf.calculate(turbModel, w, opf.patch(), G0, omega0);
         }
     }
 
-    // Apply zero-gradient condition for epsilon
+    // apply zero-gradient condition for omega
     forAll(cornerWeights_, patchi)
     {
         if (!cornerWeights_[patchi].empty())
         {
-            epsilonWallFunctionFvPatchScalarField& epf = epsilonPatch(patchi);
+            flameletOmegaWallFunctionFvPatchScalarField& opf = omegaPatch(patchi);
 
-            epf == scalarField(epsilon0, epf.patch().faceCells());
+            opf == scalarField(omega0, opf.patch().faceCells());
         }
     }
 }
 
 
-void Foam::epsilonWallFunctionFvPatchScalarField::calculate
+void flameletOmegaWallFunctionFvPatchScalarField::calculate
 (
     const turbulenceModel& turbModel,
     const List<scalar>& cornerWeights,
     const fvPatch& patch,
     scalarField& G0,
-    scalarField& epsilon0
+    scalarField& omega0
 )
 {
     const label patchi = patch.index();
@@ -188,43 +194,79 @@ void Foam::epsilonWallFunctionFvPatchScalarField::calculate
 
     const scalarField& y = turbModel.y()[patchi];
 
-    const tmp<scalarField> tnuw = turbModel.nu(patchi);
-    const scalarField& nuw = tnuw();
-
     const tmp<volScalarField> tk = turbModel.k();
     const volScalarField& k = tk();
+
+    const tmp<scalarField> tnuw = turbModel.nu(patchi);
+    const scalarField& nuw = tnuw();
 
     const fvPatchVectorField& Uw = turbModel.U().boundaryField()[patchi];
 
     const scalarField magGradUw(mag(Uw.snGrad()));
 
-    const scalar Cmu25 = pow025(nutw.Cmu());
-    const scalar Cmu75 = pow(nutw.Cmu(), 0.75);
+    const FieldType& G =
+        db().lookupObject<FieldType>(turbModel.GName());
 
-    // Set epsilon and G
+    const scalar Cmu25 = pow025(nutw.Cmu());
+    const scalar Cmu5 = sqrt(nutw.Cmu());
+
+    // Set omega and G
     forAll(nutw, facei)
     {
         const label celli = patch.faceCells()[facei];
-
-        const scalar yPlus = Cmu25*y[facei]*sqrt(k[celli])/nuw[facei];
-
         const scalar w = cornerWeights[facei];
 
-        if (yPlus > nutw.yPlusLam())
+        const scalar Rey = y[facei]*sqrt(k[celli])/nuw[facei];
+        const scalar yPlus = Cmu25*Rey;
+        const scalar uPlus = (1/nutw.kappa())*log(nutw.E()*yPlus);
+
+        if (blended_)
         {
-            epsilon0[celli] +=
-                w*Cmu75*pow(k[celli], 1.5)/(nutw.kappa()*y[facei]);
+            const scalar lamFrac = exp(-Rey/11);
+            const scalar turbFrac = 1 - lamFrac;
+
+            const scalar uStar = sqrt
+            (
+                lamFrac*nuw[facei]*magGradUw[facei] + turbFrac*Cmu5*k[celli]
+            );
+
+            const scalar omegaVis = 6*nuw[facei]/(beta1_*sqr(y[facei]));
+            const scalar omegaLog = uStar/(Cmu5*nutw.kappa()*y[facei]);
+
+            omega0[celli] += w*(lamFrac*omegaVis + turbFrac*omegaLog);
 
             G0[celli] +=
                 w
-               *(nutw[facei] + nuw[facei])
-               *magGradUw[facei]
-               *Cmu25*sqrt(k[celli])
-              /(nutw.kappa()*y[facei]);
+               *(
+                   lamFrac*G[celli]
+
+                 + turbFrac
+                  *sqr(uStar*magGradUw[facei]*y[facei]/uPlus)
+                  /(nuw[facei]*nutw.kappa()*yPlus)
+               );
         }
         else
         {
-            epsilon0[celli] += w*2.0*k[celli]*nuw[facei]/sqr(y[facei]);
+            if (yPlus < nutw.yPlusLam())
+            {
+                const scalar omegaVis = 6*nuw[facei]/(beta1_*sqr(y[facei]));
+
+                omega0[celli] += w*omegaVis;
+
+                G0[celli] += w*G[celli];
+            }
+            else
+            {
+                const scalar uStar = sqrt(Cmu5*k[celli]);
+                const scalar omegaLog = uStar/(Cmu5*nutw.kappa()*y[facei]);
+
+                omega0[celli] += w*omegaLog;
+
+                G0[celli] +=
+                    w*
+                    sqr(uStar*magGradUw[facei]*y[facei]/uPlus)
+                   /(nuw[facei]*nutw.kappa()*yPlus);
+            }
         }
     }
 }
@@ -232,24 +274,24 @@ void Foam::epsilonWallFunctionFvPatchScalarField::calculate
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::epsilonWallFunctionFvPatchScalarField::
-epsilonWallFunctionFvPatchScalarField
+flameletOmegaWallFunctionFvPatchScalarField::flameletOmegaWallFunctionFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF
 )
 :
     fixedValueFvPatchField<scalar>(p, iF),
+    beta1_(0.075),
+    blended_(false),
     G_(),
-    epsilon_(),
+    omega_(),
     initialised_(false),
     master_(-1),
     cornerWeights_()
 {}
 
 
-Foam::epsilonWallFunctionFvPatchScalarField::
-epsilonWallFunctionFvPatchScalarField
+flameletOmegaWallFunctionFvPatchScalarField::flameletOmegaWallFunctionFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
@@ -257,60 +299,65 @@ epsilonWallFunctionFvPatchScalarField
 )
 :
     fixedValueFvPatchField<scalar>(p, iF, dict),
+    beta1_(dict.lookupOrDefault<scalar>("beta1", 0.075)),
+    blended_(dict.lookupOrDefault<Switch>("blended", false)),
     G_(),
-    epsilon_(),
+    omega_(),
     initialised_(false),
     master_(-1),
     cornerWeights_()
 {
-    // Apply zero-gradient condition on start-up
+    // apply zero-gradient condition on start-up
     this->operator==(patchInternalField());
 }
 
 
-Foam::epsilonWallFunctionFvPatchScalarField::
-epsilonWallFunctionFvPatchScalarField
+flameletOmegaWallFunctionFvPatchScalarField::flameletOmegaWallFunctionFvPatchScalarField
 (
-    const epsilonWallFunctionFvPatchScalarField& ptf,
+    const flameletOmegaWallFunctionFvPatchScalarField& ptf,
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
 )
 :
     fixedValueFvPatchField<scalar>(ptf, p, iF, mapper),
+    beta1_(ptf.beta1_),
+    blended_(ptf.blended_),
     G_(),
-    epsilon_(),
+    omega_(),
     initialised_(false),
     master_(-1),
     cornerWeights_()
 {}
 
 
-Foam::epsilonWallFunctionFvPatchScalarField::
-epsilonWallFunctionFvPatchScalarField
+flameletOmegaWallFunctionFvPatchScalarField::flameletOmegaWallFunctionFvPatchScalarField
 (
-    const epsilonWallFunctionFvPatchScalarField& ewfpsf
+    const flameletOmegaWallFunctionFvPatchScalarField& owfpsf
 )
 :
-    fixedValueFvPatchField<scalar>(ewfpsf),
+    fixedValueFvPatchField<scalar>(owfpsf),
+    beta1_(owfpsf.beta1_),
+    blended_(owfpsf.blended_),
     G_(),
-    epsilon_(),
+    omega_(),
     initialised_(false),
     master_(-1),
     cornerWeights_()
 {}
 
 
-Foam::epsilonWallFunctionFvPatchScalarField::
-epsilonWallFunctionFvPatchScalarField
+flameletOmegaWallFunctionFvPatchScalarField::flameletOmegaWallFunctionFvPatchScalarField
 (
-    const epsilonWallFunctionFvPatchScalarField& ewfpsf,
+    const flameletOmegaWallFunctionFvPatchScalarField& owfpsf,
     const DimensionedField<scalar, volMesh>& iF
 )
 :
-    fixedValueFvPatchField<scalar>(ewfpsf, iF),
+    fixedValueFvPatchField<scalar>(owfpsf, iF),
+    beta1_(owfpsf.beta1_),
+    blended_(owfpsf.blended_),
     G_(),
-    epsilon_(),
+    omega_(),
     initialised_(false),
     master_(-1),
     cornerWeights_()
@@ -319,7 +366,7 @@ epsilonWallFunctionFvPatchScalarField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalarField& Foam::epsilonWallFunctionFvPatchScalarField::G(bool init)
+scalarField& flameletOmegaWallFunctionFvPatchScalarField::G(bool init)
 {
     if (patch().index() == master_)
     {
@@ -331,30 +378,27 @@ Foam::scalarField& Foam::epsilonWallFunctionFvPatchScalarField::G(bool init)
         return G_;
     }
 
-    return epsilonPatch(master_).G();
+    return omegaPatch(master_).G();
 }
 
 
-Foam::scalarField& Foam::epsilonWallFunctionFvPatchScalarField::epsilon
-(
-    bool init
-)
+scalarField& flameletOmegaWallFunctionFvPatchScalarField::omega(bool init)
 {
     if (patch().index() == master_)
     {
         if (init)
         {
-            epsilon_ = 0.0;
+            omega_ = 0.0;
         }
 
-        return epsilon_;
+        return omega_;
     }
 
-    return epsilonPatch(master_).epsilon(init);
+    return omegaPatch(master_).omega(init);
 }
 
 
-void Foam::epsilonWallFunctionFvPatchScalarField::updateCoeffs()
+void flameletOmegaWallFunctionFvPatchScalarField::updateCoeffs()
 {
     if (updated())
     {
@@ -375,13 +419,11 @@ void Foam::epsilonWallFunctionFvPatchScalarField::updateCoeffs()
     if (patch().index() == master_)
     {
         createAveragingWeights();
-        calculateTurbulenceFields(turbModel, G(true), epsilon(true));
+        calculateTurbulenceFields(turbModel, G(true), omega(true));
     }
 
     const scalarField& G0 = this->G();
-    const scalarField& epsilon0 = this->epsilon();
-
-    typedef DimensionedField<scalar, volMesh> FieldType;
+    const scalarField& omega0 = this->omega();
 
     FieldType& G =
         const_cast<FieldType&>
@@ -389,21 +431,21 @@ void Foam::epsilonWallFunctionFvPatchScalarField::updateCoeffs()
             db().lookupObject<FieldType>(turbModel.GName())
         );
 
-    FieldType& epsilon = const_cast<FieldType&>(internalField());
+    FieldType& omega = const_cast<FieldType&>(internalField());
 
     forAll(*this, facei)
     {
         label celli = patch().faceCells()[facei];
 
         G[celli] = G0[celli];
-        epsilon[celli] = epsilon0[celli];
+        omega[celli] = omega0[celli];
     }
 
     fvPatchField<scalar>::updateCoeffs();
 }
 
 
-void Foam::epsilonWallFunctionFvPatchScalarField::updateWeightedCoeffs
+void flameletOmegaWallFunctionFvPatchScalarField::updateWeightedCoeffs
 (
     const scalarField& weights
 )
@@ -427,13 +469,11 @@ void Foam::epsilonWallFunctionFvPatchScalarField::updateWeightedCoeffs
     if (patch().index() == master_)
     {
         createAveragingWeights();
-        calculateTurbulenceFields(turbModel, G(true), epsilon(true));
+        calculateTurbulenceFields(turbModel, G(true), omega(true));
     }
 
     const scalarField& G0 = this->G();
-    const scalarField& epsilon0 = this->epsilon();
-
-    typedef DimensionedField<scalar, volMesh> FieldType;
+    const scalarField& omega0 = this->omega();
 
     FieldType& G =
         const_cast<FieldType&>
@@ -441,22 +481,22 @@ void Foam::epsilonWallFunctionFvPatchScalarField::updateWeightedCoeffs
             db().lookupObject<FieldType>(turbModel.GName())
         );
 
-    FieldType& epsilon = const_cast<FieldType&>(internalField());
+    FieldType& omega = const_cast<FieldType&>(internalField());
 
-    scalarField& epsilonf = *this;
+    scalarField& omegaf = *this;
 
-    // Only set the values if the weights are < 1 - tolerance
+    // only set the values if the weights are < 1 - tolerance
     forAll(weights, facei)
     {
         scalar w = weights[facei];
 
-        if (w < 1.0 - tolerance_)
+        if (w < (1.0 - tolerance_))
         {
             label celli = patch().faceCells()[facei];
 
             G[celli] = w*G[celli] + (1.0 - w)*G0[celli];
-            epsilon[celli] = w*epsilon[celli] + (1.0 - w)*epsilon0[celli];
-            epsilonf[facei] = epsilon[celli];
+            omega[celli] = w*omega[celli] + (1.0 - w)*omega0[celli];
+            omegaf[facei] = omega[celli];
         }
     }
 
@@ -464,7 +504,7 @@ void Foam::epsilonWallFunctionFvPatchScalarField::updateWeightedCoeffs
 }
 
 
-void Foam::epsilonWallFunctionFvPatchScalarField::manipulateMatrix
+void flameletOmegaWallFunctionFvPatchScalarField::manipulateMatrix
 (
     fvMatrix<scalar>& matrix
 )
@@ -480,7 +520,7 @@ void Foam::epsilonWallFunctionFvPatchScalarField::manipulateMatrix
 }
 
 
-void Foam::epsilonWallFunctionFvPatchScalarField::manipulateMatrix
+void flameletOmegaWallFunctionFvPatchScalarField::manipulateMatrix
 (
     fvMatrix<scalar>& matrix,
     const Field<scalar>& weights
@@ -492,10 +532,10 @@ void Foam::epsilonWallFunctionFvPatchScalarField::manipulateMatrix
     }
 
     DynamicList<label> constraintCells(weights.size());
-    DynamicList<scalar> constraintEpsilon(weights.size());
+    DynamicList<scalar> constraintomega(weights.size());
     const labelUList& faceCells = patch().faceCells();
 
-    const DimensionedField<scalar, volMesh>& epsilon
+    const DimensionedField<scalar, volMesh>& omega
         = internalField();
 
     label nConstrainedCells = 0;
@@ -503,7 +543,7 @@ void Foam::epsilonWallFunctionFvPatchScalarField::manipulateMatrix
 
     forAll(weights, facei)
     {
-        // Only set the values if the weights are < 1 - tolerance
+        // only set the values if the weights are < 1 - tolerance
         if (weights[facei] < (1 - tolerance_))
         {
             nConstrainedCells++;
@@ -511,7 +551,7 @@ void Foam::epsilonWallFunctionFvPatchScalarField::manipulateMatrix
             label celli = faceCells[facei];
 
             constraintCells.append(celli);
-            constraintEpsilon.append(epsilon[celli]);
+            constraintomega.append(omega[celli]);
         }
     }
 
@@ -526,23 +566,31 @@ void Foam::epsilonWallFunctionFvPatchScalarField::manipulateMatrix
     matrix.setValues
     (
         constraintCells,
-        scalarField(constraintEpsilon)
+        scalarField(constraintomega)
     );
 
     fvPatchField<scalar>::manipulateMatrix(matrix);
 }
 
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-namespace Foam
+void flameletOmegaWallFunctionFvPatchScalarField::write(Ostream& os) const
 {
-    makePatchTypeField
-    (
-        fvPatchScalarField,
-        epsilonWallFunctionFvPatchScalarField
-    );
+    writeEntry(os, "beta1", beta1_);
+    writeEntry(os, "blended", blended_);
+    fixedValueFvPatchField<scalar>::write(os);
 }
 
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+makePatchTypeField
+(
+    fvPatchScalarField,
+    flameletOmegaWallFunctionFvPatchScalarField
+);
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
 
 // ************************************************************************* //

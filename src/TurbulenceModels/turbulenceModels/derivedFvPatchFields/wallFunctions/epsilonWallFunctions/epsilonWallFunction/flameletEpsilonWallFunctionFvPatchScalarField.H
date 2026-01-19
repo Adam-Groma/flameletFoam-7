@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::epsilonWallFunctionFvPatchScalarField
+    Foam::flameletEpsilonWallFunctionFvPatchScalarField
 
 Description
     This boundary condition provides a turbulence dissipation wall constraint
@@ -48,21 +48,21 @@ Usage
     \verbatim
     <patchName>
     {
-        type            epsilonWallFunction;
+        type            flameletEpsilonWallFunction;
     }
     \endverbatim
 
 See also
     Foam::fixedInternalValueFvPatchField
-    Foam::omegaWallFunctionFvPatchScalarField
+    Foam::flameletOmegaWallFunctionFvPatchScalarField
 
 SourceFiles
-    epsilonWallFunctionFvPatchScalarField.C
+    flameletEpsilonWallFunctionFvPatchScalarField.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef epsilonWallFunctionFvPatchScalarField_H
-#define epsilonWallFunctionFvPatchScalarField_H
+#ifndef flameletEpsilonWallFunctionFvPatchScalarField_H
+#define flameletEpsilonWallFunctionFvPatchScalarField_H
 
 #include "fixedValueFvPatchField.H"
 
@@ -74,10 +74,10 @@ namespace Foam
 class turbulenceModel;
 
 /*---------------------------------------------------------------------------*\
-           Class epsilonWallFunctionFvPatchScalarField Declaration
+           Class flameletEpsilonWallFunctionFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class epsilonWallFunctionFvPatchScalarField
+class flameletEpsilonWallFunctionFvPatchScalarField
 :
     public fixedValueFvPatchField<scalar>
 {
@@ -115,7 +115,7 @@ protected:
         virtual void createAveragingWeights();
 
         //- Helper function to return non-const access to an epsilon patch
-        virtual epsilonWallFunctionFvPatchScalarField& epsilonPatch
+        virtual flameletEpsilonWallFunctionFvPatchScalarField& epsilonPatch
         (
             const label patchi
         );
@@ -148,20 +148,20 @@ protected:
 public:
 
     //- Runtime type information
-    TypeName("epsilonWallFunction");
+    TypeName("flameletEpsilonWallFunction");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        epsilonWallFunctionFvPatchScalarField
+        flameletEpsilonWallFunctionFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        epsilonWallFunctionFvPatchScalarField
+        flameletEpsilonWallFunctionFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
@@ -169,20 +169,20 @@ public:
         );
 
         //- Construct by mapping given
-        //  epsilonWallFunctionFvPatchScalarField
+        //  flameletEpsilonWallFunctionFvPatchScalarField
         //  onto a new patch
-        epsilonWallFunctionFvPatchScalarField
+        flameletEpsilonWallFunctionFvPatchScalarField
         (
-            const epsilonWallFunctionFvPatchScalarField&,
+            const flameletEpsilonWallFunctionFvPatchScalarField&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Copy constructor
-        epsilonWallFunctionFvPatchScalarField
+        flameletEpsilonWallFunctionFvPatchScalarField
         (
-            const epsilonWallFunctionFvPatchScalarField&
+            const flameletEpsilonWallFunctionFvPatchScalarField&
         );
 
         //- Construct and return a clone
@@ -190,14 +190,14 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new epsilonWallFunctionFvPatchScalarField(*this)
+                new flameletEpsilonWallFunctionFvPatchScalarField(*this)
             );
         }
 
         //- Copy constructor setting internal field reference
-        epsilonWallFunctionFvPatchScalarField
+        flameletEpsilonWallFunctionFvPatchScalarField
         (
-            const epsilonWallFunctionFvPatchScalarField&,
+            const flameletEpsilonWallFunctionFvPatchScalarField&,
             const DimensionedField<scalar, volMesh>&
         );
 
@@ -209,12 +209,12 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new epsilonWallFunctionFvPatchScalarField(*this, iF)
+                new flameletEpsilonWallFunctionFvPatchScalarField(*this, iF)
             );
         }
 
     //- Destructor
-    virtual ~epsilonWallFunctionFvPatchScalarField()
+    virtual ~flameletEpsilonWallFunctionFvPatchScalarField()
     {}
 
 

@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2012 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -43,13 +43,20 @@ SourceFiles
 namespace Foam
 {
 
+// Forward declaration of friend functions and operators
+
+class LandauTellerReactionRate;
+
+Ostream& operator<<(Ostream&, const LandauTellerReactionRate&);
+
+
 /*---------------------------------------------------------------------------*\
                    Class LandauTellerReactionRate Declaration
 \*---------------------------------------------------------------------------*/
 
 class LandauTellerReactionRate
 {
-    // Private data
+    // Private Data
 
         scalar A_;
         scalar beta_;
@@ -72,13 +79,6 @@ public:
             const scalar C
         );
 
-        //- Construct from Istream
-        inline LandauTellerReactionRate
-        (
-            const speciesTable& species,
-            Istream& is
-        );
-
         //- Construct from dictionary
         inline LandauTellerReactionRate
         (
@@ -96,6 +96,35 @@ public:
         }
 
         inline scalar operator()
+        (
+            const scalar p,
+            const scalar T,
+            const scalarField& c
+        ) const;
+
+        inline scalar ddT
+        (
+            const scalar p,
+            const scalar T,
+            const scalarField& c
+        ) const;
+
+        //- Third-body efficiencies (beta = 1-alpha)
+        //  non-empty only for third-body reactions
+        //  with enhanced molecularity (alpha != 1)
+        inline const List<Tuple2<label, scalar>>& beta() const;
+
+        //- Species concentration derivative of the pressure dependent term
+        inline void dcidc
+        (
+            const scalar p,
+            const scalar T,
+            const scalarField& c,
+            scalarField& dcidc
+        ) const;
+
+        //- Temperature derivative of the pressure dependent term
+        inline scalar dcidT
         (
             const scalar p,
             const scalar T,

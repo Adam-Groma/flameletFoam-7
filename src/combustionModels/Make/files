@@ -1,9 +1,5 @@
 combustionModel/combustionModel.C
-
-rhoCombustionModel/rhoCombustionModel/rhoCombustionModel.C
-rhoCombustionModel/rhoCombustionModel/rhoCombustionModelNew.C
-rhoCombustionModel/rhoThermoCombustion/rhoThermoCombustion.C
-rhoCombustionModel/rhoChemistryCombustion/rhoChemistryCombustion.C
+CombustionModel/CombustionModel/CombustionModels.C
 
 flameletTable/linearInterpolation/linearInterpolation.C
 flameletTable/flameletTable/flameletTable.C
@@ -11,4 +7,9 @@ flameletTable/tableSolver/tableSolver.C
 
 YSLFModel/YSLFModels.C
 
-LIB = $(FOAM_USER_LIBBIN)/libFlameletCombustionModels
+functionObjects/Qdot/Qdot.C
+
+radiationModels/absorptionEmissionModels/greyMeanCombustion/greyMeanCombustion.C
+radiationModels/absorptionEmissionModels/wideBandCombustion/wideBandCombustion.C
+
+LIB = $(FOAM_USER_LIBBIN)/libFlameletcombustionModels

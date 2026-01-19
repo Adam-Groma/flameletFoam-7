@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2012-2013 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2012-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -21,10 +21,6 @@ License
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
-Contributors/Copyright
-    2014 Hagen Müller <hagen.mueller@unibw.de> Universität der Bundeswehr München
-    2014 Likun Ma <L.Ma@tudelft.nl> TU Delft
-
 \*---------------------------------------------------------------------------*/
 
 #include "makeReactionThermo.H"
@@ -39,9 +35,13 @@ Contributors/Copyright
 #include "janafThermo.H"
 #include "sensibleEnthalpy.H"
 #include "thermo.H"
+#include "rhoConst.H"
+#include "perfectFluid.H"
+#include "adiabaticPerfectFluid.H"
 
 #include "constTransport.H"
 #include "sutherlandTransport.H"
+#include "WLFTransport.H"
 
 #include "multiComponentMixture.H"
 #include "reactingMixture.H"
@@ -55,9 +55,9 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-// Multi-component reaction thermo
+// Reaction thermo for sensible enthalpy
 
-makeReactionMixtureThermo
+makeThermoPhysicsReactionThermos
 (
     rhoThermo,
     rhoReactionThermo,
@@ -66,7 +66,7 @@ makeReactionMixtureThermo
     constGasHThermoPhysics
 );
 
-makeReactionMixtureThermo
+makeThermoPhysicsReactionThermos
 (
     rhoThermo,
     rhoReactionThermo,
@@ -75,7 +75,7 @@ makeReactionMixtureThermo
     gasHThermoPhysics
 );
 
-makeReactionMixtureThermo
+makeThermoPhysicsReactionThermos
 (
     rhoThermo,
     rhoReactionThermo,
@@ -84,7 +84,7 @@ makeReactionMixtureThermo
     constIncompressibleGasHThermoPhysics
 );
 
-makeReactionMixtureThermo
+makeThermoPhysicsReactionThermos
 (
     rhoThermo,
     rhoReactionThermo,
@@ -93,13 +93,40 @@ makeReactionMixtureThermo
     incompressibleGasHThermoPhysics
 );
 
-makeReactionMixtureThermo
+makeThermoPhysicsReactionThermos
 (
     rhoThermo,
     rhoReactionThermo,
     heRhoThermo,
     reactingMixture,
     icoPoly8HThermoPhysics
+);
+
+makeThermoPhysicsReactionThermos
+(
+    rhoThermo,
+    rhoReactionThermo,
+    heRhoThermo,
+    reactingMixture,
+    constFluidHThermoPhysics
+);
+
+makeThermoPhysicsReactionThermos
+(
+    rhoThermo,
+    rhoReactionThermo,
+    heRhoThermo,
+    reactingMixture,
+    constAdiabaticFluidHThermoPhysics
+);
+
+makeThermoPhysicsReactionThermos
+(
+    rhoThermo,
+    rhoReactionThermo,
+    heRhoThermo,
+    reactingMixture,
+    constHThermoPhysics
 );
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

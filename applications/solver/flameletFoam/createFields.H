@@ -1,16 +1,20 @@
-Info<< "Creating combustion model\n" << endl;
+#include "createRDeltaT.H"
 
-autoPtr<combustionModels::rhoCombustionModel> combustion
-(
-    combustionModels::rhoCombustionModel::New
-    (
-        mesh
-    )
-);
+Info<< "Reading thermophysical properties\n" << endl;
+autoPtr<rhoReactionThermo> pThermo(rhoReactionThermo::New(mesh));
+rhoReactionThermo& thermo = pThermo();
+//thermo.validate(args.executable(), "h", "e");
 
-combustion->correct();
+//basicSpecieMixture& composition = thermo.composition();
+//PtrList<volScalarField>& Y = composition.Y();
 
-rhoReactionThermo& thermo = combustion->thermo(); 
+//const word inertSpecie(thermo.lookup("inertSpecie"));
+//if (!composition.species().found(inertSpecie))
+//{
+//    FatalIOErrorIn(args.executable().c_str(), thermo)
+//        << "Inert specie " << inertSpecie << " not found in available species "
+//        << composition.species() << exit(FatalIOError);
+//}
 
 volScalarField rho
 (
@@ -40,11 +44,13 @@ volVectorField U
 );
 
 volScalarField& p = thermo.p();
-
-// Mixture Fraction
 volScalarField& Z = thermo.Z();
 
 #include "compressibleCreatePhi.H"
+
+pressureControl pressureControl(p, rho, pimple.dict(), false);
+
+mesh.setFluxRequired(p.name());
 
 Info << "Creating turbulence model.\n" << nl;
 autoPtr<compressible::turbulenceModel> turbulence
@@ -58,15 +64,39 @@ autoPtr<compressible::turbulenceModel> turbulence
     )
 );
 
-// Set the turbulence into the combustion model
-combustion->setTurbulence(turbulence());
+Info<< "Creating combustion model\n" << endl;
+autoPtr<CombustionModel<rhoReactionThermo>> combustion
+(
+    CombustionModel<rhoReactionThermo>::New(thermo, turbulence())
+);
+
+combustion->correct();
 
 Info<< "Creating field dpdt\n" << endl;
 volScalarField dpdt("dpdt", fvc::ddt(p));
+//volScalarField dpdt
+//(
+//    IOobject
+//    (
+//        "dpdt",
+//        runTime.timeName(),
+//        mesh
+//    ),
+//    mesh,
+//    dimensionedScalar(p.dimensions()/dimTime, 0)
+//);
 
 Info<< "Creating field kinetic energy K\n" << endl;
 volScalarField K("K", 0.5*magSqr(U));
 
+
 multivariateSurfaceInterpolationScheme<scalar>::fieldTable fields;
 
-const volScalarField& psi = thermo.psi();
+//forAll(Y, i)
+//{
+//    fields.add(Y[i]);
+//}
+//fields.add(thermo.he());
+
+#include "createMRF.H"
+#include "createFvOptions.H"

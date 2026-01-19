@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -35,7 +35,11 @@ Description
 #include "specie.H"
 #include "perfectGas.H"
 #include "incompressiblePerfectGas.H"
+#include "perfectFluid.H"
+#include "adiabaticPerfectFluid.H"
+#include "rhoConst.H"
 #include "hConstThermo.H"
+#include "eConstThermo.H"
 #include "janafThermo.H"
 
 #include "sensibleEnthalpy.H"
@@ -120,6 +124,48 @@ namespace Foam
         8
     > icoPoly8HThermoPhysics;
 
+    typedef
+    constTransport
+    <
+        species::thermo
+        <
+            hConstThermo
+            <
+                perfectFluid<specie>
+            >,
+            sensibleEnthalpy
+        >
+    >
+    constFluidHThermoPhysics;
+
+    typedef
+    constTransport
+    <
+        species::thermo
+        <
+            hConstThermo
+            <
+                adiabaticPerfectFluid<specie>
+            >,
+            sensibleEnthalpy
+        >
+    >
+    constAdiabaticFluidHThermoPhysics;
+
+    typedef
+    constTransport
+    <
+        species::thermo
+        <
+            hConstThermo
+            <
+                rhoConst<specie>
+            >,
+            sensibleEnthalpy
+        >
+    >
+    constHThermoPhysics;
+
 
     // thermo physics types based on sensibleInternalEnergy
     typedef
@@ -127,7 +173,7 @@ namespace Foam
     <
         species::thermo
         <
-            hConstThermo
+            eConstThermo
             <
                 perfectGas<specie>
             >,
@@ -153,7 +199,7 @@ namespace Foam
     <
         species::thermo
         <
-            hConstThermo
+            eConstThermo
             <
                 incompressiblePerfectGas<specie>
             >,
@@ -188,6 +234,48 @@ namespace Foam
         >,
         8
     > icoPoly8EThermoPhysics;
+
+    typedef
+    constTransport
+    <
+        species::thermo
+        <
+            eConstThermo
+            <
+                perfectFluid<specie>
+            >,
+            sensibleInternalEnergy
+        >
+    >
+    constFluidEThermoPhysics;
+
+    typedef
+    constTransport
+    <
+        species::thermo
+        <
+            eConstThermo
+            <
+                adiabaticPerfectFluid<specie>
+            >,
+            sensibleInternalEnergy
+        >
+    >
+    constAdiabaticFluidEThermoPhysics;
+
+    typedef
+    constTransport
+    <
+        species::thermo
+        <
+            eConstThermo
+            <
+                rhoConst<specie>
+            >,
+            sensibleInternalEnergy
+        >
+    >
+    constEThermoPhysics;
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

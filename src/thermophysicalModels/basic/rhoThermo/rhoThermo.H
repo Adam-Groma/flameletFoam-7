@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2012 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -29,10 +29,6 @@ Description
 
 SourceFiles
     rhoThermo.C
-
-Contributors/Copyright
-    2014 Hagen Müller <hagen.mueller@unibw.de> Universität der Bundeswehr München
-    2014 Likun Ma <L.Ma@tudelft.nl> TU Delft
 
 \*---------------------------------------------------------------------------*/
 
@@ -124,7 +120,7 @@ public:
     virtual ~rhoThermo();
 
 
-    // Member functions
+    // Member Functions
 
         // Fields derived from thermodynamic state variables
 
@@ -137,6 +133,10 @@ public:
             //- Return non-const access to the local density field [kg/m^3]
             virtual volScalarField& rho();
 
+            //- Add the given density correction to the density field.
+            //  Used to update the density field following pressure solution
+            virtual void correctRho(const volScalarField& deltaRho);
+
             //- Compressibility [s^2/m^2]
             virtual volScalarField& psi();
 
@@ -146,13 +146,14 @@ public:
 
         // Access to transport state variables
 
+            //- Dynamic viscosity of mixture [kg/m/s]
             virtual volScalarField& mu();
 
             //- Dynamic viscosity of mixture [kg/m/s]
-            virtual const volScalarField& mu() const;
+            virtual tmp<volScalarField> mu() const;
 
             //- Dynamic viscosity of mixture for patch [kg/m/s]
-            virtual const scalarField& mu(const label patchi) const;
+            virtual tmp<scalarField> mu(const label patchi) const;
 };
 
 

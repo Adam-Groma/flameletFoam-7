@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2012-2014 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2012-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::fv::codedSource
+    Foam::fv::CodedSource
 
 Description
    Constructs on-the-fly fvOption source
@@ -31,40 +31,41 @@ Description
 
     codeCorrect
     (
-        GeometricField<Type, fvPatchField, volMesh>& fld
+        GeometricField<Type, fvPatchField, volMesh>& field
     )
 
     codeAddSup
     (
         fvMatrix<Type}>& eqn,
-        const label fieldI
+        const label fieldi
     )
 
-    setValue
+    constrain
     (
         fvMatrix<Type}>& eqn,
-        const label fieldI
+        const label fieldi
     )
 
     where :
-        fld is the field in fieldNames
+        field is the field in fieldNames
         eqn is the fvMatrix
 
-    \heading Source usage
-
+Usage
     Example usage in controlDict:
     \verbatim
     energySource
     {
         type            scalarCodedSource;
 
-        active          true;
-        selectionMode   all;
+        active          yes;
+
+        name    sourceTime;
 
         scalarCodedSourceCoeffs
         {
-            fieldNames      (h);
-            redirectType    sourceTime;
+            selectionMode   all;
+
+            fields          (h);
 
             codeInclude
             #{
@@ -88,20 +89,11 @@ Description
             #{
                 Pout<< "**codeSetValue**" << endl;
             #};
-
-            // Dummy entry. Make dependent on above to trigger recompilation
-            code
-            #{
-                $codeInclude
-                $codeCorrect
-                $codeAddSup
-                $codeSetValue
-            #};
         }
 
         sourceTimeCoeffs
         {
-            // Dummy entry
+            $scalarCodedSourceCoeffs;
         }
     }
     \endverbatim
@@ -115,7 +107,7 @@ SourceFiles
 #ifndef CodedSource_H
 #define CodedSource_H
 
-#include "fvOption.H"
+#include "cellSetOption.H"
 #include "codedBase.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -132,19 +124,21 @@ namespace fv
 template<class Type>
 class CodedSource
 :
-    public option,
+    public cellSetOption,
     public codedBase
 {
-
 protected:
+
+    // Protected static data
+
+        //- The keywords associated with source code
+        static const wordList codeKeys_;
+
 
     // Protected data
 
-        word redirectType_;
-
-        string codeCorrect_;
-        string codeAddSup_;
-        string codeSetValue_;
+        //- The name
+        word name_;
 
         //- Underlying functionObject
         mutable autoPtr<option> redirectFvOptionPtr_;
@@ -152,20 +146,23 @@ protected:
 
     // Protected Member Functions
 
-        //- get the loaded dynamic libraries
+        //- Get the loaded dynamic libraries
         virtual dlLibraryTable& libs() const;
 
-        //- adapt the context for the current object
+        //- Adapt the context for the current object
         virtual void prepare(dynamicCode&, const dynamicCodeContext&) const;
 
-        // Return a description (type + name) for the output
+        //- Return a description (type + name) for the output
         virtual string description() const;
 
-        // Clear any redirected objects
+        //- Clear any redirected objects
         virtual void clearRedirect() const;
 
-        // Get the dictionary to initialize the codeContext
+        //- Get the dictionary to initialize the codeContext
         virtual const dictionary& codeDict() const;
+
+        //- Get the keywords associated with source code
+        virtual const wordList& codeKeys() const;
 
 
 public:
@@ -203,7 +200,7 @@ public:
             virtual void addSup
             (
                 fvMatrix<Type>& eqn,
-                const label fieldI
+                const label fieldi
             );
 
             //- Explicit and implicit matrix contributions
@@ -212,21 +209,18 @@ public:
             (
                 const volScalarField& rho,
                 fvMatrix<Type>& eqn,
-                const label fieldI
+                const label fieldi
             );
 
             //- Set value
-            virtual void setValue
+            virtual void constrain
             (
                 fvMatrix<Type>& eqn,
-                const label fieldI
+                const label fieldi
             );
 
 
-        // I-O
-
-            //- Write the source properties
-            virtual void writeData(Ostream&) const;
+        // IO
 
             //- Read source dictionary
             virtual bool read(const dictionary& dict);
@@ -241,8 +235,8 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-#   include "CodedSource.C"
-#   include "CodedSourceIO.C"
+    #include "CodedSource.C"
+    #include "CodedSourceIO.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

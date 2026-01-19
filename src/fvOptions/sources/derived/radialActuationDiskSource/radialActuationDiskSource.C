@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2014 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -65,14 +65,14 @@ Foam::fv::radialActuationDiskSource::radialActuationDiskSource
 void Foam::fv::radialActuationDiskSource::addSup
 (
     fvMatrix<vector>& eqn,
-    const label fieldI
+    const label fieldi
 )
 {
     const scalarField& cellsV = mesh_.V();
     vectorField& Usource = eqn.source();
     const vectorField& U = eqn.psi();
 
-    if (V_ > VSMALL)
+    if (V_ > vSmall)
     {
         addRadialActuationDiskAxialInertialResistance
         (
@@ -90,14 +90,14 @@ void Foam::fv::radialActuationDiskSource::addSup
 (
     const volScalarField& rho,
     fvMatrix<vector>& eqn,
-    const label fieldI
+    const label fieldi
 )
 {
     const scalarField& cellsV = mesh_.V();
     vectorField& Usource = eqn.source();
     const vectorField& U = eqn.psi();
 
-    if (V_ > VSMALL)
+    if (V_ > vSmall)
     {
         addRadialActuationDiskAxialInertialResistance
         (
@@ -111,20 +111,10 @@ void Foam::fv::radialActuationDiskSource::addSup
 }
 
 
-void Foam::fv::radialActuationDiskSource::writeData(Ostream& os) const
-{
-    actuationDiskSource::writeData(os);
-}
-
-
 bool Foam::fv::radialActuationDiskSource::read(const dictionary& dict)
 {
-    if (option::read(dict))
+    if (actuationDiskSource::read(dict))
     {
-        coeffs_.readIfPresent("diskDir", diskDir_);
-        coeffs_.readIfPresent("Cp", Cp_);
-        coeffs_.readIfPresent("Ct", Ct_);
-        coeffs_.readIfPresent("diskArea", diskArea_);
         coeffs_.lookup("coeffs") >> radialCoeffs_;
         return true;
     }

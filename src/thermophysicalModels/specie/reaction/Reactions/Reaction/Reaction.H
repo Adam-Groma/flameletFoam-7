@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2012 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -38,8 +38,11 @@ SourceFiles
 #define Reaction_H
 
 #include "speciesTable.H"
+#include "specieCoeffs.H"
 #include "HashPtrTable.H"
 #include "scalarField.H"
+#include "simpleMatrix.H"
+#include "Tuple2.H"
 #include "typeInfo.H"
 #include "runTimeSelectionTables.H"
 
@@ -64,18 +67,8 @@ inline Ostream& operator<<(Ostream&, const Reaction<ReactionThermo>&);
 template<class ReactionThermo>
 class Reaction
 :
-    public ReactionThermo
+    public ReactionThermo::thermoType
 {
-protected:
-
-    // Protected member functions
-
-        //- Return string representation of the left of the reaction
-        void reactionStrLeft(OStringStream& reaction) const;
-
-        //- Return string representation of the right of the reaction
-        void reactionStrRight(OStringStream& reaction) const;
-
 
 public:
 
@@ -84,55 +77,21 @@ public:
         //- Number of un-named reactions
         static label nUnNamedReactions;
 
-
-    // Public data types
-
-        //- Class to hold the specie index and its coefficients in the
-        //  reaction rate expression
-        struct specieCoeffs
-        {
-            label index;
-            scalar stoichCoeff;
-            scalar exponent;
-
-            specieCoeffs()
-            :
-                index(-1),
-                stoichCoeff(0),
-                exponent(1)
-            {}
-
-            specieCoeffs(const speciesTable& species, Istream& is);
-
-            bool operator==(const specieCoeffs& sc) const
-            {
-                return index == sc.index;
-            }
-
-            bool operator!=(const specieCoeffs& sc) const
-            {
-                return index != sc.index;
-            }
-
-            friend Ostream& operator<<(Ostream& os, const specieCoeffs& sc)
-            {
-                os  << sc.index << token::SPACE
-                    << sc.stoichCoeff << token::SPACE
-                    << sc.exponent;
-                return os;
-            }
-        };
-
+        //- Default temperature limits of applicability of reaction rates
+        static scalar TlowDefault, ThighDefault;
 
 private:
 
-    // Private data
+    // Private Data
 
         //- Name of reaction
         const word name_;
 
         //- List of specie names present in reaction system
         const speciesTable& species_;
+
+        //- Temperature limits of applicability of reaction rates
+        scalar Tlow_, Thigh_;
 
         //- Specie info for the left-hand-side of the reaction
         List<specieCoeffs> lhs_;
@@ -143,14 +102,8 @@ private:
 
     // Private Member Functions
 
-        //- Return string representation of reaction
-        string reactionStr(OStringStream& reaction) const;
-
         //- Construct reaction thermo
         void setThermo(const HashPtrTable<ReactionThermo>& thermoDatabase);
-
-        //- Disallow default bitwise assignment
-        void operator=(const Reaction<ReactionThermo>&);
 
         //- Return new reaction ID for un-named reactions
         label getNewReactionID();
@@ -168,19 +121,6 @@ public:
         (
             autoPtr,
             Reaction,
-            Istream,
-            (
-                const speciesTable& species,
-                const HashPtrTable<ReactionThermo>& thermoDatabase,
-                Istream& is
-            ),
-            (species, thermoDatabase, is)
-        );
-
-        declareRunTimeSelectionTable
-        (
-            autoPtr,
-            Reaction,
             dictionary,
             (
                 const speciesTable& species,
@@ -189,36 +129,6 @@ public:
             ),
             (species, thermoDatabase, dict)
         );
-
-
-    // Public classes
-
-        //- Class used for the read-construction of PtrLists of reaction
-        class iNew
-        {
-            const speciesTable& species_;
-            const HashPtrTable<ReactionThermo>& thermoDatabase_;
-
-        public:
-
-            iNew
-            (
-                const speciesTable& species,
-                const HashPtrTable<ReactionThermo>& thermoDatabase
-            )
-            :
-                species_(species),
-                thermoDatabase_(thermoDatabase)
-            {}
-
-            autoPtr<Reaction> operator()(Istream& is) const
-            {
-                return autoPtr<Reaction>
-                (
-                    Reaction::New(species_, thermoDatabase_, is)
-                );
-            }
-        };
 
 
     // Constructors
@@ -235,14 +145,6 @@ public:
         //- Construct as copy given new speciesTable
         Reaction(const Reaction<ReactionThermo>&, const speciesTable& species);
 
-        //- Construct from Istream
-        Reaction
-        (
-            const speciesTable& species,
-            const HashPtrTable<ReactionThermo>& thermoDatabase,
-            Istream& is
-        );
-
         //- Construct from dictionary
         Reaction
         (
@@ -252,39 +154,19 @@ public:
         );
 
         //- Construct and return a clone
-        virtual autoPtr<Reaction<ReactionThermo> > clone() const //
-        {
-            return autoPtr<Reaction<ReactionThermo> >
-            (
-                new Reaction<ReactionThermo>(*this)
-            );
-        }
+        virtual autoPtr<Reaction<ReactionThermo>> clone() const = 0;
 
         //- Construct and return a clone with new speciesTable
-        virtual autoPtr<Reaction<ReactionThermo> > clone
+        virtual autoPtr<Reaction<ReactionThermo>> clone
         (
             const speciesTable& species
-        ) const
-        {
-            return autoPtr<Reaction<ReactionThermo> >
-            (
-                new Reaction<ReactionThermo>(*this, species)
-            );
-        }
+        ) const = 0;
 
 
     // Selectors
 
-        //- Return a pointer to new patchField created on freestore from input
-        static autoPtr<Reaction<ReactionThermo> > New
-        (
-            const speciesTable& species,
-            const HashPtrTable<ReactionThermo>& thermoDatabase,
-            Istream& is
-        );
-
         //- Return a pointer to new patchField created on freestore from dict
-        static autoPtr<Reaction<ReactionThermo> > New
+        static autoPtr<Reaction<ReactionThermo>> New
         (
             const speciesTable& species,
             const HashPtrTable<ReactionThermo>& thermoDatabase,
@@ -301,32 +183,67 @@ public:
 
         // Access
 
-            inline word& name();
+            //- Return the name of the reaction
             inline const word& name() const;
 
-            // - Access to basic components of the reaction
+            //- Return the lower temperature limit for the reaction
+            inline scalar Tlow() const;
+
+            //- Return the upper temperature limit for the reaction
+            inline scalar Thigh() const;
+
+            //- Return the components of the left hand side
             inline const List<specieCoeffs>& lhs() const;
+
+            //- Return the components of the right hand side
             inline const List<specieCoeffs>& rhs() const;
 
-            // - Access to gas components of the reaction
-            virtual const List<specieCoeffs>& grhs() const;
-            virtual const List<specieCoeffs>& glhs() const;
-
-            // - Access to specie list
+            //- Return the specie list
             const speciesTable& species() const;
 
-            // - Access to gas specie list
-            virtual const speciesTable& gasSpecies() const;
 
-            //- Construct the left- and right-hand-side reaction coefficients
-            void setLRhs
+        // Reaction rate coefficients
+
+            //- Forward reaction rate
+            void ddot
             (
-                Istream&,
-                const speciesTable&,
-                List<specieCoeffs>& lhs,
-                List<specieCoeffs>& rhs
-            );
+                const scalar p,
+                const scalar T,
+                const scalarField& c,
+                scalarField& d
+            ) const;
 
+            //- Backward reaction rate
+            void fdot
+            (
+                const scalar p,
+                const scalar T,
+                const scalarField& c,
+                scalarField& f
+            ) const;
+
+            //- Net reaction rate for individual species
+            void omega
+            (
+                const scalar p,
+                const scalar T,
+                const scalarField& c,
+                scalarField& dcdt
+            ) const;
+
+            //- Net reaction rate
+            scalar omega
+            (
+                const scalar p,
+                const scalar T,
+                const scalarField& c,
+                scalar& pf,
+                scalar& cf,
+                label& lRef,
+                scalar& pr,
+                scalar& cr,
+                label& rRef
+            ) const;
 
         // Reaction rate coefficients
 
@@ -336,7 +253,7 @@ public:
                 const scalar p,
                 const scalar T,
                 const scalarField& c
-            ) const;
+            ) const = 0;
 
             //- Reverse rate constant from the given forward rate constant
             virtual scalar kr
@@ -345,21 +262,100 @@ public:
                 const scalar p,
                 const scalar T,
                 const scalarField& c
-            ) const;
+            ) const = 0;
 
-            //- Reverse rate constant.
-            //  Note this evaluates the forward rate constant and divides by the
-            //  equilibrium constant
+            //- Reverse rate constant
             virtual scalar kr
             (
                 const scalar p,
                 const scalar T,
                 const scalarField& c
+            ) const = 0;
+
+
+        // Jacobian coefficients
+
+            //- Derivative of the net reaction rate for each species involved
+            //  w.r.t. the species concentration
+            void dwdc
+            (
+                const scalar p,
+                const scalar T,
+                const scalarField& c,
+                scalarSquareMatrix& J,
+                scalarField& dcdt,
+                scalar& omegaI,
+                scalar& kfwd,
+                scalar& kbwd,
+                const bool reduced,
+                const List<label>& c2s
             ) const;
+
+            //- Derivative of the net reaction rate for each species involved
+            //  w.r.t. the temperature
+            void dwdT
+            (
+                const scalar p,
+                const scalar T,
+                const scalarField& c,
+                const scalar omegaI,
+                const scalar kfwd,
+                const scalar kbwd,
+                scalarSquareMatrix& J,
+                const bool reduced,
+                const List<label>& c2s,
+                const label indexT
+            ) const;
+
+            //- Temperature derivative of forward rate
+            virtual scalar dkfdT
+            (
+                const scalar p,
+                const scalar T,
+                const scalarField& c
+            ) const = 0;
+
+            //- Temperature derivative of reverse rate
+            virtual scalar dkrdT
+            (
+                const scalar p,
+                const scalar T,
+                const scalarField& c,
+                const scalar dkfdT,
+                const scalar kr
+            ) const = 0;
+
+            //- Third-body efficiencies (beta = 1-alpha)
+            //  non-empty only for third-body reactions
+            //  with enhanced molecularity (alpha != 1)
+            virtual const List<Tuple2<label, scalar>>& beta() const = 0;
+
+            //- Species concentration derivative of the pressure dependent term
+            virtual void dcidc
+            (
+                const scalar p,
+                const scalar T,
+                const scalarField& c,
+                scalarField& dcidc
+            ) const = 0;
+
+            //- Temperature derivative of the pressure dependent term
+            virtual scalar dcidT
+            (
+                const scalar p,
+                const scalar T,
+                const scalarField& c
+            ) const = 0;
 
 
         //- Write
         virtual void write(Ostream&) const;
+
+
+    // Member Operators
+
+        //- Disallow default bitwise assignment
+        void operator=(const Reaction<ReactionThermo>&) = delete;
 
 
     // Ostream Operator
@@ -383,7 +379,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-#   include "Reaction.C"
+    #include "Reaction.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

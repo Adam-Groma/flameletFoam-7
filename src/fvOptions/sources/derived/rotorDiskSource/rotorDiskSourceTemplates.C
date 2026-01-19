@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2014 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -25,6 +25,7 @@ License
 
 #include "rotorDiskSource.H"
 #include "volFields.H"
+#include "unitConversion.H"
 
 using namespace Foam::constant;
 
@@ -43,99 +44,95 @@ void Foam::fv::rotorDiskSource::calculate
 {
     const scalarField& V = mesh_.V();
 
-    // logging info
-    scalar dragEff = 0.0;
-    scalar liftEff = 0.0;
-    scalar AOAmin = GREAT;
-    scalar AOAmax = -GREAT;
+    // Logging info
+    scalar dragEff = 0;
+    scalar liftEff = 0;
+    scalar AOAmin = great;
+    scalar AOAmax = -great;
+    scalar powerEff = 0;
 
     forAll(cells_, i)
     {
-        if (area_[i] > ROOTVSMALL)
+        if (area_[i] > rootVSmall)
         {
-            const label cellI = cells_[i];
+            const label celli = cells_[i];
 
             const scalar radius = x_[i].x();
 
-            // velocity in local cylindrical reference frame
-            vector Uc = localAxesRotation_->transform(U[cellI], i);
+            // Transform velocity into local cylindrical reference frame
+            vector Uc = cylindrical_->invTransform(U[celli], i);
+            // Uc.x(): radial direction.
+            // Uc.y(): drag direction.
+            // Uc.z(): lift / thrust direction.
 
-            // transform from rotor cylindrical into local coning system
+            // Transform velocity into local coning system
             Uc = R_[i] & Uc;
 
-            // set radial component of velocity to zero
-            Uc.x() = 0.0;
+            // Set radial component of velocity to zero
+            Uc.x() = 0;
 
-            // set blade normal component of velocity
+            // Set blade normal component of velocity
             Uc.y() = radius*omega_ - Uc.y();
 
-            // determine blade data for this radius
+            // Determine blade data for this radius
             // i2 = index of upper radius bound data point in blade list
-            scalar twist = 0.0;
-            scalar chord = 0.0;
+            scalar twist = 0;
+            scalar chord = 0;
             label i1 = -1;
             label i2 = -1;
-            scalar invDr = 0.0;
+            scalar invDr = 0;
             blade_.interpolate(radius, twist, chord, i1, i2, invDr);
 
-            // flip geometric angle if blade is spinning in reverse (clockwise)
-            scalar alphaGeom = thetag[i] + twist;
-            if (omega_ < 0)
-            {
-                alphaGeom = mathematical::pi - alphaGeom;
-            }
+            const scalar alphaGeom = thetag[i] + twist;
 
-            // effective angle of attack
-            scalar alphaEff = alphaGeom - atan2(-Uc.z(), Uc.y());
-            if (alphaEff > mathematical::pi)
-            {
-                alphaEff -= mathematical::twoPi;
-            }
-            if (alphaEff < -mathematical::pi)
-            {
-                alphaEff += mathematical::twoPi;
-            }
+            // Effective angle of attack
+            const int rotationSign = sign(omega_);
+            const scalar alphaEff =
+                alphaGeom - atan2(-Uc.z(), rotationSign*Uc.y());
 
             AOAmin = min(AOAmin, alphaEff);
             AOAmax = max(AOAmax, alphaEff);
 
-            // determine profile data for this radius and angle of attack
+            // Determine profile data for this radius and angle of attack
             const label profile1 = blade_.profileID()[i1];
             const label profile2 = blade_.profileID()[i2];
 
-            scalar Cd1 = 0.0;
-            scalar Cl1 = 0.0;
+            scalar Cd1 = 0;
+            scalar Cl1 = 0;
             profiles_[profile1].Cdl(alphaEff, Cd1, Cl1);
 
-            scalar Cd2 = 0.0;
-            scalar Cl2 = 0.0;
+            scalar Cd2 = 0;
+            scalar Cl2 = 0;
             profiles_[profile2].Cdl(alphaEff, Cd2, Cl2);
 
-            scalar Cd = invDr*(Cd2 - Cd1) + Cd1;
-            scalar Cl = invDr*(Cl2 - Cl1) + Cl1;
+            const scalar Cd = invDr*(Cd2 - Cd1) + Cd1;
+            const scalar Cl = invDr*(Cl2 - Cl1) + Cl1;
 
-            // apply tip effect for blade lift
-            scalar tipFactor = neg(radius/rMax_ - tipEffect_);
+            // Apply tip effect for blade lift
+            const scalar tipFactor = neg(radius/rMax_ - tipEffect_);
 
-            // calculate forces perpendicular to blade
-            scalar pDyn = 0.5*rho[cellI]*magSqr(Uc);
+            // Calculate forces perpendicular to blade
+            const scalar pDyn = 0.5*rho[celli]*magSqr(Uc);
 
-            scalar f = pDyn*chord*nBlades_*area_[i]/radius/mathematical::twoPi;
-            vector localForce = vector(0.0, -f*Cd, tipFactor*f*Cl);
+            const scalar f =
+                pDyn*chord*nBlades_*area_[i]/radius/mathematical::twoPi;
 
-            // accumulate forces
+            vector localForce = vector(0, rotationSign*-f*Cd, tipFactor*f*Cl);
+
+            // Accumulate forces
             dragEff += rhoRef_*localForce.y();
             liftEff += rhoRef_*localForce.z();
+            powerEff += rhoRef_*localForce.y()*radius*omega_;
 
-            // convert force from local coning system into rotor cylindrical
+            // Transform force from local coning system into rotor cylindrical
             localForce = invR_[i] & localForce;
 
-            // convert force to global cartesian co-ordinate system
-            force[cellI] = localAxesRotation_->invTransform(localForce, i);
+            // Transform force into global Cartesian co-ordinate system
+            force[celli] = cylindrical_->transform(localForce, i);
 
             if (divideVolume)
             {
-                force[cellI] /= V[cellI];
+                force[celli] /= V[celli];
             }
         }
     }
@@ -150,6 +147,7 @@ void Foam::fv::rotorDiskSource::calculate
         Info<< type() << " output:" << nl
             << "    min/max(AOA)   = " << radToDeg(AOAmin) << ", "
             << radToDeg(AOAmax) << nl
+            << "    Effective power = " << powerEff << nl
             << "    Effective drag = " << dragEff << nl
             << "    Effective lift = " << liftEff << endl;
     }
@@ -166,9 +164,9 @@ void Foam::fv::rotorDiskSource::writeField
 {
     typedef GeometricField<Type, fvPatchField, volMesh> fieldType;
 
-    if (mesh_.time().outputTime() || writeNow)
+    if (mesh_.time().writeTime() || writeNow)
     {
-        tmp<fieldType> tfld
+        tmp<fieldType> tfield
         (
             new fieldType
             (
@@ -181,25 +179,24 @@ void Foam::fv::rotorDiskSource::writeField
                     IOobject::NO_WRITE
                 ),
                 mesh_,
-                dimensioned<Type>("zero", dimless, pTraits<Type>::zero)
+                dimensioned<Type>("zero", dimless, Zero)
             )
         );
 
-        Field<Type>& fld = tfld().internalField();
+        Field<Type>& field = tfield.ref().primitiveFieldRef();
 
         if (cells_.size() != values.size())
         {
-            FatalErrorIn("") << "cells_.size() != values_.size()"
-                << abort(FatalError);
+            FatalErrorInFunction << abort(FatalError);
         }
 
         forAll(cells_, i)
         {
-            const label cellI = cells_[i];
-            fld[cellI] = values[i];
+            const label celli = cells_[i];
+            field[celli] = values[i];
         }
 
-        tfld().write();
+        tfield().write();
     }
 }
 

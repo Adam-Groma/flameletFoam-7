@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2014 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -50,20 +50,16 @@ Description
         thrust(r) = T (C_0 + C_1 r^2 + C_2 r^4)
     \f]
 
-    \heading Source usage
-
+Usage
     Example usage:
     \verbatim
-    actuationDiskSourceCoeffs
-    {
-        fieldName       U;          // name of field to apply source
-        diskDir         (-1 0 0);   // disk direction
-        Cp              0.1;        // power coefficient
-        Ct              0.5;        // thrust coefficient
-        diskArea        5.0;        // disk area
-        coeffs          (0.1 0.5 0.01); // radial distribution coefficients
-        upstreamPoint   (0 0 0);    // upstream point
-    }
+    fieldName       U;          // name of field to apply source
+    diskDir         (-1 0 0);   // disk direction
+    Cp              0.1;        // power coefficient
+    Ct              0.5;        // thrust coefficient
+    diskArea        5.0;        // disk area
+    coeffs          (0.1 0.5 0.01); // radial distribution coefficients
+    upstreamPoint   (0 0 0);    // upstream point
     \endverbatim
 
 
@@ -94,9 +90,9 @@ class radialActuationDiskSource
 :
     public actuationDiskSource
 {
-    // Private data
+    // Private Data
 
-        //- Coeffcients for the radial distribution
+        //- Coefficients for the radial distribution
         FixedList<scalar, 3> radialCoeffs_;
 
 
@@ -112,12 +108,6 @@ class radialActuationDiskSource
             const RhoFieldType& rho,
             const vectorField& U
         ) const;
-
-        //- Disallow default bitwise copy construct
-        radialActuationDiskSource(const radialActuationDiskSource&);
-
-        //- Disallow default bitwise assignment
-        void operator=(const radialActuationDiskSource&);
 
 
 public:
@@ -137,6 +127,9 @@ public:
             const fvMesh& mesh
         );
 
+        //- Disallow default bitwise copy construction
+        radialActuationDiskSource(const radialActuationDiskSource&) = delete;
+
 
     //- Destructor
     virtual ~radialActuationDiskSource()
@@ -149,7 +142,7 @@ public:
         virtual void addSup
         (
             fvMatrix<vector>& eqn,
-            const label fieldI
+            const label fieldi
         );
 
         //- Source term to compressible momentum equation
@@ -157,17 +150,20 @@ public:
         (
             const volScalarField& rho,
             fvMatrix<vector>& eqn,
-            const label fieldI
+            const label fieldi
         );
 
 
-    // I-O
-
-        //- Write data
-        virtual void writeData(Ostream&) const;
+    // IO
 
         //- Read dictionary
         virtual bool read(const dictionary& dict);
+
+
+    // Member Operators
+
+        //- Disallow default bitwise assignment
+        void operator=(const radialActuationDiskSource&) = delete;
 };
 
 
@@ -179,7 +175,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-#   include "radialActuationDiskSourceTemplates.C"
+    #include "radialActuationDiskSourceTemplates.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

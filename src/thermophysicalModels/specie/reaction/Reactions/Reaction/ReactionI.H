@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -33,13 +33,6 @@ namespace Foam
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 template<class ReactionThermo>
-inline word& Reaction<ReactionThermo>::name()
-{
-    return name_;
-}
-
-
-template<class ReactionThermo>
 inline const word& Reaction<ReactionThermo>::name() const
 {
     return name_;
@@ -47,16 +40,28 @@ inline const word& Reaction<ReactionThermo>::name() const
 
 
 template<class ReactionThermo>
-inline const List<typename Reaction<ReactionThermo>::specieCoeffs>&
-Reaction<ReactionThermo>::lhs() const
+inline scalar Reaction<ReactionThermo>::Tlow() const
+{
+    return Tlow_;
+}
+
+
+template<class ReactionThermo>
+inline scalar Reaction<ReactionThermo>::Thigh() const
+{
+    return Thigh_;
+}
+
+
+template<class ReactionThermo>
+inline const List<specieCoeffs>& Reaction<ReactionThermo>::lhs() const
 {
     return lhs_;
 }
 
 
 template<class ReactionThermo>
-inline const List<typename Reaction<ReactionThermo>::specieCoeffs>&
-Reaction<ReactionThermo>::rhs() const
+inline const List<specieCoeffs>& Reaction<ReactionThermo>::rhs() const
 {
     return rhs_;
 }
@@ -67,9 +72,8 @@ Reaction<ReactionThermo>::rhs() const
 template<class ReactionThermo>
 inline Ostream& operator<<(Ostream& os, const Reaction<ReactionThermo>& r)
 {
-    OStringStream reaction;
-    os << r.reactionStr(reaction)<< token::END_STATEMENT <<nl;
-   return os;
+    r.write(os);
+    return os;
 }
 
 

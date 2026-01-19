@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2012-2013 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2012-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -29,73 +29,25 @@ License
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 template<class Type>
-void Foam::fv::CodedSource<Type>::writeData(Ostream& os) const
-{
-    os  << indent << name_ << endl;
-    dict_.write(os);
-}
-
-
-template<class Type>
 bool Foam::fv::CodedSource<Type>::read(const dictionary& dict)
 {
-    if (option::read(dict))
+    if (cellSetOption::read(dict))
     {
-        coeffs_.lookup("fieldNames") >> fieldNames_;
+        coeffs_.lookup("fields") >> fieldNames_;
         applied_.setSize(fieldNames_.size(), false);
-        coeffs_.lookup("redirectType") >> redirectType_;
 
-        // Code snippets
+        // The name keyword is "name". "redirectType" is also maintained here
+        // for backwards compatibility, but "name" is taken in preference and
+        // is printed in the error message if neither keyword is present.
+        name_ = word::null;
+        name_ = dict.lookupOrDefault("redirectType", name_);
+        name_ = dict.lookupOrDefault("name", name_);
+        if (name_ == word::null)
         {
-            const entry& e = coeffs_.lookupEntry
-            (
-                "codeCorrect",
-                false,
-                false
-            );
-            codeCorrect_ = stringOps::trim(e.stream());
-            stringOps::inplaceExpand(codeCorrect_, coeffs_);
-            dynamicCodeContext::addLineDirective
-            (
-                codeCorrect_,
-                e.startLineNumber(),
-                coeffs_.name()
-            );
+            dict.lookup("name"); // <-- generate error message with "name" in it
         }
 
-        {
-            const entry& e = coeffs_.lookupEntry
-            (
-                "codeAddSup",
-                false,
-                false
-            );
-            codeAddSup_ = stringOps::trim(e.stream());
-            stringOps::inplaceExpand(codeAddSup_, coeffs_);
-            dynamicCodeContext::addLineDirective
-            (
-                codeAddSup_,
-                e.startLineNumber(),
-                coeffs_.name()
-            );
-        }
-
-        {
-            const entry& e = coeffs_.lookupEntry
-            (
-                "codeSetValue",
-                false,
-                false
-            );
-            codeSetValue_ = stringOps::trim(e.stream());
-            stringOps::inplaceExpand(codeSetValue_, coeffs_);
-            dynamicCodeContext::addLineDirective
-            (
-                codeSetValue_,
-                e.startLineNumber(),
-                coeffs_.name()
-            );
-        }
+        updateLibrary(name_);
 
         return true;
     }

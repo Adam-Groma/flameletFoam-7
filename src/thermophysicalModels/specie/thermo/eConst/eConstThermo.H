@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2012 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -56,13 +56,6 @@ inline eConstThermo<EquationOfState> operator+
 );
 
 template<class EquationOfState>
-inline eConstThermo<EquationOfState> operator-
-(
-    const eConstThermo<EquationOfState>&,
-    const eConstThermo<EquationOfState>&
-);
-
-template<class EquationOfState>
 inline eConstThermo<EquationOfState> operator*
 (
     const scalar,
@@ -93,10 +86,10 @@ class eConstThermo
 :
     public EquationOfState
 {
-    // Private data
+    // Private Data
 
         //- Heat capacity at constant volume
-        //  Note: input in [J/(kg K)], but internally uses [J/(kmol K)]
+        //  Note: input in [J/kg/K], but internally uses [J/kmol/K]
         scalar Cv_;
 
         //- Heat of formation
@@ -119,9 +112,6 @@ public:
 
     // Constructors
 
-        //- Construct from Istream
-        eConstThermo(Istream&);
-
         //- Construct from dictionary
         eConstThermo(const dictionary& dict);
 
@@ -130,9 +120,6 @@ public:
 
         //- Construct and return a clone
         inline autoPtr<eConstThermo> clone() const;
-
-        // Selector from Istream
-        inline static autoPtr<eConstThermo> New(Istream& is);
 
         // Selector from dictionary
         inline static autoPtr<eConstThermo> New(const dictionary& dict);
@@ -152,20 +139,31 @@ public:
 
         // Fundamental properties
 
-            //- Heat capacity at constant pressure [J/(kmol K)]
-            inline scalar cp(const scalar p, const scalar T) const;
+            //- Heat capacity at constant volume [J/kg/K]
+            inline scalar Cv(const scalar p, const scalar T) const;
 
-            //- Absolute Enthalpy [J/kmol]
-            inline scalar ha(const scalar p, const scalar T) const;
+            //- Sensible internal energy [J/kg]
+            inline scalar Es(const scalar p, const scalar T) const;
 
-            //- Sensible Enthalpy [J/kmol]
-            inline scalar hs(const scalar p, const scalar T) const;
+            //- Absolute internal energy [J/kg]
+            inline scalar Ea(const scalar p, const scalar T) const;
 
-            //- Chemical enthalpy [J/kmol]
-            inline scalar hc() const;
+            //- Chemical enthalpy [J/kg]
+            inline scalar Hc() const;
 
-            //- Entropy [J/(kmol K)]
-            inline scalar s(const scalar p, const scalar T) const;
+            //- Entropy [J/kg/K]
+            inline scalar S(const scalar p, const scalar T) const;
+
+            #include "EtoHthermo.H"
+
+
+        // Derivative term used for Jacobian
+
+            //- Derivative of Gibbs free energy w.r.t. temperature
+            inline scalar dGdT(const scalar p, const scalar T) const;
+
+            //- Temperature derivative of heat capacity at constant pressure
+            inline scalar dCpdT(const scalar p, const scalar T) const;
 
 
         // I-O
@@ -174,21 +172,14 @@ public:
             void write(Ostream& os) const;
 
 
-    // Member operators
+    // Member Operators
 
         inline void operator+=(const eConstThermo&);
-        inline void operator-=(const eConstThermo&);
 
 
     // Friend operators
 
         friend eConstThermo operator+ <EquationOfState>
-        (
-            const eConstThermo&,
-            const eConstThermo&
-        );
-
-        friend eConstThermo operator- <EquationOfState>
         (
             const eConstThermo&,
             const eConstThermo&
@@ -226,7 +217,7 @@ public:
 #include "eConstThermoI.H"
 
 #ifdef NoRepository
-#   include "eConstThermo.C"
+    #include "eConstThermo.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2014 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -25,18 +25,15 @@ Class
     Foam::fv::rotorDiskSource
 
 Description
-    Cell based momemtum source
+    Rotor disk source
 
-    Source approximates the mean effects of rotor forces on a cylindrical
-    region within the domain
+    Cell based momemtum source which approximates the mean effects of
+    rotor forces on a cylindrical region within the domain.
 
-    \heading Source usage
-
+Usage
     Example usage:
     \verbatim
-    rotorDiskSourceCoeffs
-    {
-        fieldNames      (U);    // names of fields on which to apply source
+        fields          (U);    // names of fields on which to apply source
         nBlades         3;      // number of blades
         tipEffect       0.96;   // normalised radius above which lift = 0
 
@@ -58,14 +55,22 @@ Description
 
         blade
         {
-            ...
+            // see bladeModel.H for documentation
         }
 
         profiles
         {
-            ...
+            profile1
+            {
+                type    lookup; // lookup || series
+                ...
+                // see lookupProfile.H or seriesProfile.H for documentation
+            }
+            profile2
+            {
+                ...
+            }
         }
-    }
     \endverbatim
 
     Where:
@@ -78,6 +83,10 @@ Description
     - local         : use local flow conditions
     - surfaceNormal : specified normal velocity (positive towards rotor)
 
+See also
+    Foam::bladeModel
+    Foam::lookupProfile
+    Foam::seriesProfile
 
 SourceFiles
     rotorDiskSource.C
@@ -88,9 +97,9 @@ SourceFiles
 #ifndef rotorDiskSource_H
 #define rotorDiskSource_H
 
-#include "fvOption.H"
+#include "cellSetOption.H"
 #include "cylindricalCS.H"
-#include "localAxesRotation.H"
+#include "cylindrical.H"
 #include "NamedEnum.H"
 #include "bladeModel.H"
 #include "profileModelList.H"
@@ -113,7 +122,7 @@ namespace fv
 
 class rotorDiskSource
 :
-    public option
+    public cellSetOption
 {
 public:
 
@@ -181,14 +190,14 @@ protected:
         //- Inverse rotation tensor for flap angle
         List<tensor> invR_;
 
-        //- Area [m2]
+        //- Area [m^2]
         List<scalar> area_;
 
         //- Rotor local cylindrical co-ordinate system (r, theta, z)
         cylindricalCS coordSys_;
 
          //- Rotor transformation co-ordinate system
-        autoPtr<localAxesRotation> localAxesRotation_;
+        autoPtr<cylindrical> cylindrical_;
 
         //- Maximum radius
         scalar rMax_;
@@ -293,7 +302,7 @@ public:
             virtual void addSup
             (
                 fvMatrix<vector>& eqn,
-                const label fieldI
+                const label fieldi
             );
 
             //- Source term to compressible momentum equation
@@ -301,14 +310,11 @@ public:
             (
                 const volScalarField& rho,
                 fvMatrix<vector>& eqn,
-                const label fieldI
+                const label fieldi
             );
 
 
-        // I-O
-
-            //- Write the source properties
-            virtual void writeData(Ostream&) const;
+        // IO
 
             //- Read source dictionary
             virtual bool read(const dictionary& dict);

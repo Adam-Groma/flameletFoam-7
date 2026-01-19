@@ -103,7 +103,7 @@ private:
 
         bool noSecondLine;
 
-        basicMultiComponentMixture& composition;
+        basicSpecieMixture& composition;
         rhoReactionThermo& thermo;        
 
         PtrList<volScalarField>& Y_;
@@ -143,7 +143,7 @@ public:
         // Constructors
 
         //construct from filename
-        canteraReader(const IOdictionary& canteraDict, rhoReactionThermo& thermo, basicMultiComponentMixture& composition);    
+        canteraReader(const IOdictionary& canteraDict, rhoReactionThermo& thermo, basicSpecieMixture& composition);    
 
         //- Destructor
         virtual ~canteraReader();

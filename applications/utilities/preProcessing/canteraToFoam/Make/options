@@ -1,12 +1,11 @@
-EXE_INC = \ 
+EXE_INC = \
     -I$(LIB_SRC)/OpenFOAM/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
-    -I$(LIB_SRC)/meshTools/lnInclude \ 
-    -I$(LIB_FLAMELET_SRC)/turbulenceModels \
-    -I$(LIB_FLAMELET_SRC)/turbulenceModels/compressible/turbulenceModel/lnInclude \
-    -I$(LIB_FLAMELET_SRC)/turbulenceModels/compressible/RAS/lnInclude \
-    -I$(LIB_FLAMELET_SRC)/turbulenceModels/compressible/LES/lnInclude \
-    -I$(LIB_SRC)/turbulenceModels/LES/LESdeltas/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude \
+    -I$(LIB_FLAMELET_SRC)/TurbulenceModels \
+    -I$(LIB_FLAMELET_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
+    -I$(LIB_FLAMELET_SRC)/TurbulenceModels/compressible/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
     -I$(LIB_FLAMELET_SRC)/thermophysicalModels/specie/lnInclude \
     -I$(LIB_FLAMELET_SRC)/thermophysicalModels/reactionThermo/lnInclude \
     -I$(LIB_FLAMELET_SRC)/thermophysicalModels/basic/lnInclude \
@@ -22,8 +21,7 @@ EXE_LIBS = \
     -lFlameletchemistryModel \
     -lFlameletCombustionModels \
     -lFlameletreactionThermophysicalModels \
-    -lFlameletcompressibleLESModels \
-    -lFlameletcompressibleTurbulenceModel \
-    -lFlameletcompressibleRASModels \
+    -lFlameletturbulenceModels \
+    -lFlameletcompressibleTurbulenceModels \
     -lfiniteVolume \
     -lmeshTools

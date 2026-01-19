@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -54,9 +54,9 @@ namespace Foam
 template<class ThermoType>
 class ReactionList
 :
-    public SLPtrList<Reaction<ThermoType> >
+    public SLPtrList<Reaction<ThermoType>>
 {
-    // Private data
+    // Private Data
 
         //- Reference to the table of species
         const speciesTable& species_;
@@ -66,12 +66,6 @@ class ReactionList
 
         //- The dictionary used for construction
         const dictionary dict_;
-
-
-    // Private Member Functions
-
-        //- Disallow default bitwise assignment
-        void operator=(const ReactionList&);
 
 
 public:
@@ -93,14 +87,6 @@ public:
             const dictionary& dict
         );
 
-        //- Construct from file using (Istream)
-        ReactionList
-        (
-            const speciesTable& species,
-            const HashPtrTable<ThermoType>& thermoDatabase,
-            const fileName& fName
-        );
-
         //- Construct copy
         ReactionList(const ReactionList<ThermoType>& reactions);
 
@@ -116,7 +102,14 @@ public:
 
         //- Write
         void write(Ostream& os) const;
+
+
+    // Member Operators
+
+        //- Disallow default bitwise assignment
+        void operator=(const ReactionList&) = delete;
 };
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -125,7 +118,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-#   include "ReactionList.C"
+    #include "ReactionList.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

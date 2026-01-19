@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -57,7 +57,7 @@ class thirdBodyEfficiencies
 :
     public scalarList
 {
-    // Private data
+    // Private Data
 
         const speciesTable& species_;
 
@@ -73,13 +73,6 @@ public:
             const scalarList& efficiencies
         );
 
-        //- Construct from Istream
-        inline thirdBodyEfficiencies
-        (
-            const speciesTable& species,
-            Istream& is
-        );
-
         //- Construct from dictionary
         inline thirdBodyEfficiencies
         (
@@ -88,7 +81,7 @@ public:
         );
 
 
-    // Member functions
+    // Member Functions
 
         //- Calculate and return M, the concentration of the third-bodies
         inline scalar M(const scalarList& c) const;

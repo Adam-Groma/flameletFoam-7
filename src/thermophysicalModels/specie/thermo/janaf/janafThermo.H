@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2012 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -57,13 +57,6 @@ inline janafThermo<EquationOfState> operator+
 );
 
 template<class EquationOfState>
-inline janafThermo<EquationOfState> operator-
-(
-    const janafThermo<EquationOfState>&,
-    const janafThermo<EquationOfState>&
-);
-
-template<class EquationOfState>
 inline janafThermo<EquationOfState> operator*
 (
     const scalar,
@@ -105,7 +98,7 @@ public:
 
 private:
 
-    // Private data
+    // Private Data
 
         // Temperature limits of applicability of functions
         scalar Tlow_, Thigh_, Tcommon_;
@@ -135,11 +128,9 @@ public:
             const scalar Thigh,
             const scalar Tcommon,
             const coeffArray& highCpCoeffs,
-            const coeffArray& lowCpCoeffs
+            const coeffArray& lowCpCoeffs,
+            const bool convertCoeffs = false
         );
-
-        //- Construct from Istream
-        janafThermo(Istream&);
 
         //- Construct from dictionary
         janafThermo(const dictionary& dict);
@@ -180,20 +171,31 @@ public:
 
         // Fundamental properties
 
-            //- Heat capacity at constant pressure [J/(kmol K)]
-            inline scalar cp(const scalar p, const scalar T) const;
+            //- Heat capacity at constant pressure [J/kg/K]
+            inline scalar Cp(const scalar p, const scalar T) const;
 
-            //- Absolute Enthalpy [J/kmol]
-            inline scalar ha(const scalar p, const scalar T) const;
+            //- Absolute Enthalpy [J/kg]
+            inline scalar Ha(const scalar p, const scalar T) const;
 
-            //- Sensible enthalpy [J/kmol]
-            inline scalar hs(const scalar p, const scalar T) const;
+            //- Sensible enthalpy [J/kg]
+            inline scalar Hs(const scalar p, const scalar T) const;
 
-            //- Chemical enthalpy [J/kmol]
-            inline scalar hc() const;
+            //- Chemical enthalpy [J/kg]
+            inline scalar Hc() const;
 
-            //- Entropy [J/(kmol K)]
-            inline scalar s(const scalar p, const scalar T) const;
+            //- Entropy [J/kg/K]
+            inline scalar S(const scalar p, const scalar T) const;
+
+            #include "HtoEthermo.H"
+
+
+        // Derivative term used for Jacobian
+
+            //- Derivative of Gibbs free energy w.r.t. temperature
+            inline scalar dGdT(const scalar p, const scalar T) const;
+
+            //- Temperature derivative of heat capacity at constant pressure
+            inline scalar dCpdT(const scalar p, const scalar T) const;
 
 
         // I-O
@@ -202,21 +204,14 @@ public:
             void write(Ostream& os) const;
 
 
-    // Member operators
+    // Member Operators
 
         inline void operator+=(const janafThermo&);
-        inline void operator-=(const janafThermo&);
 
 
     // Friend operators
 
         friend janafThermo operator+ <EquationOfState>
-        (
-            const janafThermo&,
-            const janafThermo&
-        );
-
-        friend janafThermo operator- <EquationOfState>
         (
             const janafThermo&,
             const janafThermo&
@@ -254,7 +249,7 @@ public:
 #include "janafThermoI.H"
 
 #ifdef NoRepository
-#   include "janafThermo.C"
+    #include "janafThermo.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

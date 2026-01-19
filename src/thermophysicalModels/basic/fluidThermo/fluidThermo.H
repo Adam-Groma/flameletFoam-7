@@ -1,9 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
-
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2012-2013 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2012-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -31,10 +30,6 @@ Description
 SourceFiles
     fluidThermo.C
 
-Contributors/Copyright
-    2014 Hagen Müller <hagen.mueller@unibw.de> Universität der Bundeswehr München
-    2014 Likun Ma <L.Ma@tudelft.nl> TU Delft
-
 \*---------------------------------------------------------------------------*/
 
 #ifndef fluidThermo_H
@@ -60,13 +55,13 @@ protected:
 
     //- Mixture Fraction []
     volScalarField Z_;
-
+    
     //- Mixture Fraction variance []
     volScalarField varZ_;
 
-     //- Scalar dissipation rate [1/s]
-     volScalarField Chi_;
-  
+    //- Scalar dissipation rate [1/s]
+    volScalarField Chi_;
+
 public:
 
     //- Runtime type information
@@ -113,9 +108,13 @@ public:
     virtual ~fluidThermo();
 
 
-    // Member functions
+    // Member Functions
 
         // Access to thermodynamic state variables
+
+            //- Add the given density correction to the density field.
+            //  Used to update the density field following pressure solution
+            virtual void correctRho(const volScalarField& deltaRho) = 0;
 
             //- Compressibility [s^2/m^2]
             virtual const volScalarField& psi() const = 0;
@@ -124,37 +123,34 @@ public:
         // Access to transport state variables
 
             //- Dynamic viscosity of mixture [kg/m/s]
-            virtual const volScalarField& mu() const = 0;
+            virtual tmp<volScalarField> mu() const = 0;
 
             //- Dynamic viscosity of mixture for patch [kg/m/s]
-            virtual const scalarField& mu(const label patchi) const = 0;
+            virtual tmp<scalarField> mu(const label patchi) const = 0;
 
             //- Kinematic viscosity of mixture [m^2/s]
             virtual tmp<volScalarField> nu() const;
 
             //- Kinematic viscosity of mixture for patch [m^2/s]
             virtual tmp<scalarField> nu(const label patchi) const;
-	    	    
-             //- Mixture Fraction []
-	        //  Non-const access allowed for transport equations
-	        virtual volScalarField& Z();
-	    
-	        //- Mixture Fraction []
-	        virtual const volScalarField& Z() const;
-
-	        //  Non-const access allowed for transport equations
-	        virtual volScalarField& varZ();
-
-	        //- Mixture Fraction []
-	        virtual const volScalarField& varZ() const;
-
-	        //  Non-const access allowed for transport equations
-	        virtual volScalarField& Chi();
-
-	        //- Scalar dissipation rate [1/s]
-	        virtual const volScalarField& Chi() const;
-
- 
+         
+            //  Non-const access allowed for transport equations
+            virtual volScalarField& Z();
+           
+            //- Mixture Fraction []
+            virtual const volScalarField& Z() const;
+           
+            //  Non-const access allowed for transport equations
+            virtual volScalarField& varZ();
+           
+            //- Mixture Fraction []
+            virtual const volScalarField& varZ() const;
+           
+            //  Non-const access allowed for transport equations
+            virtual volScalarField& Chi();
+           
+            //- Scalar dissipation rate [1/s]
+            virtual const volScalarField& Chi() const;
 };
 
 

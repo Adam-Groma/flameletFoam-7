@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2012-2014 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2012-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -25,27 +25,29 @@ Class
     Foam::fv::interRegionExplicitPorositySource
 
 Description
-    Inter-region explicit porosity source
+    Inter-region explicit porosity source.
 
     Sources described by, for example using the DarcyForchheimer model:
 
-        interRegionExplicitPorositySourceCoeffs
+    \verbatim
+    interRegionExplicitPorositySourceCoeffs
+    {
+        type            DarcyForchheimer;
+        DarcyForchheimerCoeffs
         {
-            type            DarcyForchheimer;
-            DarcyForchheimerCoeffs
-            {
-                d   d [0 -2 0 0 0 0 0] (5e7 -1000 -1000);
-                f   f [0 -1 0 0 0 0 0] (0 0 0);
+            d   d [0 -2 0 0 0 0 0] (5e7 -1000 -1000);
+            f   f [0 -1 0 0 0 0 0] (0 0 0);
 
-                coordinateSystem
-                {
-                    e1  (0.70710678 0.70710678 0);
-                    e2  (0 0 1);
-                }
+            coordinateSystem
+            {
+                e1  (0.70710678 0.70710678 0);
+                e2  (0 0 1);
             }
         }
+    }
+    \endverbatim
 
-Note:
+Note
     The porous region must be selected as a cellZone.
 
 SourceFiles
@@ -56,7 +58,7 @@ SourceFiles
 #ifndef interRegionExplicitPorositySource_H
 #define interRegionExplicitPorositySource_H
 
-#include "fvOption.H"
+#include "interRegionOption.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -75,7 +77,7 @@ namespace fv
 
 class interRegionExplicitPorositySource
 :
-    public option
+    public interRegionOption
 {
 
 protected:
@@ -102,20 +104,6 @@ protected:
         void initialise();
 
 
-private:
-
-    // Private Member Functions
-
-        //- Disallow default bitwise copy construct
-        interRegionExplicitPorositySource
-        (
-            const interRegionExplicitPorositySource&
-        );
-
-        //- Disallow default bitwise assignment
-        void operator=(const interRegionExplicitPorositySource&);
-
-
 public:
 
     //- Runtime type information
@@ -133,6 +121,12 @@ public:
             const fvMesh& mesh
         );
 
+        //- Disallow default bitwise copy construction
+        interRegionExplicitPorositySource
+        (
+            const interRegionExplicitPorositySource&
+        );
+
 
     //- Destructor
     virtual ~interRegionExplicitPorositySource()
@@ -147,7 +141,7 @@ public:
             virtual void addSup
             (
                 fvMatrix<vector>& eqn,
-                const label fieldI
+                const label fieldi
             );
 
 
@@ -158,17 +152,20 @@ public:
             (
                 const volScalarField& rho,
                 fvMatrix<vector>& eqn,
-                const label fieldI
+                const label fieldi
             );
 
 
-        // I-O
-
-            //- Write data
-            virtual void writeData(Ostream&) const;
+        // IO
 
             //- Read dictionary
             virtual bool read(const dictionary& dict);
+
+
+    // Member Operators
+
+        //- Disallow default bitwise assignment
+        void operator=(const interRegionExplicitPorositySource&) = delete;
 };
 
 

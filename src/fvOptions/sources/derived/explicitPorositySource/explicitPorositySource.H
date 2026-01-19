@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2012-2014 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2012-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -27,8 +27,7 @@ Class
 Description
     Explicit porosity source
 
-    \heading Source usage
-
+Usage
     Example usage, here employing the Darcy-Forchheimer model:
     \verbatim
     explicitPorositySourceCoeffs
@@ -42,8 +41,14 @@ Description
 
             coordinateSystem
             {
-                e1  (0.70710678 0.70710678 0);
-                e2  (0 0 1);
+                type    cartesian;
+                origin  (0 0 0);
+                coordinateRotation
+                {
+                    type    axesRotation;
+                    e1  (0.70710678 0.70710678 0);
+                    e2  (0 0 1);
+                }
             }
         }
     }
@@ -60,7 +65,7 @@ SourceFiles
 #ifndef explicitPorositySource_H
 #define explicitPorositySource_H
 
-#include "fvOption.H"
+#include "cellSetOption.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -79,26 +84,14 @@ namespace fv
 
 class explicitPorositySource
 :
-    public option
+    public cellSetOption
 {
-
 protected:
 
     // Protected data
 
         //- Run-time selectable porosity model
         autoPtr<porosityModel> porosityPtr_;
-
-
-private:
-
-    // Private Member Functions
-
-        //- Disallow default bitwise copy construct
-        explicitPorositySource(const explicitPorositySource&);
-
-        //- Disallow default bitwise assignment
-        void operator=(const explicitPorositySource&);
 
 
 public:
@@ -118,6 +111,9 @@ public:
             const fvMesh& mesh
         );
 
+        //- Disallow default bitwise copy construction
+        explicitPorositySource(const explicitPorositySource&) = delete;
+
 
     //- Destructor
     virtual ~explicitPorositySource()
@@ -126,13 +122,18 @@ public:
 
     // Member Functions
 
+        const porosityModel& model() const
+        {
+            return porosityPtr_();
+        }
+
         // Add explicit and implicit contributions
 
             //- Add implicit contribution to momentum equation
             virtual void addSup
             (
                 fvMatrix<vector>& eqn,
-                const label fieldI
+                const label fieldi
             );
 
             //- Add implicit contribution to compressible momentum equation
@@ -140,7 +141,7 @@ public:
             (
                 const volScalarField& rho,
                 fvMatrix<vector>& eqn,
-                const label fieldI
+                const label fieldi
             );
 
             //- Add implicit contribution to phase momentum equation
@@ -149,17 +150,20 @@ public:
                 const volScalarField& alpha,
                 const volScalarField& rho,
                 fvMatrix<vector>& eqn,
-                const label fieldI
+                const label fieldi
             );
 
 
-        // I-O
-
-            //- Write data
-            virtual void writeData(Ostream&) const;
+        // IO
 
             //- Read dictionary
             virtual bool read(const dictionary& dict);
+
+
+    // Member Operators
+
+        //- Disallow default bitwise assignment
+        void operator=(const explicitPorositySource&) = delete;
 };
 
 

@@ -36,7 +36,8 @@ Contributors/Copyright
 #include "tableSolver.H"
 
 #include "fvCFD.H"
-#include "rhoCombustionModel.H"
+//#include "rhoCombustionModel.H"
+#include "rhoReactionThermo.H"
 #include "IOdictionary.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -65,17 +66,11 @@ int main(int argc, char *argv[])
         args.optionLookup("fields")() >> selectedFields;
     }
 
-    Info<< "Creating combustion model\n" << endl;
+    Info<< "Reading thermophysical properties\n" << endl;
 
-    autoPtr<combustionModels::rhoCombustionModel> combustion
-    (
-        combustionModels::rhoCombustionModel::New
-        (
-            mesh
-        )
-    );
+    autoPtr<rhoReactionThermo> pThermo(rhoReactionThermo::New(mesh));
 
-    rhoReactionThermo& thermo = combustion->thermo();    
+    rhoReactionThermo& thermo = pThermo();    
 
     const IOdictionary combProps
     (
@@ -183,7 +178,7 @@ int main(int argc, char *argv[])
         // Interpolate for internal Field
         forAll(Y, i)
         {
-     	  scalarField& YCells = Y[i].internalField();
+     	  scalarField& YCells = Y[i].primitiveFieldRef();
 
            forAll(Z, cellI)
            {
@@ -210,11 +205,11 @@ int main(int argc, char *argv[])
            const fvPatchScalarField& pZeta = Zeta.boundaryField()[patchi];
            const fvPatchScalarField& pZ = Z.boundaryField()[patchi];
 
-           fvPatchScalarField& pHe = he.boundaryField()[patchi];
+           fvPatchScalarField& pHe = he.boundaryFieldRef()[patchi];
 
            forAll(Y, i)
            {
-         	  fvPatchScalarField& pY = Y[i].boundaryField()[patchi];
+         	  fvPatchScalarField& pY = Y[i].boundaryFieldRef()[patchi];
 
                forAll(pY , facei)
                {

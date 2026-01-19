@@ -1,0 +1,18 @@
+compressibleTurbulenceModel.C
+turbulentFluidThermoModels/turbulentFluidThermoModels.C
+
+BCs = turbulentFluidThermoModels/derivedFvPatchFields
+$(BCs)/temperatureCoupledBase/temperatureCoupledBase.C
+$(BCs)/externalCoupledTemperatureMixed/externalCoupledTemperatureMixedFvPatchScalarField.C
+$(BCs)/externalWallHeatFluxTemperature/externalWallHeatFluxTemperatureFvPatchScalarField.C
+$(BCs)/thermalBaffle1D/thermalBaffle1DFvPatchScalarFields.C
+$(BCs)/turbulentTemperatureCoupledBaffleMixed/turbulentTemperatureCoupledBaffleMixedFvPatchScalarField.C
+$(BCs)/turbulentTemperatureRadCoupledMixed/turbulentTemperatureRadCoupledMixedFvPatchScalarField.C
+$(BCs)/totalFlowRateAdvectiveDiffusive/totalFlowRateAdvectiveDiffusiveFvPatchScalarField.C
+$(BCs)/wallHeatTransfer/wallHeatTransferFvPatchScalarField.C
+$(BCs)/convectiveHeatTransfer/convectiveHeatTransferFvPatchScalarField.C
+
+turbulentFluidThermoModels/derivedFvPatchFields/wallFunctions/alphatWallFunctions/alphatWallFunction/alphatWallFunctionFvPatchScalarField.C
+turbulentFluidThermoModels/derivedFvPatchFields/wallFunctions/alphatWallFunctions/alphatJayatillekeWallFunction/alphatJayatillekeWallFunctionFvPatchScalarField.C
+
+LIB = $(FOAM_USER_LIBBIN)/libFlameletcompressibleTurbulenceModels

@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2012 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -28,9 +28,35 @@ Description
     Incompressible, polynomial form of equation of state, using a polynomial
     function for density.
 
+Usage
+    \table
+        Property     | Description
+        rhoCoeffs<8> | Density polynomial coefficients
+    \endtable
+
+    Example of the specification of the equation of state:
+    \verbatim
+    equationOfState
+    {
+        rhoCoeffs<8>    ( 1000 -0.05 0.003 0 0 0 0 0 );
+    }
+    \endverbatim
+
+    The polynomial expression is evaluated as so:
+
+        \f[
+            \rho = 1000 - 0.05 T + 0.003 T^2
+        \f]
+
+Note
+    Input in [kg/m^3], but internally uses [kg/m3/kmol].
+
 SourceFiles
     icoPolynomialI.H
     icoPolynomial.C
+
+See also
+    Foam::Polynomial
 
 \*---------------------------------------------------------------------------*/
 
@@ -52,13 +78,6 @@ class icoPolynomial;
 
 template<class Specie, int PolySize>
 icoPolynomial<Specie, PolySize> operator+
-(
-    const icoPolynomial<Specie, PolySize>&,
-    const icoPolynomial<Specie, PolySize>&
-);
-
-template<class Specie, int PolySize>
-icoPolynomial<Specie, PolySize> operator-
 (
     const icoPolynomial<Specie, PolySize>&,
     const icoPolynomial<Specie, PolySize>&
@@ -95,10 +114,9 @@ class icoPolynomial
 :
     public Specie
 {
-    // Private data
+    // Private Data
 
         //- Density polynomial coefficients
-        //  Note: input in [kg/m3], but internally uses [kg/m3/kmol]
         Polynomial<PolySize> rhoCoeffs_;
 
 
@@ -113,14 +131,8 @@ public:
             const Polynomial<PolySize>& rhoPoly
         );
 
-        //- Construct from Istream
-        icoPolynomial(Istream&);
-
         //- Construct from dictionary
         icoPolynomial(const dictionary& dict);
-
-        //- Construct as copy
-        inline icoPolynomial(const icoPolynomial&);
 
         //- Construct as named copy
         inline icoPolynomial(const word& name, const icoPolynomial&);
@@ -128,14 +140,11 @@ public:
         //- Construct and return a clone
         inline autoPtr<icoPolynomial> clone() const;
 
-        // Selector from Istream
-        inline static autoPtr<icoPolynomial> New(Istream& is);
-
         // Selector from dictionary
         inline static autoPtr<icoPolynomial> New(const dictionary& dict);
 
 
-    // Member functions
+    // Member Functions
 
         //- Return the instantiated type name
         static word typeName()
@@ -155,14 +164,29 @@ public:
             //- Return density [kg/m^3]
             inline scalar rho(scalar p, scalar T) const;
 
+            //- Return enthalpy departure [J/kg]
+            inline scalar H(const scalar p, const scalar T) const;
+
+            //- Return Cp departure [J/(kg K]
+            inline scalar Cp(scalar p, scalar T) const;
+
+            //- Return internal energy departure [J/kg]
+            inline scalar E(const scalar p, const scalar T) const;
+
+            //- Return Cv departure [J/(kg K]
+            inline scalar Cv(scalar p, scalar T) const;
+
+            //- Return entropy [J/kg/K]
+            inline scalar S(const scalar p, const scalar T) const;
+
             //- Return compressibility rho/p [s^2/m^2]
             inline scalar psi(scalar p, scalar T) const;
 
             //- Return compression factor []
             inline scalar Z(scalar p, scalar T) const;
 
-            //- Return (cp - cv) [J/(kmol K]
-            inline scalar cpMcv(scalar p, scalar T) const;
+            //- Return (Cp - Cv) [J/(kg K]
+            inline scalar CpMCv(scalar p, scalar T) const;
 
 
         // IO
@@ -171,24 +195,15 @@ public:
             void write(Ostream& os) const;
 
 
-    // Member operators
+    // Member Operators
 
-        inline icoPolynomial& operator=(const icoPolynomial&);
         inline void operator+=(const icoPolynomial&);
-        inline void operator-=(const icoPolynomial&);
-
         inline void operator*=(const scalar);
 
 
     // Friend operators
 
         friend icoPolynomial operator+ <Specie, PolySize>
-        (
-            const icoPolynomial&,
-            const icoPolynomial&
-        );
-
-        friend icoPolynomial operator- <Specie, PolySize>
         (
             const icoPolynomial&,
             const icoPolynomial&
@@ -223,13 +238,13 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#define makeIcoPolynomial(PolySize)                                          \
-                                                                             \
-defineTemplateTypeNameAndDebugWithName                                       \
-(                                                                            \
-    icoPolynomial<Specie, PolySize>,                                         \
-    "icoPolynomial<"#PolySize">",                                            \
-    0                                                                        \
+#define makeIcoPolynomial(PolySize)                                            \
+                                                                               \
+defineTemplateTypeNameAndDebugWithName                                         \
+(                                                                              \
+    icoPolynomial<Specie, PolySize>,                                           \
+    "icoPolynomial<"#PolySize">",                                              \
+    0                                                                          \
 );
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -239,7 +254,7 @@ defineTemplateTypeNameAndDebugWithName                                       \
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-#   include "icoPolynomial.C"
+    #include "icoPolynomial.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

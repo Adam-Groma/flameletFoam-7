@@ -4,8 +4,8 @@ EXE_INC = \
     -I$(LIB_FLAMELET_SRC)/thermophysicalModels/basic/lnInclude \
     -I$(LIB_FLAMELET_SRC)/thermophysicalModels/specie/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/functions/Polynomial \
-    -I$(LIB_SRC)/thermophysicalModels/thermophysicalFunctions/lnInclude \
-    -I$(LIB_FLAMELET_SRC)/turbulenceModels/compressible/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude \
+    -I$(LIB_FLAMELET_SRC)/TurbulenceModels/compressible/lnInclude \
     -I$(LIB_SRC)/ODE/lnInclude
 
 LIB_LIBS = \
@@ -13,5 +13,5 @@ LIB_LIBS = \
     -lFlameletfluidThermophysicalModels \
     -lFlameletreactionThermophysicalModels \
     -lFlameletspecie \
-    -lthermophysicalFunctions \
+    -lthermophysicalProperties \
     -lODE

@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -63,11 +63,20 @@ class foamChemistryReader
         //- Thermo properties dictionary
         dictionary thermoDict_;
 
-        //- Table of the thermodynamic data given in the foamChemistry file
-        HashPtrTable<ThermoType> speciesThermo_;
+        //- List of elements
+        DynamicList<word> elementNames_;
+
+        //- Element indices
+        HashTable<label> elementIndices_;
 
         //- Table of species
         speciesTable& speciesTable_;
+
+        //- Table of species composition
+        speciesCompositionTable speciesComposition_;
+
+        //- Table of the thermodynamic data given in the foamChemistry file
+        HashPtrTable<ThermoType> speciesThermo_;
 
         //- List of the reactions
         ReactionList<ThermoType> reactions_;
@@ -78,11 +87,8 @@ class foamChemistryReader
         //- Set the species list
         speciesTable& setSpecies(const dictionary& dict, speciesTable& species);
 
-        //- Disallow default bitwise copy construct
-        foamChemistryReader(const foamChemistryReader&);
-
-        //- Disallow default bitwise assignment
-        void operator=(const foamChemistryReader&);
+        //- Read the species composition
+        void readSpeciesComposition();
 
 
 public:
@@ -109,18 +115,39 @@ public:
             speciesTable& species
         );
 
+        //- Disallow default bitwise copy construction
+        foamChemistryReader(const foamChemistryReader&) = delete;
+
 
     //- Destructor
     virtual ~foamChemistryReader()
     {}
 
 
-    // Member functions
+    // Member Functions
+
+        //- List of elements
+        const wordList& elementNames() const
+        {
+            return elementNames_;
+        }
+
+        //- Element indices
+        const HashTable<label>& elementIndices() const
+        {
+            return elementIndices_;
+        }
 
         //- Table of species
         const speciesTable& species() const
         {
             return speciesTable_;
+        }
+
+        //- Table of species composition
+        const speciesCompositionTable& specieComposition() const
+        {
+            return speciesComposition_;
         }
 
         //- Table of the thermodynamic data given in the foamChemistry file
@@ -134,6 +161,12 @@ public:
         {
             return reactions_;
         }
+
+
+    // Member Operators
+
+        //- Disallow default bitwise assignment
+        void operator=(const foamChemistryReader&) = delete;
 };
 
 
@@ -144,7 +177,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-#   include "foamChemistryReader.C"
+    #include "foamChemistryReader.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -22,40 +22,49 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Application
-    flameletFoam
+    reactingFoam
 
 Description
-    Solver for combustion with the steady laminar flamelet model.
-
-Contributors/Copyright
-    2014 Hagen Müller <hagen.mueller@unibw.de> Universität der Bundeswehr München
-    2014 Likun Ma <L.Ma@tudelft.nl> TU Delft
+    Solver for combustion with chemical reactions.
 
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
-#include "rhoCombustionModel.H"
-#include "turbulenceModel.H"
+#include "turbulentFluidThermoModel.H"
+#include "rhoReactionThermo.H"
+#include "CombustionModel.H"
 #include "multivariateScheme.H"
 #include "pimpleControl.H"
-#include "fvIOoptionList.H"   
+#include "pressureControl.H"
+#include "fvOptions.H"
+#include "localEulerDdtScheme.H"
+#include "fvcSmooth.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
 {
-    #include "setRootCase.H"
+//    #include "postProcess.H"
+
+    #include "setRootCaseLists.H"
     #include "createTime.H"
     #include "createMesh.H"
-    #include "readGravitationalAcceleration.H"
-    #include "createFields.H"
-    #include "createFvOptions.H"      
+    #include "createControl.H"
+    #include "createTimeControls.H"
     #include "initContinuityErrs.H"
-    #include "readTimeControls.H"
+    #include "createFields.H"
+    #include "createFieldRefs.H"
+
+    turbulence->validate();
+
+    //if (!LTS)
+    //{
+    //    #include "compressibleCourantNo.H"
+    //    #include "setInitialDeltaT.H"
+    //}
+
     #include "compressibleCourantNo.H"
     #include "setInitialDeltaT.H"
-
-    pimpleControl pimple(mesh);
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -64,29 +73,58 @@ int main(int argc, char *argv[])
     while (runTime.run())
     {
         #include "readTimeControls.H"
+
+        //if (LTS)
+        //{
+        //    #include "setRDeltaT.H"
+        //}
+        //else
+        //{
+        //    #include "compressibleCourantNo.H"
+        //    #include "setDeltaT.H"
+        //}
+	    
         #include "compressibleCourantNo.H"
         #include "setDeltaT.H"
 
         runTime++;
+
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
         #include "rhoEqn.H"
 
-        // --- Pressure-velocity PIMPLE corrector loop
         while (pimple.loop())
-    	{
+        {
             #include "UEqn.H"
-            #include "ZEqn.H"
+	    #include "ZEqn.H"
+            //#include "YEqn.H"
+            //#include "EEqn.H"
 
-	    // --- Pressure corrector loop
+            // --- Pressure corrector loop
             while (pimple.correct())
-    	    {
+            {
+                //if (pimple.consistent())
+                //{
+                //    #include "pcEqn.H"
+                //}
+                //else
+                //{
+                //    #include "pEqn.H"
+                //}
+
                 #include "pEqn.H"
             }
+
+            //if (pimple.turbCorr())
+            //{
+            //    turbulence->correct();
+            //}
 
             turbulence->correct();
             rho = thermo.rho();
         }
+
+        rho = thermo.rho();
 
         runTime.write();
 

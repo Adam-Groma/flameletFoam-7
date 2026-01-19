@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -36,11 +36,15 @@ SourceFiles
 #define EulerImplicit_H
 
 #include "chemistrySolver.H"
+#include "Switch.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
+
+template <class Type>
+class simpleMatrix;
 
 /*---------------------------------------------------------------------------*\
                        Class EulerImplicit Declaration
@@ -51,7 +55,7 @@ class EulerImplicit
 :
     public chemistrySolver<ChemistryModel>
 {
-    // Private data
+    // Private Data
 
         //- Coefficients dictionary
         dictionary coeffsDict_;
@@ -77,8 +81,8 @@ public:
 
     // Constructors
 
-        //- Construct from mesh
-        EulerImplicit(const fvMesh& mesh);
+        //- Construct from thermo
+        EulerImplicit(typename ChemistryModel::reactionThermo& thermo);
 
 
     //- Destructor
@@ -119,7 +123,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-#   include "EulerImplicit.C"
+    #include "EulerImplicit.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

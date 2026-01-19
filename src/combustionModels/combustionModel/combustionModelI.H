@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -21,10 +21,6 @@ License
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
-Contributors/Copyright
-    2014 Hagen Müller <hagen.mueller@unibw.de> Universität der Bundeswehr München
-    2014 Likun Ma <L.Ma@tudelft.nl> TU Delft
-
 \*---------------------------------------------------------------------------*/
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
@@ -35,63 +31,22 @@ inline const Foam::fvMesh& Foam::combustionModel::mesh() const
 }
 
 
-inline const Foam::surfaceScalarField& Foam::combustionModel::phi() const
-{
-    if (turbulencePtr_)
-    {
-        return turbulencePtr_->phi();
-    }
-    else
-    {
-        FatalErrorIn
-        (
-            "const Foam::compressible::turbulenceModel& "
-            "Foam::combustionModel::turbulence() const "
-        )   << "turbulencePtr_ is empty. Please use "
-            << "combustionModel::setTurbulence "
-            << "(compressible::turbulenceModel& )"
-            << abort(FatalError);
-
-        return turbulencePtr_->phi();
-    }
-}
-
-
-inline const Foam::compressible::turbulenceModel&
+inline const Foam::compressibleTurbulenceModel&
 Foam::combustionModel::turbulence() const
 {
-    if (turbulencePtr_)
-    {
-        return *turbulencePtr_;
-    }
-    else
-    {
-        FatalErrorIn
-        (
-            "const Foam::compressible::turbulenceModel& "
-            "Foam::combustionModel::turbulence() const "
-        )   << "turbulencePtr_ is empty. Please use "
-            << "combustionModel::setTurbulence "
-            << "(compressible::turbulenceModel& )"
-            << abort(FatalError);
-
-        return *turbulencePtr_;
-    }
+    return turb_;
 }
 
 
-inline const Foam::Switch& Foam::combustionModel::active() const
+inline const Foam::volScalarField& Foam::combustionModel::rho() const
 {
-    return active_;
+    return turbulence().rho();
 }
 
 
-inline void Foam::combustionModel::setTurbulence
-(
-    compressible::turbulenceModel& turbModel
-)
+inline Foam::tmp<Foam::surfaceScalarField> Foam::combustionModel::phi() const
 {
-    turbulencePtr_ = &turbModel;
+    return turbulence().alphaRhoPhi();
 }
 
 

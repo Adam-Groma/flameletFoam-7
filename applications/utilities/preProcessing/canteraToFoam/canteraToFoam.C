@@ -33,7 +33,7 @@ Contributors/Copyright
 
 #include "OFstream.H"
 #include "fvCFD.H"
-#include "rhoCombustionModel.H"
+//#include "rhoCombustionModel.H"
 //#include "rhoChemistryModel.H"  
 #include "turbulenceModel.H"
 #include "multivariateScheme.H"
@@ -63,18 +63,12 @@ int main(int argc, char *argv[])
        )
    );
 
-   Info<< "Creating thermodynamics model\n" << endl;
+   Info<< "Reading thermophysical properties\n" << endl;
 
-   autoPtr<combustionModels::rhoCombustionModel> combustion                  
-   (
-      combustionModels::rhoCombustionModel::New                              
-      (
-         mesh
-      )
-   );
+   autoPtr<rhoReactionThermo> pThermo(rhoReactionThermo::New(mesh));
 
-   rhoReactionThermo& thermo = combustion->thermo();
-   basicMultiComponentMixture& composition = thermo.composition();
+   rhoReactionThermo& thermo = pThermo();
+   basicSpecieMixture& composition = thermo.composition();
 
    //create dummy tables
    hashedWordList dummytable(thermo.composition().species());

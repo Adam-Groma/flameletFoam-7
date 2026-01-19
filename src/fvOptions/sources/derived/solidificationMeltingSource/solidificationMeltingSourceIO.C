@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2014 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2014-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -27,18 +27,13 @@ License
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
-void Foam::fv::solidificationMeltingSource::writeData(Ostream& os) const
-{
-    os  << indent << name_ << endl;
-    dict_.write(os);
-}
-
-
 bool Foam::fv::solidificationMeltingSource::read(const dictionary& dict)
 {
-    if (option::read(dict))
+    if (cellSetOption::read(dict))
     {
-        coeffs_.lookup("Tmelt") >> Tmelt_;
+        coeffs_.lookup("Tsol") >> Tsol_;
+        coeffs_.readIfPresent("Tliq", Tliq_);
+        coeffs_.readIfPresent("alpha1e", alpha1e_);
         coeffs_.lookup("L") >> L_;
 
         coeffs_.readIfPresent("relax", relax_);
@@ -46,8 +41,8 @@ bool Foam::fv::solidificationMeltingSource::read(const dictionary& dict)
         mode_ = thermoModeTypeNames_.read(coeffs_.lookup("thermoMode"));
 
         coeffs_.lookup("rhoRef") >> rhoRef_;
-        coeffs_.readIfPresent("TName", TName_);
-        coeffs_.readIfPresent("UName", UName_);
+        coeffs_.readIfPresent("T", TName_);
+        coeffs_.readIfPresent("U", UName_);
 
         coeffs_.readIfPresent("Cu", Cu_);
         coeffs_.readIfPresent("q", q_);

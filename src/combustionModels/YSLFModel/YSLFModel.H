@@ -38,17 +38,8 @@ Contributors/Copyright
 #ifndef YSLFModel_H
 #define YSLFModel_H
 
-
-#include "primitiveFieldsFwd.H"
-#include "volFieldsFwd.H"
-#include "zeroGradientFvPatchFields.H"
-#include "surfaceFieldsFwd.H"
-#include "fvMatricesFwd.H"
+#include "ThermoCombustion.H"
 #include "tableSolver.H"
-#include "fvm.H"
-#include "fvc.H"
-#include "fvMatrices.H"
-#include "autoPtr.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -62,91 +53,93 @@ namespace combustionModels
                   Class YSLFModel Declaration
 \*---------------------------------------------------------------------------*/
 
-template<class CombThermoType>
+template<class ReactionThermo>
 class YSLFModel
 :
-    public CombThermoType
+    public ThermoCombustion<ReactionThermo>
 {
-
 protected:
 
-    // Protected data
+    //- Tables
+    tableSolver solver_;
 
-        // tables
-	    tableSolver solver_;
+    //- Species mass fractions
+    PtrList<volScalarField>& Y_;
 
-        //- Species mass fractions
-        PtrList<volScalarField>& Y_;
+    //- Enthalpy
+    volScalarField& he_;    
 
-        //- Enthalpy
-        volScalarField& he_;    
+    //- Mixture fraction
+    const volScalarField& Z_;
 
-        //- Mixture fraction
-        const volScalarField& Z_;
+    //- Mixture fraction variance
+    const volScalarField& varZ_;
 
-        //- Mixture fraction variance
-        const volScalarField& varZ_;
+    //- scalar dissipation rate
+    const volScalarField& Chi_;
 
-        //- scalar dissipation rate
-        const volScalarField& Chi_;
+    //- Upper Bounds for table interpolation
+    List<List<int> > ubIF_, ubP_;
 
-        //- Upper Bounds for table interpolation
-        List<List<int> > ubIF_, ubP_;
-
-        //- Table Position
-        List<scalarList> posIF_, posP_;
+    //- Table Position
+    List<scalarList> posIF_, posP_;
 
 private:
 
-    // Private Member
+    //- Use scalar dissipation for interpolation switch
+    Switch useScalarDissipation_;
 
-        //- use scalar dissipation for interpolation switch
-        Switch useScalarDissipation_;
-
-        //- use mixture fraction variance for interpolation switch
-        Switch useMixtureFractionVariance_;
-
-        //- Disallow copy construct
-	    YSLFModel(const YSLFModel&);
-
-        //- Disallow default bitwise assignment
-        void operator=(const YSLFModel&);
-
-public:
+    //- Use mixture fraction variance for interpolation switch
+    Switch useMixtureFractionVariance_;
 
     // Constructors
 
-        //- Runtime type information
-        TypeName("YSLFModel");
+        //- Disallow default bitwise copy construction
+        YSLFModel(const YSLFModel&);
 
-        hashedWordList tables();
+    // Member Operators
+
+        //- Disallow default bitwise assignment
+        void operator=(const YSLFModel&) = delete;
+
+public:
+
+    //- Runtime type information
+    TypeName("YSLFModel");
 
         //- Construct from components
-        YSLFModel(const word& modelType, const fvMesh& mesh);
+        YSLFModel
+        (
+            const word& modelType,
+            ReactionThermo& thermo,
+            const compressibleTurbulenceModel& turb,
+            const word& combustionProperties
+        );
 
-        //- Destructor
-        virtual ~YSLFModel();
+
+    //- Destructor
+    virtual ~YSLFModel();
+
+
+    // Member Functions
+
+        //- 
+        hashedWordList tables();
 
         //- Correct combustion rate
         virtual void correct();
 
-        //- Correct density during PISO
+        //- Switch for density correction in PISO
         Switch correctDensity();
 
-        //- Fuel consumption rate matrix  
-        inline tmp<fvScalarMatrix> R(volScalarField& Y) const;         
+        //- Fuel consumption rate matrix
+        virtual tmp<fvScalarMatrix> R(volScalarField& Y) const;
 
-        //- Enthalpy source term
-        inline tmp<Foam::volScalarField> Sh() const;
+        //- Heat release rate [kg/m/s^3]
+        virtual tmp<volScalarField> Qdot() const;
 
-        //- Heat release rate calculated from fuel consumption rate matrix
-        inline tmp<volScalarField> dQ() const;
-
-        // I-O
-        //- Update properties
+        //- Update properties from given dictionary
         virtual bool read();
-
-
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -27,219 +27,186 @@ Contributors/Copyright
 \*---------------------------------------------------------------------------*/
 
 #include "YSLFModel.H"
-#include "reactingMixture.H"
-#include "volFields.H"
+#include "fvmSup.H"
 #include "hashedWordList.H"
 
-namespace Foam
-{
-namespace combustionModels
-{
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-template<class CombThermoType>
-YSLFModel<CombThermoType>::YSLFModel
+template<class ReactionThermo>
+Foam::combustionModels::YSLFModel<ReactionThermo>::YSLFModel
 (
-    const word& modelType, const fvMesh& mesh
+    const word& modelType,
+    ReactionThermo& thermo,
+    const compressibleTurbulenceModel& turb,
+    const word& combustionProperties
 )
 :
-    CombThermoType(modelType, mesh),
-    solver_(tableSolver(mesh, tables())),
+    ThermoCombustion<ReactionThermo>(modelType, thermo, turb),
+    solver_(tableSolver(this->mesh(), tables())),
     Y_(this->thermo().composition().Y()),
     he_(this->thermo().he()),             
     Z_(this->thermo().Z()),
     varZ_(this->thermo().varZ()),
     Chi_(this->thermo().Chi()),
-    ubIF_(mesh.cells().size()),
+    ubIF_(this->mesh().cells().size()),
     ubP_(),
-    posIF_(mesh.cells().size()),
+    posIF_(this->mesh().cells().size()),
     posP_(),
     useScalarDissipation_(this->coeffs().lookup("useScalarDissipation")),
     useMixtureFractionVariance_(this->coeffs().lookup("useMixtureFractionVariance"))
 {
-	const polyBoundaryMesh& patches = mesh.boundaryMesh();
-	int patchSize = 0;
-    forAll(patches, patchI)
-    {
-    	const polyPatch& pp = patches[patchI];
-    	if (pp.size() > patchSize) patchSize = pp.size();
-    }
+  const polyBoundaryMesh& patches = this->mesh().boundaryMesh();
+  int patchSize = 0;
+  forAll(patches, patchI)
+  {
+    const polyPatch& pp = patches[patchI];
+    if (pp.size() > patchSize) patchSize = pp.size();
 
     ubP_.setSize(patchSize);
     posP_.setSize(patchSize);
+  }
 }
 
-// * * * * * * * * * * * * * * * * Destructors * * * * * * * * * * * * * * * //
 
-template<class CombThermoType>
-YSLFModel<CombThermoType>::~YSLFModel()
+// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
+
+template<class ReactionThermo>
+Foam::combustionModels::YSLFModel<ReactionThermo>::~YSLFModel()
 {}
 
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-template<class CombThermoType>
-hashedWordList YSLFModel<CombThermoType>::tables()
+// * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
+
+template<class ReactionThermo>
+Foam::hashedWordList
+Foam::combustionModels::YSLFModel<ReactionThermo>::tables()
 {
-	hashedWordList tableNames = this->thermo().composition().species();
-	tableNames.append("he");
+  hashedWordList tableNames = this->thermo().composition().species();
+  tableNames.append("he");
 
-	return tableNames;
+  return tableNames;
 }
 
-template<class CombThermoType>
-void YSLFModel<CombThermoType>::correct()
+template<class ReactionThermo>
+void Foam::combustionModels::YSLFModel<ReactionThermo>::correct()
 {
-    // limit the scalar dissipation rate to avoid instabilities at extinction
+    // Limit the scalar dissipation rate to avoid instabilities at extiction
     scalar chiLimiter = solver_.maxChi();
 
     const scalarField& ZCells = Z_.internalField();
     const scalarField& varZCells = varZ_.internalField();
     const scalarField& chiCells = Chi_.internalField();
 
-    scalarField& heCells = he_.internalField();
+    scalarField& heCells = he_.primitiveFieldRef();
 
     //- Update the species and enthalpy field
-    if(this->active())
-    {
-       scalarList x(3, 0.0);
-       double Zeta;
+    scalarList x(3, 0.0);
+    double Zeta;
 
-       // Interpolate for internal Field
+    // Interpolate for internal Field
+    forAll(Y_, i)
+    {
+        scalarField& YCells = Y_[i].primitiveFieldRef();
+
+        forAll(ZCells, cellI)
+        {
+    	      if (i == 0)
+    	      {
+    	  	      Zeta = sqrt(varZCells[cellI]/max(ZCells[cellI]*(1 - ZCells[cellI]), SMALL));
+                if (useScalarDissipation_)   x[0] = min(chiCells[cellI], chiLimiter);
+                if (useMixtureFractionVariance_) x[1] = min(Zeta, 0.99);
+                x[2] = ZCells[cellI];
+
+                ubIF_[cellI] = solver_.upperBounds(x);
+                posIF_[cellI] = solver_.position(ubIF_[cellI], x);
+
+          	    heCells[cellI] = solver_.interpolate(ubIF_[cellI], posIF_[cellI], (solver_.sizeTableNames() - 1));
+    	      }
+
+    	      YCells[cellI] = solver_.interpolate(ubIF_[cellI], posIF_[cellI], i);
+        }
+    }
+
+    // Interpolate for patches
+    forAll(he_.boundaryField(), patchi)   
+    {
+       const fvPatchScalarField& pChi = Chi_.boundaryField()[patchi];
+       const fvPatchScalarField& pvarZ = varZ_.boundaryField()[patchi];
+       const fvPatchScalarField& pZ = Z_.boundaryField()[patchi];
+
+       fvPatchScalarField& pHe = he_.boundaryFieldRef()[patchi];
+
        forAll(Y_, i)
        {
-    	  scalarField& YCells = Y_[i].internalField();
+     	  fvPatchScalarField& pY = Y_[i].boundaryFieldRef()[patchi];
 
-          forAll(ZCells, cellI)
-          {
-        	 if (i == 0)
-        	 {
-        		 Zeta = sqrt(varZCells[cellI]/max(ZCells[cellI]*(1 - ZCells[cellI]), SMALL));
-                 if (useScalarDissipation_)   x[0] = min(chiCells[cellI], chiLimiter);
-                 if (useMixtureFractionVariance_) x[1] = min(Zeta, 0.99);
-                 x[2] = ZCells[cellI];
+           forAll(pY , facei)
+           {
+          	 if (i == 0)
+          	 {
+                  Zeta = sqrt(pvarZ[facei]/max(pZ[facei]*(1 - pZ[facei]), SMALL));
 
-                 ubIF_[cellI] = solver_.upperBounds(x);
-                 posIF_[cellI] = solver_.position(ubIF_[cellI], x);
+                  if (useScalarDissipation_) x[0] = min(pChi[facei], chiLimiter);
+                  if (useMixtureFractionVariance_) x[1] = min(Zeta, 0.99);
+                  x[2] = pZ[facei];
 
-            	 heCells[cellI] = solver_.interpolate(ubIF_[cellI], posIF_[cellI], (solver_.sizeTableNames() - 1));
-        	 }
+                  ubP_[facei] = solver_.upperBounds(x);
+                  posP_[facei] = solver_.position(ubP_[facei], x);
 
-        	 YCells[cellI] = solver_.interpolate(ubIF_[cellI], posIF_[cellI], i);
+                  pHe[facei] = solver_.interpolate(ubP_[facei], posP_[facei], (solver_.sizeTableNames() - 1));
+          	 }
+
+         	 pY[facei] = solver_.interpolate(ubP_[facei], posP_[facei], i);
           }
        }
-
-       // Interpolate for patches
-       forAll(he_.boundaryField(), patchi)   
-       {
-          const fvPatchScalarField& pChi = Chi_.boundaryField()[patchi];
-          const fvPatchScalarField& pvarZ = varZ_.boundaryField()[patchi];
-          const fvPatchScalarField& pZ = Z_.boundaryField()[patchi];
-
-          fvPatchScalarField& pHe = he_.boundaryField()[patchi];
-
-          forAll(Y_, i)
-          {
-        	  fvPatchScalarField& pY = Y_[i].boundaryField()[patchi];
-
-              forAll(pY , facei)
-              {
-             	 if (i == 0)
-             	 {
-                     Zeta = sqrt(pvarZ[facei]/max(pZ[facei]*(1 - pZ[facei]), SMALL));
-
-                     if (useScalarDissipation_) x[0] = min(pChi[facei], chiLimiter);
-                     if (useMixtureFractionVariance_) x[1] = min(Zeta, 0.99);
-                     x[2] = pZ[facei];
-
-                     ubP_[facei] = solver_.upperBounds(x);
-                     posP_[facei] = solver_.position(ubP_[facei], x);
-
-                     pHe[facei] = solver_.interpolate(ubP_[facei], posP_[facei], (solver_.sizeTableNames() - 1));
-             	 }
-
-            	 pY[facei] = solver_.interpolate(ubP_[facei], posP_[facei], i);
-             }
-          }
-       }
-
-       // Calculate thermodynamic Properties
-       this->thermo().correct();
     }
+
+    // Calculate thermodynamic Properties
+    this->thermo().correct();
 }
 
-template<class CombThermoType>
-Switch YSLFModel<CombThermoType>::correctDensity()
+
+template<class ReactionThermo>
+Foam::Switch
+Foam::combustionModels::YSLFModel<ReactionThermo>::correctDensity()
 {
-	return true;
+    return true;
 }
 
-template<class CombThermoType>
+
+template<class ReactionThermo>
 Foam::tmp<Foam::fvScalarMatrix>
-YSLFModel<CombThermoType>::R
+Foam::combustionModels::YSLFModel<ReactionThermo>::R
 (
-    volScalarField& Y              
+    volScalarField& Y
 ) const
 {
-    tmp<fvScalarMatrix> tSu(new fvScalarMatrix(Y, dimMass/dimTime));
+    tmp<fvScalarMatrix> tSu
+    (
+        new fvScalarMatrix(Y, dimMass/dimTime)
+    );
+
     return tSu;
 }
 
-template<class CombThermoType>
-Foam::tmp<Foam::volScalarField>
-YSLFModel< CombThermoType>::Sh() const
-{
-    tmp<volScalarField> tSh
-    (
-        new volScalarField
-        (
-            IOobject
-            (
-                "Sh",
-                this->mesh().time().timeName(),
-                this->mesh(),
-                IOobject::NO_READ,
-                IOobject::NO_WRITE,
-                false
-            ),
-            this->mesh(),
-            dimensionedScalar("zero", dimEnergy/dimTime/dimVolume, 0.0),
-            zeroGradientFvPatchScalarField::typeName
-        )
-    );
 
-    return tSh;
+template<class ReactionThermo>
+Foam::tmp<Foam::volScalarField>
+Foam::combustionModels::YSLFModel<ReactionThermo>::Qdot() const
+{
+    return volScalarField::New
+    (
+        this->thermo().phasePropertyName(typeName + ":Qdot"),
+        this->mesh(),
+        dimensionedScalar(dimEnergy/dimVolume/dimTime, 0)
+    );
 }
 
-template<class CombThermoType>
-Foam::tmp<Foam::volScalarField>
-YSLFModel< CombThermoType>::dQ() const
-{
-    tmp<volScalarField> tdQ
-    (
-        new volScalarField
-        (
-            IOobject
-            (
-                "dQ",
-                this->mesh().time().timeName(),
-                this->mesh(),
-                IOobject::NO_READ,
-                IOobject::NO_WRITE,
-                false
-            ),
-            this->mesh(),
-            dimensionedScalar("dQ", dimEnergy/dimTime, 0.0),
-            zeroGradientFvPatchScalarField::typeName
-        )
-    );
 
-    return tdQ;
-}
-
-template<class CombThermoType>
-bool YSLFModel<CombThermoType>::read()
+template<class ReactionThermo>
+bool Foam::combustionModels::YSLFModel<ReactionThermo>::read()
 {
-    if (CombThermoType::read())
+    if (ThermoCombustion<ReactionThermo>::read())
     {
         this->coeffs().lookup("useScalarDissipation") >> useScalarDissipation_;
         this->coeffs().lookup("useMixtureFractionVariance") >> useMixtureFractionVariance_;
@@ -251,9 +218,6 @@ bool YSLFModel<CombThermoType>::read()
     }
 }
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace combustionModels
-} // End namespace Foam
+// ************************************************************************* //
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

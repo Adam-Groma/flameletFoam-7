@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2012 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2012-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -24,15 +24,12 @@ License
 Class
     Foam::energyJumpFvPatchScalarField
 
-Group
-    grpThermoBoundaryConditions grpCoupledBoundaryConditions
-
 Description
     This boundary condition provides an energy jump condition across a pair
     of coupled patches.  It is not applied directly, but is employed on-the-fly
     when converting temperature boundary conditions into energy.
 
-SeeAlso
+See also
     Foam::fixedJumpFvPatchField
 
 SourceFiles
@@ -44,7 +41,6 @@ SourceFiles
 #define energyJumpFvPatchScalarField_H
 
 #include "fixedJumpFvPatchField.H"
-#include "DataEntry.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -92,22 +88,22 @@ public:
             const fvPatchFieldMapper&
         );
 
-        //- Construct as copy
+        //- Copy constructor
         energyJumpFvPatchScalarField
         (
             const energyJumpFvPatchScalarField&
         );
 
         //- Construct and return a clone
-        virtual tmp<fvPatchField<scalar> > clone() const
+        virtual tmp<fvPatchField<scalar>> clone() const
         {
-            return tmp<fvPatchField<scalar> >
+            return tmp<fvPatchField<scalar>>
             (
                 new energyJumpFvPatchScalarField(*this)
             );
         }
 
-        //- Construct as copy setting internal field reference
+        //- Copy constructor setting internal field reference
         energyJumpFvPatchScalarField
         (
             const energyJumpFvPatchScalarField&,
@@ -115,19 +111,19 @@ public:
         );
 
         //- Construct and return a clone setting internal field reference
-        virtual tmp<fvPatchField<scalar> > clone
+        virtual tmp<fvPatchField<scalar>> clone
         (
             const DimensionedField<scalar, volMesh>& iF
         ) const
         {
-            return tmp<fvPatchField<scalar> >
+            return tmp<fvPatchField<scalar>>
             (
                 new energyJumpFvPatchScalarField(*this, iF)
             );
         }
 
 
-    // Member functions
+    // Member Functions
 
         // Evaluation functions
 

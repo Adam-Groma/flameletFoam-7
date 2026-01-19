@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2014 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2014-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -35,11 +35,6 @@ void Foam::fv::solidificationMeltingSource::apply
     fvMatrix<scalar>& eqn
 )
 {
-    if (!solveField(eqn.psi().name()))
-    {
-        return;
-    }
-
     if (debug)
     {
         Info<< type() << ": applying source to " << eqn.psi().name() << endl;
@@ -51,17 +46,13 @@ void Foam::fv::solidificationMeltingSource::apply
 
     dimensionedScalar L("L", dimEnergy/dimMass, L_);
 
-    // contributions added to rhs of solver equation
+    // Contributions added to rhs of solver equation
     if (eqn.psi().dimensions() == dimTemperature)
     {
-        // isothermal phase change - only include time derivative
-//        eqn -= L/Cp*(fvc::ddt(rho, alpha1_) + fvc::div(phi, alpha1_));
         eqn -= L/Cp*(fvc::ddt(rho, alpha1_));
     }
     else
     {
-        // isothermal phase change - only include time derivative
-//        eqn -= L*(fvc::ddt(rho, alpha1_) + fvc::div(phi, alpha1_));
         eqn -= L*(fvc::ddt(rho, alpha1_));
     }
 }

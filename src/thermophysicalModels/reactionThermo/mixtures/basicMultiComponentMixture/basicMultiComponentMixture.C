@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -21,13 +21,16 @@ License
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
-Contributors/Copyright
-    2014 Hagen Müller <hagen.mueller@unibw.de> Universität der Bundeswehr München
-    2014 Likun Ma <L.Ma@tudelft.nl> TU Delft
-
 \*---------------------------------------------------------------------------*/
 
 #include "basicMultiComponentMixture.H"
+
+// * * * * * * * * * * * * * Static Member Functions * * * * * * * * * * * * //
+
+namespace Foam
+{
+    defineTypeNameAndDebug(basicMultiComponentMixture, 0);
+}
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
@@ -35,32 +38,35 @@ Foam::basicMultiComponentMixture::basicMultiComponentMixture
 (
     const dictionary& thermoDict,
     const wordList& specieNames,
-    const fvMesh& mesh
+    const fvMesh& mesh,
+    const word& phaseName
 )
 :
+    basicMixture(thermoDict, mesh, phaseName),
     species_(specieNames),
+    active_(species_.size(), true),
     Y_(species_.size())
 {
+
     forAll(species_, i)
     {
-
-       Y_.set
-       (
-          i,
-          new volScalarField
-          (
+        Y_.set
+        (
+            i,
+            new volScalarField
+            (
                 IOobject
                 (
-                    species_[i],
+                    IOobject::groupName(species_[i], phaseName),
                     mesh.time().timeName(),
                     mesh,
-                    IOobject::NO_READ,
+                    IOobject::MUST_READ,
                     IOobject::NO_WRITE
                 ),
                 mesh,
                 dimensionedScalar(species_[i], dimless, 0.0)
-           )
-       );
+            )
+        );
     }
 }
 

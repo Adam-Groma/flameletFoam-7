@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2012 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2012-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -20,10 +20,6 @@ License
 
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
-
-Contributors/Copyright
-    2014 Hagen Müller <hagen.mueller@unibw.de> Universität der Bundeswehr München
-    2014 Likun Ma <L.Ma@tudelft.nl> TU Delft
 
 \*---------------------------------------------------------------------------*/
 
@@ -43,7 +39,7 @@ namespace Foam
 Foam::fluidThermo::fluidThermo(const fvMesh& mesh, const word& phaseName)
 :
     basicThermo(mesh, phaseName),
-    
+
     Z_
     (
         IOobject
@@ -96,7 +92,6 @@ Foam::fluidThermo::fluidThermo
 :
     basicThermo(mesh, dict, phaseName),
 
-    
     Z_
     (
         IOobject
@@ -201,7 +196,6 @@ const Foam::volScalarField& Foam::fluidThermo::Chi() const
 {
     return Chi_;
 }
-
 
 
 // ************************************************************************* //

@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -25,7 +25,22 @@ Class
     Foam::bladeModel
 
 Description
-    Blade model class
+    Blade model class calculates:
+        Linear interpolated blade twist and chord based on radial position
+        Interpolation factor (for interpolating profile performance)
+
+    Input in list format:
+
+        data
+        (
+            (profile1 (radius1 twist1 chord1))
+            (profile1 (radius2 twist2 chord2))
+        );
+
+    where:
+        radius [m]
+        twist [deg], converted to [rad] internally
+        chord [m]
 
 SourceFiles
     bladeModel.C
@@ -75,7 +90,7 @@ protected:
 
     // Protected Member Functions
 
-        //- Return ture if file name is set
+        //- Return true if file name is set
         bool readFromFile() const;
 
         //- Return the interpolation indices and gradient
@@ -99,7 +114,7 @@ public:
     virtual ~bladeModel();
 
 
-    // Member functions
+    // Member Functions
 
         // Access
 

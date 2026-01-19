@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2012 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -24,13 +24,10 @@ License
 Class
     Foam::mixedEnergyFvPatchScalarField
 
-Group
-    grpThermoBoundaryConditions
-
 Description
     This boundary condition provides a mixed condition for internal energy
 
-SeeAlso
+See also
     Foam::mixedFvPatchField
 
 SourceFiles
@@ -90,7 +87,7 @@ public:
             const fvPatchFieldMapper&
         );
 
-        //- Construct as copy
+        //- Copy constructor
         mixedEnergyFvPatchScalarField
         (
             const mixedEnergyFvPatchScalarField&
@@ -105,7 +102,7 @@ public:
             );
         }
 
-        //- Construct as copy setting internal field reference
+        //- Copy constructor setting internal field reference
         mixedEnergyFvPatchScalarField
         (
             const mixedEnergyFvPatchScalarField&,
@@ -125,7 +122,16 @@ public:
         }
 
 
-    // Member functions
+    // Member Functions
+
+        // Access
+
+            //- Allow manipulation of the boundary values
+            virtual bool fixesValue() const
+            {
+                return false;
+            }
+
 
         // Evaluation functions
 

@@ -8,9 +8,8 @@ wclean ./thermophysicalModels/basic
 wclean ./thermophysicalModels/reactionThermo
 wclean ./thermophysicalModels/chemistryModel
 
-wclean ./turbulenceModels/compressible/turbulenceModel
-wclean ./turbulenceModels/compressible/RAS
-wclean ./turbulenceModels/compressible/LES
+wclean ./TurbulenceModels/turbulenceModels
+wclean ./TurbulenceModels/compressible
 
 wclean ./fvOptions
 

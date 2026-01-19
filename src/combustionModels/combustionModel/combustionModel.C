@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -21,10 +21,6 @@ License
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
-Contributors/Copyright
-    2014 Hagen Müller <hagen.mueller@unibw.de> Universität der Bundeswehr München
-    2014 Likun Ma <L.Ma@tudelft.nl> TU Delft
-
 \*---------------------------------------------------------------------------*/
 
 #include "combustionModel.H"
@@ -36,80 +32,79 @@ namespace Foam
     defineTypeNameAndDebug(combustionModel, 0);
 }
 
+const Foam::word Foam::combustionModel::combustionPropertiesName
+(
+    "combustionProperties"
+);
+
+
+// * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
+
+Foam::IOobject Foam::combustionModel::createIOobject
+(
+    basicThermo& thermo,
+    const word& combustionProperties
+) const
+{
+    IOobject io
+    (
+        thermo.phasePropertyName(combustionProperties),
+        thermo.db().time().constant(),
+        thermo.db(),
+        IOobject::MUST_READ,
+        IOobject::NO_WRITE
+    );
+
+    if (io.typeHeaderOk<IOdictionary>(true))
+    {
+        io.readOpt() = IOobject::MUST_READ_IF_MODIFIED;
+        return io;
+    }
+    else
+    {
+        io.readOpt() = IOobject::NO_READ;
+        return io;
+    }
+}
+
+
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 Foam::combustionModel::combustionModel
 (
     const word& modelType,
-    const fvMesh& mesh
+    basicThermo& thermo,
+    const compressibleTurbulenceModel& turb,
+    const word& combustionProperties
 )
 :
-    IOdictionary
-    (
-        IOobject
-        (
-            "combustionProperties",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ_IF_MODIFIED,
-            IOobject::NO_WRITE
-        )
-    ),
-    turbulencePtr_(),
-    mesh_(mesh),
-    active_(lookupOrDefault<Switch>("active", true)),
-    coeffs_(subDict(modelType + "Coeffs")),
+    IOdictionary(createIOobject(thermo, combustionProperties)),
+    mesh_(thermo.p().mesh()),
+    turb_(turb),
+    coeffs_(optionalSubDict(modelType + "Coeffs")),
     modelType_(modelType)
 {}
 
 
-// * * * * * * * * * * * * * * * * Destructors * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
 Foam::combustionModel::~combustionModel()
-{
-    if (turbulencePtr_)
-    {
-        turbulencePtr_ = 0;
-    }
-}
+{}
 
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
-
 
 bool Foam::combustionModel::read()
 {
     if (regIOobject::read())
     {
-        this->lookup("active") >> active_;
-        coeffs_ = subDict(modelType_ + "Coeffs");
+        coeffs_ = optionalSubDict(modelType_ + "Coeffs");
         return true;
     }
     else
     {
         return false;
     }
-}
-
-
-Foam::tmp<Foam::volScalarField> Foam::combustionModel::Sh() const
-{
-    return tmp<Foam::volScalarField>
-    (
-        new volScalarField
-        (
-            IOobject
-            (
-                "Sh",
-                mesh_.time().timeName(),
-                mesh_,
-                IOobject::NO_READ,
-                IOobject::NO_WRITE
-            ),
-            mesh_,
-            dimensionedScalar("zero", dimEnergy/dimVolume/dimTime, 0.0)
-        )
-    );
 }
 
 

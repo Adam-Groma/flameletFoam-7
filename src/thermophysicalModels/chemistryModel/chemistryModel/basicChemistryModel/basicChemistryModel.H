@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -39,9 +39,8 @@ SourceFiles
 #include "IOdictionary.H"
 #include "Switch.H"
 #include "scalarField.H"
-#include "volFieldsFwd.H"
-#include "volMesh.H"
-#include "DimensionedField.H"
+#include "volFields.H"
+#include "basicThermo.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -59,15 +58,6 @@ class basicChemistryModel
 :
     public IOdictionary
 {
-    // Private Member Functions
-
-        //- Construct as copy (not implemented)
-        basicChemistryModel(const basicChemistryModel&);
-
-        //- Disallow default bitwise assignment
-        void operator=(const basicChemistryModel&);
-
-
 protected:
 
     // Protected data
@@ -81,15 +71,18 @@ protected:
         //- Initial chemical time step
         const scalar deltaTChemIni_;
 
+        //- Maximum chemical time step
+        const scalar deltaTChemMax_;
+
         //- Latest estimation of integration step
-        DimensionedField<scalar, volMesh> deltaTChem_;
+        volScalarField::Internal deltaTChem_;
 
 
     // Protected Member Functions
 
         //- Return non-const access to the latest estimation of integration
         //  step, e.g. for multi-chemistry model
-        inline DimensionedField<scalar, volMesh>& deltaTChem();
+        inline volScalarField::Internal& deltaTChem();
 
         //- Correct function - updates due to mesh changes
         void correct();
@@ -103,15 +96,21 @@ public:
 
     // Constructors
 
-        //- Construct from mesh
-        basicChemistryModel(const fvMesh& mesh);
+        //- Construct from thermo
+        basicChemistryModel(basicThermo& thermo);
+
+        //- Construct as copy (not implemented)
+        basicChemistryModel(const basicChemistryModel&);
 
 
     // Selectors
 
         //- Generic New for each of the related chemistry model
-        template<class Thermo>
-        static autoPtr<Thermo> New(const fvMesh&);
+        template<class ChemistryModel>
+        static autoPtr<ChemistryModel> New
+        (
+            typename ChemistryModel::reactionThermo& thermo
+        );
 
 
     //- Destructor
@@ -126,22 +125,28 @@ public:
         //- Chemistry activation switch
         inline Switch chemistry() const;
 
+        //- The number of species
+        virtual label nSpecie() const = 0;
+
+        //- The number of reactions
+        virtual label nReaction() const = 0;
+
         //- Return the latest estimation of integration step
-        inline const DimensionedField<scalar, volMesh>& deltaTChem() const;
+        inline const volScalarField::Internal& deltaTChem() const;
 
 
         // Functions to be derived in derived classes
 
             // Fields
 
-                //- Return const access to chemical source terms [kg/m3/s]
-                virtual const DimensionedField<scalar, volMesh>& RR
+                //- Return const access to chemical source terms [kg/m^3/s]
+                virtual const volScalarField::Internal& RR
                 (
                     const label i
                 ) const = 0;
 
-                //- Return access to chemical source terms [kg/m3/s]
-                virtual DimensionedField<scalar, volMesh>& RR
+                //- Return access to chemical source terms [kg/m^3/s]
+                virtual volScalarField::Internal& RR
                 (
                     const label i
                 ) = 0;
@@ -163,11 +168,14 @@ public:
                 //- Return the chemical time scale
                 virtual tmp<volScalarField> tc() const = 0;
 
-                //- Return source for enthalpy equation [kg/m/s3]
-                virtual tmp<volScalarField> Sh() const = 0;
+                //- Return the heat release rate [kg/m/s^3]
+                virtual tmp<volScalarField> Qdot() const = 0;
 
-                //- Return the heat release, i.e. enthalpy/sec [m2/s3]
-                virtual tmp<volScalarField> dQ() const = 0;
+
+    // Member Operators
+
+        //- Disallow default bitwise assignment
+        void operator=(const basicChemistryModel&) = delete;
 };
 
 
@@ -180,7 +188,7 @@ public:
 #include "basicChemistryModelI.H"
 
 #ifdef NoRepository
-#   include "basicChemistryModelTemplates.C"
+    #include "basicChemistryModelTemplates.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -1,5 +1,7 @@
 EXE_INC = \
-    -I$(LIB_FLAMELET_SRC)/turbulenceModels/compressible/turbulenceModel \
+    -I$(LIB_FLAMELET_SRC)/TurbulenceModels/turbulenceModels \
+    -I$(LIB_FLAMELET_SRC)/TurbulenceModels/compressible/lnInclude \
+    -I$(LIB_FLAMELET_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
     -I$(LIB_FLAMELET_SRC)/thermophysicalModels/specie/lnInclude \
     -I$(LIB_FLAMELET_SRC)/thermophysicalModels/reactionThermo/lnInclude \
     -I$(LIB_FLAMELET_SRC)/thermophysicalModels/basic/lnInclude \
@@ -13,9 +15,8 @@ EXE_INC = \
 
 EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) \
-    -lFlameletcompressibleTurbulenceModel \
-    -lFlameletcompressibleLESModels \
-    -lFlameletcompressibleRASModels \
+    -lFlameletcompressibleTurbulenceModels \
+    -lFlameletturbulenceModels \
     -lFlameletreactionThermophysicalModels \
     -lFlameletspecie \
     -lFlameletfluidThermophysicalModels \

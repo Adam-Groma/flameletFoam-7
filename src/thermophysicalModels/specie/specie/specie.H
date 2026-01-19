@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -40,13 +40,24 @@ SourceFiles
 #include "scalar.H"
 #include "dictionary.H"
 
+#include "thermodynamicConstants.H"
+using namespace Foam::constant::thermodynamic;
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-class Istream;
-class Ostream;
+// Forward declaration of friend functions and operators
+
+class specie;
+
+inline specie operator+(const specie&, const specie&);
+inline specie operator*(const scalar, const specie&);
+inline specie operator==(const specie&, const specie&);
+
+Ostream& operator<<(Ostream&, const specie&);
+
 
 /*---------------------------------------------------------------------------*\
                            Class specie Declaration
@@ -54,13 +65,13 @@ class Ostream;
 
 class specie
 {
-    // Private data
+    // Private Data
 
         //- Name of specie
         word name_;
 
         //- Number of moles of this component in the mixture
-        scalar nMoles_;
+        scalar Y_;
 
         //- Molecular weight of specie [kg/kmol]
         scalar molWeight_;
@@ -72,45 +83,27 @@ public:
     ClassName("specie");
 
 
-    // Public constants
-
-        // Thermodynamic constants
-
-            //- Universal gas constant [J/(kmol K)]
-            static const scalar RR;
-
-            //- Standard pressure [Pa]
-            static const scalar Pstd;
-
-            //- Standard temperature [K]
-            static const scalar Tstd;
-
-
     // Constructors
 
-
         //- Construct from components without name
-        inline specie(const scalar nMoles, const scalar molWeight);
+        inline specie(const scalar Y, const scalar molWeight);
 
         //- Construct from components with name
         inline specie
         (
             const word& name,
-            const scalar nMoles,
+            const scalar Y,
             const scalar molWeight
         );
-
-        //- Construct as copy
-        inline specie(const specie&);
 
         //- Construct as named copy
         inline specie(const word& name, const specie&);
 
-        //- Construct from Istream
-        specie(Istream&);
-
         //- Construct from dictionary
         specie(const dictionary& dict);
+
+        //- Copy constructor
+        specie(const specie&) = default;
 
 
     // Member Functions
@@ -124,9 +117,9 @@ public:
             inline scalar W() const;
 
             //- No of moles of this species in mixture
-            inline scalar nMoles() const;
+            inline scalar Y() const;
 
-            //- Gas constant [J/(kg K)]
+            //- Gas constant [J/kg/K]
             inline scalar R() const;
 
 
@@ -136,23 +129,17 @@ public:
             void write(Ostream& os) const;
 
 
-    // Member operators
+    // Member Operators
 
         inline void operator=(const specie&);
-
         inline void operator+=(const specie&);
-        inline void operator-=(const specie&);
-
         inline void operator*=(const scalar);
 
 
     // Friend operators
 
         inline friend specie operator+(const specie&, const specie&);
-        inline friend specie operator-(const specie&, const specie&);
-
         inline friend specie operator*(const scalar, const specie&);
-
         inline friend specie operator==(const specie&, const specie&);
 
 

@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2012 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -25,11 +25,47 @@ Class
     Foam::polynomialTransport
 
 Description
-    Transport package using polynomial functions for mu and kappa
+    Transport package using polynomial functions for \c mu and \c kappa.
+
+Usage
+
+    \table
+        Property        | Description
+        muCoeffs<8>     | Dynamic viscosity polynomial coefficients
+        kappaCoeffs<8>  | Thermal conductivity polynomial coefficients
+    \endtable
+
+    Example of the specification of the transport properties:
+    \verbatim
+    transport
+    {
+        muCoeffs<8>     ( 1000 -0.05 0.003 0 0 0 0 0 );
+        kappaCoeffs<8>  ( 2000 -0.15 0.023 0 0 0 0 0 );
+    }
+    \endverbatim
+
+    The polynomial expressions are evaluated as so:
+
+        \f[
+            \mu    = 1000 - 0.05 T + 0.003 T^2
+        \f]
+
+        \f[
+            \kappa = 2000 - 0.15 T + 0.023 T^2
+        \f]
+
+Note
+    - Dynamic viscosity polynomial coefficients evaluate to an expression in
+      [Pa.s], but internally uses [Pa.s/kmol].
+    - Thermal conductivity polynomial coefficients evaluate to an expression in
+      [W/m/K], but internally uses [W/m/K/kmol].
 
 SourceFiles
     polynomialTransportI.H
     polynomialTransport.C
+
+See also
+    Foam::Polynomial
 
 \*---------------------------------------------------------------------------*/
 
@@ -55,23 +91,9 @@ inline polynomialTransport<Thermo, PolySize> operator+
 );
 
 template<class Thermo, int PolySize>
-inline polynomialTransport<Thermo, PolySize> operator-
-(
-    const polynomialTransport<Thermo, PolySize>&,
-    const polynomialTransport<Thermo, PolySize>&
-);
-
-template<class Thermo, int PolySize>
 inline polynomialTransport<Thermo, PolySize> operator*
 (
     const scalar,
-    const polynomialTransport<Thermo, PolySize>&
-);
-
-template<class Thermo, int PolySize>
-inline polynomialTransport<Thermo, PolySize> operator==
-(
-    const polynomialTransport<Thermo, PolySize>&,
     const polynomialTransport<Thermo, PolySize>&
 );
 
@@ -92,14 +114,12 @@ class polynomialTransport
 :
     public Thermo
 {
-    // Private data
+    // Private Data
 
         //- Dynamic viscosity polynomial coefficients
-        //  Note: input in [Pa.s], but internally uses [Pa.s/kmol]
         Polynomial<PolySize> muCoeffs_;
 
         //- Thermal conductivity polynomial coefficients
-        //  Note: input in [W/m/K], but internally uses [W/m/K/kmol]
         Polynomial<PolySize> kappaCoeffs_;
 
 
@@ -118,14 +138,8 @@ public:
 
     // Constructors
 
-        //- Construct copy
-        inline polynomialTransport(const polynomialTransport&);
-
         //- Construct as named copy
         inline polynomialTransport(const word&, const polynomialTransport&);
-
-        //- Construct from Istream
-        polynomialTransport(Istream& is);
 
         //- Construct from dictionary
         polynomialTransport(const dictionary& dict);
@@ -133,14 +147,11 @@ public:
         //- Construct and return a clone
         inline autoPtr<polynomialTransport> clone() const;
 
-        // Selector from Istream
-        inline static autoPtr<polynomialTransport> New(Istream& is);
-
         // Selector from dictionary
         inline static autoPtr<polynomialTransport> New(const dictionary& dict);
 
 
-    // Member functions
+    // Member Functions
 
         //- Return the instantiated type name
         static word typeName()
@@ -148,27 +159,25 @@ public:
             return "polynomial<" + Thermo::typeName() + '>';
         }
 
-        //- Dynamic viscosity [kg/ms]
+        //- Dynamic viscosity [kg/m/s]
         inline scalar mu(const scalar p, const scalar T) const;
 
-        //- Thermal conductivity [W/mK]
+        //- Thermal conductivity [W/m/K]
         inline scalar kappa(const scalar p, const scalar T) const;
 
-        //- Thermal diffusivity of enthalpy [kg/ms]
+        //- Thermal diffusivity of enthalpy [kg/m/s]
         inline scalar alphah(const scalar p, const scalar T) const;
 
         // Species diffusivity
-        //inline scalar D(const scalar p, const scalar T) const;
+        // inline scalar D(const scalar p, const scalar T) const;
 
         //- Write to Ostream
         void write(Ostream& os) const;
 
 
-    // Member operators
+    // Member Operators
 
-        inline polynomialTransport& operator=(const polynomialTransport&);
         inline void operator+=(const polynomialTransport&);
-        inline void operator-=(const polynomialTransport&);
         inline void operator*=(const scalar);
 
 
@@ -180,21 +189,9 @@ public:
             const polynomialTransport&
         );
 
-        friend polynomialTransport operator- <Thermo, PolySize>
-        (
-            const polynomialTransport&,
-            const polynomialTransport&
-        );
-
         friend polynomialTransport operator* <Thermo, PolySize>
         (
             const scalar,
-            const polynomialTransport&
-        );
-
-        friend polynomialTransport operator== <Thermo, PolySize>
-        (
-            const polynomialTransport&,
             const polynomialTransport&
         );
 
@@ -218,7 +215,7 @@ public:
 #include "polynomialTransportI.H"
 
 #ifdef NoRepository
-#   include "polynomialTransport.C"
+    #include "polynomialTransport.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

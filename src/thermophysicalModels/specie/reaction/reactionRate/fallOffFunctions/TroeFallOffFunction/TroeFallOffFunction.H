@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -54,7 +54,7 @@ Ostream& operator<<(Ostream&, const TroeFallOffFunction&);
 
 class TroeFallOffFunction
 {
-    // Private data
+    // Private Data
 
         scalar alpha_;
         scalar Tsss_, Ts_, Tss_;
@@ -73,9 +73,6 @@ public:
             const scalar Tss
         );
 
-        //- Construct from Istream
-        inline TroeFallOffFunction(Istream&);
-
         //- Construct from dictionary
         inline TroeFallOffFunction(const dictionary& dict);
 
@@ -92,6 +89,22 @@ public:
         (
             const scalar T,
             const scalar Pr
+        ) const;
+
+        inline scalar ddT
+        (
+            const scalar Pr,
+            const scalar F,
+            const scalar dPrdT,
+            const scalar T
+        ) const;
+
+        inline scalar ddc
+        (
+            const scalar Pr,
+            const scalar F,
+            const scalar dPrdc,
+            const scalar T
         ) const;
 
         //- Write to stream

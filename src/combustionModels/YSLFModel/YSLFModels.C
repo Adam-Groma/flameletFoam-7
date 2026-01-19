@@ -29,21 +29,23 @@ Contributors/Copyright
 
 #include "makeCombustionTypes.H"
 
-#include "rhoThermoCombustion.H"         
-#include "thermoPhysicsTypes.H"
+#include "rhoReactionThermo.H"
+//#include "rhoThermoCombustion.H"         
+//#include "thermoPhysicsTypes.H"
 #include "YSLFModel.H"
 
 namespace Foam
 {
-namespace combustionModels
-{
 
+makeCombustionTypes(YSLFModel, rhoReactionThermo);
+
+/*
 makeCombustionTypes
 (
     YSLFModel,
     rhoThermoCombustion,
     rhoCombustionModel  
 );
+*/
 
-} // End namespace combustionModels
 } // End namespace Foam

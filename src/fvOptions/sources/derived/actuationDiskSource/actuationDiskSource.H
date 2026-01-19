@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2014 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -44,19 +44,15 @@ Description
         U_1 | velocity at the disk
     \endvartable
 
-    \heading Source usage
-
+Usage
     Example usage:
     \verbatim
-    actuationDiskSourceCoeffs
-    {
-        fieldNames      (U);        // names of fields to apply source
-        diskDir         (-1 0 0);   // disk direction
-        Cp              0.1;        // power coefficient
-        Ct              0.5;        // thrust coefficient
-        diskArea        5.0;        // disk area
-        upstreamPoint   (0 0 0);    // upstream point
-    }
+    fields          (U);        // names of fields to apply source
+    diskDir         (-1 0 0);   // disk direction
+    Cp              0.1;        // power coefficient
+    Ct              0.5;        // thrust coefficient
+    diskArea        5.0;        // disk area
+    upstreamPoint   (0 0 0);    // upstream point
     \endverbatim
 
 
@@ -69,7 +65,7 @@ SourceFiles
 #ifndef actuationDiskSource_H
 #define actuationDiskSource_H
 
-#include "fvOption.H"
+#include "cellSetOption.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -84,7 +80,7 @@ namespace fv
 
 class actuationDiskSource
 :
-    public option
+    public cellSetOption
 {
 
 protected:
@@ -128,12 +124,6 @@ private:
             const vectorField& U
         ) const;
 
-        //- Disallow default bitwise copy construct
-        actuationDiskSource(const actuationDiskSource&);
-
-        //- Disallow default bitwise assignment
-        void operator=(const actuationDiskSource&);
-
 
 public:
 
@@ -151,6 +141,9 @@ public:
             const dictionary& dict,
             const fvMesh& mesh
         );
+
+        //- Disallow default bitwise copy construction
+        actuationDiskSource(const actuationDiskSource&) = delete;
 
 
     //- Destructor
@@ -193,7 +186,7 @@ public:
             virtual void addSup
             (
                 fvMatrix<vector>& eqn,
-                const label fieldI
+                const label fieldi
             );
 
             //- Source term to compressible momentum equation
@@ -201,17 +194,20 @@ public:
             (
                 const volScalarField& rho,
                 fvMatrix<vector>& eqn,
-                const label fieldI
+                const label fieldi
             );
 
 
-        // I-O
-
-            //- Write data
-            virtual void writeData(Ostream&) const;
+        // IO
 
             //- Read dictionary
             virtual bool read(const dictionary& dict);
+
+
+    // Member Operators
+
+        //- Disallow default bitwise assignment
+        void operator=(const actuationDiskSource&) = delete;
 };
 
 
@@ -223,7 +219,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-#   include "actuationDiskSourceTemplates.C"
+    #include "actuationDiskSourceTemplates.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

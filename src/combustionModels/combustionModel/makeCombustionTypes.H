@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2012 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -21,10 +21,6 @@ License
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
-Contributors/Copyright
-    2014 Hagen Müller <hagen.mueller@unibw.de> Universität der Bundeswehr München
-    2014 Likun Ma <L.Ma@tudelft.nl> TU Delft
-
 \*---------------------------------------------------------------------------*/
 
 #ifndef makeCombustionTypes_H
@@ -34,43 +30,75 @@ Contributors/Copyright
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#define makeCombustionTypesThermo(CombModel, CombType, Thermo, Table)         \
-                                                                              \
-    typedef CombModel<CombType, Thermo> CombModel##CombType##Thermo;          \
-                                                                              \
-    defineTemplateTypeNameAndDebugWithName                                    \
-    (                                                                         \
-        CombModel##CombType##Thermo,                                          \
-        #CombModel"<"#CombType","#Thermo">",                                  \
-        0                                                                     \
-    );                                                                        \
-                                                                              \
-    addToRunTimeSelectionTable                                                \
-    (                                                                         \
-        Table,                                                                \
-        CombModel##CombType##Thermo,                                          \
-        dictionary                                                            \
+namespace Foam
+{
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#define makeCombustion(Comp)                                                   \
+                                                                               \
+    typedef CombustionModel<Comp> CombustionModel##Comp;                       \
+                                                                               \
+    defineTemplateTypeNameAndDebugWithName                                     \
+    (                                                                          \
+        CombustionModel##Comp,                                                 \
+        (                                                                      \
+            word(CombustionModel##Comp::typeName_()) + "<" + Comp::typeName    \
+          + ">"                                                                \
+        ).c_str(),                                                             \
+        0                                                                      \
+    );                                                                         \
+                                                                               \
+    defineTemplateRunTimeSelectionTable                                        \
+    (                                                                          \
+        CombustionModel##Comp,                                                 \
+        dictionary                                                             \
     );
 
 
-#define makeCombustionTypes(CombModel, CombType, Table)                       \
-                                                                              \
-    typedef CombModel<CombType> CombModel##CombType;                          \
-                                                                              \
-    defineTemplateTypeNameAndDebugWithName                                    \
-    (                                                                         \
-        CombModel##CombType,                                                  \
-        #CombModel"<"#CombType">",                                            \
-        0                                                                     \
-    );                                                                        \
-                                                                              \
-    addToRunTimeSelectionTable                                                \
-    (                                                                         \
-        Table,                                                                \
-        CombModel##CombType,                                                  \
-        dictionary                                                            \
-    );
+#define makeCombustionTypesThermo(CombModel, Comp, Thermo)                     \
+                                                                               \
+    typedef combustionModels::CombModel<Comp, Thermo>                          \
+        CombModel##Comp##Thermo;                                               \
+                                                                               \
+    defineTemplateTypeNameAndDebugWithName                                     \
+    (                                                                          \
+        CombModel##Comp##Thermo,                                               \
+        (                                                                      \
+            word(CombModel##Comp##Thermo::typeName_()) + "<" + Comp::typeName  \
+          + "," + Thermo::typeName() + ">"                                     \
+        ).c_str(),                                                             \
+        0                                                                      \
+    );                                                                         \
+                                                                               \
+    CombustionModel<Comp>::                                                    \
+        add##dictionary##ConstructorToTable<CombModel##Comp##Thermo>           \
+        add##CombModel##Comp##Thermo##dictionary##ConstructorTo##\
+CombustionModel##Comp##Table_;
 
+
+#define makeCombustionTypes(CombModel, Comp)                                   \
+                                                                               \
+    typedef combustionModels::CombModel<Comp> CombModel##Comp;                 \
+                                                                               \
+    defineTemplateTypeNameAndDebugWithName                                     \
+    (                                                                          \
+        CombModel##Comp,                                                       \
+        (                                                                      \
+            word(CombModel##Comp::typeName_()) + "<" + Comp::typeName + ">"    \
+        ).c_str(),                                                             \
+        0                                                                      \
+    );                                                                         \
+                                                                               \
+    CombustionModel<Comp>::                                                    \
+        add##dictionary##ConstructorToTable<CombModel##Comp>                   \
+        add##CombModel##Comp##dictionary##ConstructorTo##CombustionModel##Comp\
+##Table_;
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

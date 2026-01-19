@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2012-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -23,16 +23,54 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "makeFvOption.H"
-#include "SemiImplicitSource.H"
+#include "ChemistryCombustion.H"
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-makeFvOption(SemiImplicitSource, scalar);
-makeFvOption(SemiImplicitSource, vector);
-makeFvOption(SemiImplicitSource, sphericalTensor);
-makeFvOption(SemiImplicitSource, symmTensor);
-makeFvOption(SemiImplicitSource, tensor);
+template<class ReactionThermo>
+Foam::ChemistryCombustion<ReactionThermo>::ChemistryCombustion
+(
+    const word& modelType,
+    ReactionThermo& thermo,
+    const compressibleTurbulenceModel& turb,
+    const word& combustionProperties
+)
+:
+    CombustionModel<ReactionThermo>
+    (
+        modelType,
+        thermo,
+        turb,
+        combustionProperties
+    ),
+    chemistryPtr_(BasicChemistryModel<ReactionThermo>::New(thermo))
+{}
+
+
+// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
+
+template<class ReactionThermo>
+Foam::ChemistryCombustion<ReactionThermo>::
+~ChemistryCombustion()
+{}
+
+
+// * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
+
+template<class ReactionThermo>
+ReactionThermo&
+Foam::ChemistryCombustion<ReactionThermo>::thermo()
+{
+    return chemistryPtr_->thermo();
+}
+
+
+template<class ReactionThermo>
+const ReactionThermo&
+Foam::ChemistryCombustion<ReactionThermo>::thermo() const
+{
+    return chemistryPtr_->thermo();
+}
 
 
 // ************************************************************************* //

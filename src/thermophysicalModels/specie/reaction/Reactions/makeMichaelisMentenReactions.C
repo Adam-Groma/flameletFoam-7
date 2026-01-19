@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -23,16 +23,27 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "makeFvOption.H"
-#include "SemiImplicitSource.H"
+#include "makeReaction.H"
+#include "reactionTypes.H"
+#include "MichaelisMentenReactionRate.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-makeFvOption(SemiImplicitSource, scalar);
-makeFvOption(SemiImplicitSource, vector);
-makeFvOption(SemiImplicitSource, sphericalTensor);
-makeFvOption(SemiImplicitSource, symmTensor);
-makeFvOption(SemiImplicitSource, tensor);
+namespace Foam
+{
+    makeReaction
+    (
+        constFluidHThermoPhysics,
+        IrreversibleReaction,
+        MichaelisMentenReactionRate
+    )
 
+    makeReaction
+    (
+        constFluidEThermoPhysics,
+        IrreversibleReaction,
+        MichaelisMentenReactionRate
+    )
+}
 
 // ************************************************************************* //

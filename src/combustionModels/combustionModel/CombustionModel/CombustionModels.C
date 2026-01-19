@@ -23,16 +23,19 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "makeFvOption.H"
-#include "SemiImplicitSource.H"
+#include "makeCombustionTypes.H"
+
+#include "CombustionModel.H"
+
+#include "rhoReactionThermo.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-makeFvOption(SemiImplicitSource, scalar);
-makeFvOption(SemiImplicitSource, vector);
-makeFvOption(SemiImplicitSource, sphericalTensor);
-makeFvOption(SemiImplicitSource, symmTensor);
-makeFvOption(SemiImplicitSource, tensor);
+namespace Foam
+{
 
+makeCombustion(rhoReactionThermo);
+
+}
 
 // ************************************************************************* //

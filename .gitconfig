@@ -1,0 +1,7 @@
+[user]
+        name = Adam Groma
+        email = adam.groma@gsl.cz
+[github]
+  user = "Adam-Groma"
+[credential]
+        helper = /mnt/c/Users/A6082048/AppData/Local/Programs/Git/mingw64/bin/git-credential-manager.exe

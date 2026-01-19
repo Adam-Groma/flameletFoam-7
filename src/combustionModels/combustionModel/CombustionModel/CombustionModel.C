@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2017-2018 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -23,59 +23,58 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "PhaseLimitStabilization.H"
-#include "fvMatrices.H"
-#include "fvmSup.H"
-#include "uniformDimensionedFields.H"
+#include "CombustionModel.H"
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-template<class Type>
-Foam::fv::PhaseLimitStabilization<Type>::PhaseLimitStabilization
+template<class ReactionThermo>
+Foam::CombustionModel<ReactionThermo>::CombustionModel
 (
-    const word& name,
     const word& modelType,
-    const dictionary& dict,
-    const fvMesh& mesh
+    ReactionThermo& thermo,
+    const compressibleTurbulenceModel& turb,
+    const word& combustionProperties
 )
 :
-    option(name, modelType, dict, mesh),
-    fieldName_(coeffs_.lookup("field")),
-    rateName_(coeffs_.lookup("rate")),
-    residualAlpha_(readScalar(coeffs_.lookup("residualAlpha")))
-{
-    fieldNames_.setSize(1, fieldName_);
-    applied_.setSize(1, false);
-}
+    combustionModel(modelType, thermo, turb, combustionProperties)
+{}
 
 
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * * //
 
-template<class Type>
-void Foam::fv::PhaseLimitStabilization<Type>::addSup
+template<class ReactionThermo>
+Foam::autoPtr<Foam::CombustionModel<ReactionThermo>>
+Foam::CombustionModel<ReactionThermo>::New
 (
-    const volScalarField& alpha,
-    const volScalarField& rho,
-    fvMatrix<Type>& eqn,
-    const label fieldi
+    ReactionThermo& thermo,
+    const compressibleTurbulenceModel& turb,
+    const word& combustionProperties
 )
 {
-    const GeometricField<Type, fvPatchField, volMesh>& psi = eqn.psi();
-
-    uniformDimensionedScalarField& rate =
-        mesh_.lookupObjectRef<uniformDimensionedScalarField>(rateName_);
-
-    eqn -= fvm::Sp(max(residualAlpha_ - alpha, scalar(0))*rho*rate, psi);
+    return
+        combustionModel::New<CombustionModel<ReactionThermo>>
+        (
+            thermo,
+            turb,
+            combustionProperties
+        );
 }
 
 
-template<class Type>
-bool Foam::fv::PhaseLimitStabilization<Type>::read(const dictionary& dict)
-{
-    if (option::read(dict))
-    {
-        coeffs_.lookup("residualAlpha") >> residualAlpha_;
+// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
+template<class ReactionThermo>
+Foam::CombustionModel<ReactionThermo>::~CombustionModel()
+{}
+
+
+// * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
+
+template<class ReactionThermo>
+bool Foam::CombustionModel<ReactionThermo>::read()
+{
+    if (combustionModel::read())
+    {
         return true;
     }
     else

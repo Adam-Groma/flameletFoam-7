@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2012-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -23,16 +23,52 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "makeFvOption.H"
-#include "SemiImplicitSource.H"
+#include "ThermoCombustion.H"
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-makeFvOption(SemiImplicitSource, scalar);
-makeFvOption(SemiImplicitSource, vector);
-makeFvOption(SemiImplicitSource, sphericalTensor);
-makeFvOption(SemiImplicitSource, symmTensor);
-makeFvOption(SemiImplicitSource, tensor);
+template<class ReactionThermo>
+Foam::ThermoCombustion<ReactionThermo>::ThermoCombustion
+(
+    const word& modelType,
+    ReactionThermo& thermo,
+    const compressibleTurbulenceModel& turb
+)
+:
+    CombustionModel<ReactionThermo>
+    (
+        modelType,
+        thermo,
+        turb,
+        combustionModel::combustionPropertiesName
+    ),
+    thermo_(thermo)
+{}
+
+
+// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
+
+template<class ReactionThermo>
+Foam::ThermoCombustion<ReactionThermo>::~ThermoCombustion()
+{}
+
+
+// * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
+
+template<class ReactionThermo>
+ReactionThermo&
+Foam::ThermoCombustion<ReactionThermo>::thermo()
+{
+    return thermo_;
+}
+
+
+template<class ReactionThermo>
+const ReactionThermo&
+Foam::ThermoCombustion<ReactionThermo>::thermo() const
+{
+    return thermo_;
+}
 
 
 // ************************************************************************* //

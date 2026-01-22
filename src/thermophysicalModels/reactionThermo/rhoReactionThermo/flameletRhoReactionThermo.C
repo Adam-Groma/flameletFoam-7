@@ -23,49 +23,44 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "reactingMixture.H"
+#include "flameletRhoReactionThermo.H"
 #include "fvMesh.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+    defineTypeNameAndDebug(flameletRhoReactionThermo, 0);
+    defineRunTimeSelectionTable(flameletRhoReactionThermo, fvMesh);
+}
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-template<class ThermoType>
-Foam::reactingMixture<ThermoType>::reactingMixture
+Foam::flameletRhoReactionThermo::flameletRhoReactionThermo
 (
-    const dictionary& thermoDict,
     const fvMesh& mesh,
     const word& phaseName
 )
 :
-    speciesTable(),
-    autoPtr<chemistryReader<ThermoType>>
-    (
-        chemistryReader<ThermoType>::New(thermoDict, *this)
-    ),
-    multiComponentMixture<ThermoType>
-    (
-        thermoDict,
-        *this,
-        autoPtr<chemistryReader<ThermoType>>::operator()().speciesThermo(),
-        mesh,
-        phaseName
-    ),
-    PtrList<Reaction<ThermoType>>
-    (
-        autoPtr<chemistryReader<ThermoType>>::operator()().reactions()
-    ),
-    speciesComposition_
-    (
-        autoPtr<chemistryReader<ThermoType>>::operator()().specieComposition()
-    )
+    rhoThermo(mesh, phaseName)
+{}
+
+
+// * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * * //
+
+Foam::autoPtr<Foam::flameletRhoReactionThermo> Foam::flameletRhoReactionThermo::New
+(
+    const fvMesh& mesh,
+    const word& phaseName
+)
 {
-    autoPtr<chemistryReader<ThermoType>>::clear();
+    return basicThermo::New<flameletRhoReactionThermo>(mesh, phaseName);
 }
 
 
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-template<class ThermoType>
-void Foam::reactingMixture<ThermoType>::read(const dictionary& thermoDict)
+Foam::flameletRhoReactionThermo::~flameletRhoReactionThermo()
 {}
 
 

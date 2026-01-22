@@ -490,7 +490,7 @@ else
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::canteraReader::canteraReader(const IOdictionary& canteraDict, rhoReactionThermo& thermo, basicSpecieMixture& composition)  
+Foam::canteraReader::canteraReader(const IOdictionary& canteraDict, flameletRhoReactionThermo& thermo, flameletBasicSpecieMixture& composition)  
 :  composition(composition),
    thermo(thermo),
    Y_(thermo.composition().Y()),

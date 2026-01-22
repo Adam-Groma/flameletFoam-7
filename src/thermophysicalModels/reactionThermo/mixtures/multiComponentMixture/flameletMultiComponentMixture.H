@@ -22,20 +22,20 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::multiComponentMixture
+    Foam::flameletMultiComponentMixture
 
 Description
-    Foam::multiComponentMixture
+    Foam::flameletMultiComponentMixture
 
 SourceFiles
-    multiComponentMixture.C
+    flameletMultiComponentMixture.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef multiComponentMixture_H
-#define multiComponentMixture_H
+#ifndef flameletMultiComponentMixture_H
+#define flameletMultiComponentMixture_H
 
-#include "basicSpecieMixture.H"
+#include "flameletBasicSpecieMixture.H"
 #include "HashPtrTable.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -44,13 +44,13 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                    Class multiComponentMixture Declaration
+                    Class flameletMultiComponentMixture Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class ThermoType>
-class multiComponentMixture
+class flameletMultiComponentMixture
 :
-    public basicSpecieMixture
+    public flameletBasicSpecieMixture
 {
     // Private Data
 
@@ -75,7 +75,7 @@ class multiComponentMixture
         void correctMassFractions();
 
         //- Construct as copy (not implemented)
-        multiComponentMixture(const multiComponentMixture<ThermoType>&);
+        flameletMultiComponentMixture(const flameletMultiComponentMixture<ThermoType>&);
 
 
 public:
@@ -88,7 +88,7 @@ public:
 
         //- Construct from dictionary, specie names, thermo database,
         //  mesh and phase name
-        multiComponentMixture
+        flameletMultiComponentMixture
         (
             const dictionary&,
             const wordList& specieNames,
@@ -98,11 +98,11 @@ public:
         );
 
         //- Construct from dictionary, mesh and phase name
-        multiComponentMixture(const dictionary&, const fvMesh&, const word&);
+        flameletMultiComponentMixture(const dictionary&, const fvMesh&, const word&);
 
 
     //- Destructor
-    virtual ~multiComponentMixture()
+    virtual ~flameletMultiComponentMixture()
     {}
 
 
@@ -111,7 +111,7 @@ public:
         //- Return the instantiated type name
         static word typeName()
         {
-            return "multiComponentMixture<" + ThermoType::typeName() + '>';
+            return "flameletMultiComponentMixture<" + ThermoType::typeName() + '>';
         }
 
         const ThermoType& cellMixture(const label celli) const;
@@ -161,7 +161,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "multiComponentMixture.C"
+    #include "flameletMultiComponentMixture.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

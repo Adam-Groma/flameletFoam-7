@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::basicMultiComponentMixture
+    Foam::flameletBasicMultiComponentMixture
 
 Description
     Multi-component mixture.
@@ -31,12 +31,12 @@ Description
     query mixture composition.
 
 SourceFiles
-    basicMultiComponentMixture.C
+    flameletBasicMultiComponentMixture.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef basicMultiComponentMixture_H
-#define basicMultiComponentMixture_H
+#ifndef flameletBasicMultiComponentMixture_H
+#define flameletBasicMultiComponentMixture_H
 
 #include "volFields.H"
 #include "PtrList.H"
@@ -50,10 +50,10 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                 Class basicMultiComponentMixture Declaration
+                 Class flameletBasicMultiComponentMixture Declaration
 \*---------------------------------------------------------------------------*/
 
-class basicMultiComponentMixture
+class flameletBasicMultiComponentMixture
 :
     public basicMixture
 {
@@ -75,17 +75,17 @@ protected:
 public:
 
     //- Run time type information
-    TypeName("basicMultiComponentMixture");
+    TypeName("flameletBasicMultiComponentMixture");
 
 
     //- The base class of the mixture
-    typedef basicMultiComponentMixture basicMixtureType;
+    typedef flameletBasicMultiComponentMixture basicMixtureType;
 
 
     // Constructors
 
         //- Construct from dictionary, species names, mesh and phase name
-        basicMultiComponentMixture
+        flameletBasicMultiComponentMixture
         (
             const dictionary&,
             const wordList& specieNames,
@@ -95,7 +95,7 @@ public:
 
 
     //- Destructor
-    virtual ~basicMultiComponentMixture()
+    virtual ~flameletBasicMultiComponentMixture()
     {}
 
 
@@ -145,7 +145,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include "basicMultiComponentMixtureI.H"
+#include "flameletBasicMultiComponentMixtureI.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

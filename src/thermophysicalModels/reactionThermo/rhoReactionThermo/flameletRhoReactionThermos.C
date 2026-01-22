@@ -25,7 +25,7 @@ License
 
 #include "makeReactionThermo.H"
 
-#include "rhoReactionThermo.H"
+#include "flameletRhoReactionThermo.H"
 #include "heRhoThermo.H"
 
 #include "specie.H"
@@ -43,8 +43,8 @@ License
 #include "sutherlandTransport.H"
 #include "WLFTransport.H"
 
-#include "multiComponentMixture.H"
-#include "reactingMixture.H"
+#include "flameletMultiComponentMixture.H"
+#include "flameletReactingMixture.H"
 
 #include "thermoPhysicsTypes.H"
 
@@ -60,72 +60,72 @@ namespace Foam
 makeThermoPhysicsReactionThermos
 (
     rhoThermo,
-    rhoReactionThermo,
+    flameletRhoReactionThermo,
     heRhoThermo,
-    reactingMixture,
+    flameletReactingMixture,
     constGasHThermoPhysics
 );
 
 makeThermoPhysicsReactionThermos
 (
     rhoThermo,
-    rhoReactionThermo,
+    flameletRhoReactionThermo,
     heRhoThermo,
-    reactingMixture,
+    flameletReactingMixture,
     gasHThermoPhysics
 );
 
 makeThermoPhysicsReactionThermos
 (
     rhoThermo,
-    rhoReactionThermo,
+    flameletRhoReactionThermo,
     heRhoThermo,
-    reactingMixture,
+    flameletReactingMixture,
     constIncompressibleGasHThermoPhysics
 );
 
 makeThermoPhysicsReactionThermos
 (
     rhoThermo,
-    rhoReactionThermo,
+    flameletRhoReactionThermo,
     heRhoThermo,
-    reactingMixture,
+    flameletReactingMixture,
     incompressibleGasHThermoPhysics
 );
 
 makeThermoPhysicsReactionThermos
 (
     rhoThermo,
-    rhoReactionThermo,
+    flameletRhoReactionThermo,
     heRhoThermo,
-    reactingMixture,
+    flameletReactingMixture,
     icoPoly8HThermoPhysics
 );
 
 makeThermoPhysicsReactionThermos
 (
     rhoThermo,
-    rhoReactionThermo,
+    flameletRhoReactionThermo,
     heRhoThermo,
-    reactingMixture,
+    flameletReactingMixture,
     constFluidHThermoPhysics
 );
 
 makeThermoPhysicsReactionThermos
 (
     rhoThermo,
-    rhoReactionThermo,
+    flameletRhoReactionThermo,
     heRhoThermo,
-    reactingMixture,
+    flameletReactingMixture,
     constAdiabaticFluidHThermoPhysics
 );
 
 makeThermoPhysicsReactionThermos
 (
     rhoThermo,
-    rhoReactionThermo,
+    flameletRhoReactionThermo,
     heRhoThermo,
-    reactingMixture,
+    flameletReactingMixture,
     constHThermoPhysics
 );
 

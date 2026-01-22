@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2014-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -23,44 +23,27 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "rhoReactionThermo.H"
-#include "fvMesh.H"
+#include "flameletBasicSpecieMixture.H"
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * Static Member Functions * * * * * * * * * * * * //
 
 namespace Foam
 {
-    defineTypeNameAndDebug(rhoReactionThermo, 0);
-    defineRunTimeSelectionTable(rhoReactionThermo, fvMesh);
+    defineTypeNameAndDebug(flameletBasicSpecieMixture, 0);
 }
+
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::rhoReactionThermo::rhoReactionThermo
+Foam::flameletBasicSpecieMixture::flameletBasicSpecieMixture
 (
+    const dictionary& thermoDict,
+    const wordList& specieNames,
     const fvMesh& mesh,
     const word& phaseName
 )
 :
-    rhoThermo(mesh, phaseName)
-{}
-
-
-// * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * * //
-
-Foam::autoPtr<Foam::rhoReactionThermo> Foam::rhoReactionThermo::New
-(
-    const fvMesh& mesh,
-    const word& phaseName
-)
-{
-    return basicThermo::New<rhoReactionThermo>(mesh, phaseName);
-}
-
-
-// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
-
-Foam::rhoReactionThermo::~rhoReactionThermo()
+    flameletBasicMultiComponentMixture(thermoDict, specieNames, mesh, phaseName)
 {}
 
 

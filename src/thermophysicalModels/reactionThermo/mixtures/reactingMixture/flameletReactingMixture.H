@@ -22,22 +22,22 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::reactingMixture
+    Foam::flameletReactingMixture
 
 Description
-    Foam::reactingMixture
+    Foam::flameletReactingMixture
 
 SourceFiles
-    reactingMixture.C
+    flameletReactingMixture.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef reactingMixture_H
-#define reactingMixture_H
+#ifndef flameletReactingMixture_H
+#define flameletReactingMixture_H
 
 #include "speciesTable.H"
 #include "chemistryReader.H"
-#include "multiComponentMixture.H"
+#include "flameletMultiComponentMixture.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -45,15 +45,15 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                      Class reactingMixture Declaration
+                      Class flameletReactingMixture Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class ThermoType>
-class reactingMixture
+class flameletReactingMixture
 :
     public speciesTable,
     public autoPtr<chemistryReader<ThermoType>>,
-    public multiComponentMixture<ThermoType>,
+    public flameletMultiComponentMixture<ThermoType>,
     public PtrList<Reaction<ThermoType>>
 {
     // Private member data
@@ -71,14 +71,14 @@ public:
     // Constructors
 
         //- Construct from dictionary, mesh and phase name
-        reactingMixture(const dictionary&, const fvMesh&, const word&);
+        flameletReactingMixture(const dictionary&, const fvMesh&, const word&);
 
         //- Disallow default bitwise copy construction
-        reactingMixture(const reactingMixture&) = delete;
+        flameletReactingMixture(const flameletReactingMixture&) = delete;
 
 
     //- Destructor
-    virtual ~reactingMixture()
+    virtual ~flameletReactingMixture()
     {}
 
 
@@ -87,7 +87,7 @@ public:
         //- Return the instantiated type name
         static word typeName()
         {
-            return "reactingMixture<" + ThermoType::typeName() + '>';
+            return "flameletReactingMixture<" + ThermoType::typeName() + '>';
         }
 
         //- Read dictionary
@@ -118,7 +118,7 @@ public:
     // Member Operators
 
         //- Disallow default bitwise assignment
-        void operator=(const reactingMixture&) = delete;
+        void operator=(const flameletReactingMixture&) = delete;
 };
 
 
@@ -129,7 +129,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "reactingMixture.C"
+    #include "flameletReactingMixture.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

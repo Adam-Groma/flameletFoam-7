@@ -22,21 +22,21 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::rhoReactionThermo
+    Foam::flameletRhoReactionThermo
 
 Description
-    Foam::rhoReactionThermo
+    Foam::flameletRhoReactionThermo
 
 SourceFiles
-    rhoReactionThermo.C
+    flameletRhoReactionThermo.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef rhoReactionThermo_H
-#define rhoReactionThermo_H
+#ifndef flameletRhoReactionThermo_H
+#define flameletRhoReactionThermo_H
 
 #include "rhoThermo.H"
-#include "basicSpecieMixture.H"
+#include "flameletBasicSpecieMixture.H"
 #include "autoPtr.H"
 #include "runTimeSelectionTables.H"
 
@@ -46,10 +46,10 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                     Class rhoReactionThermo Declaration
+                     Class flameletRhoReactionThermo Declaration
 \*---------------------------------------------------------------------------*/
 
-class rhoReactionThermo
+class flameletRhoReactionThermo
 :
     public rhoThermo
 {
@@ -57,14 +57,14 @@ class rhoReactionThermo
 public:
 
     //- Runtime type information
-    TypeName("rhoReactionThermo");
+    TypeName("flameletRhoReactionThermo");
 
 
     //- Declare run-time constructor selection tables
     declareRunTimeSelectionTable
     (
         autoPtr,
-        rhoReactionThermo,
+        flameletRhoReactionThermo,
         fvMesh,
         (const fvMesh& mesh, const word& phaseName),
         (mesh, phaseName)
@@ -74,7 +74,7 @@ public:
     // Constructors
 
         //- Construct from mesh and phase name
-        rhoReactionThermo
+        flameletRhoReactionThermo
         (
             const fvMesh&,
             const word& phaseName
@@ -84,7 +84,7 @@ public:
     // Selectors
 
         //- Standard selection based on fvMesh
-        static autoPtr<rhoReactionThermo> New
+        static autoPtr<flameletRhoReactionThermo> New
         (
             const fvMesh&,
             const word& phaseName=word::null
@@ -92,16 +92,16 @@ public:
 
 
     //- Destructor
-    virtual ~rhoReactionThermo();
+    virtual ~flameletRhoReactionThermo();
 
 
     // Member Functions
 
         //- Return the composition of the multi-component mixture
-        virtual basicSpecieMixture& composition() = 0;
+        virtual flameletBasicSpecieMixture& composition() = 0;
 
         //- Return the composition of the multi-component mixture
-        virtual const basicSpecieMixture& composition() const = 0;
+        virtual const flameletBasicSpecieMixture& composition() const = 0;
 };
 
 

@@ -1,10 +1,6 @@
-mixtures/basicMultiComponentMixture/basicMultiComponentMixture.C
+mixtures/basicMultiComponentMixture/flameletBasicMultiComponentMixture.C
 
-rhoReactionThermo/rhoReactionThermo.C
-rhoReactionThermo/rhoReactionThermos.C
+rhoReactionThermo/flameletRhoReactionThermo.C
+rhoReactionThermo/flameletRhoReactionThermos.C
 
-/*derivedFvPatchFields/fixedUnburntEnthalpy/fixedUnburntEnthalpyFvPatchScalarField.C*/
-/*derivedFvPatchFields/gradientUnburntEnthalpy/gradientUnburntEnthalpyFvPatchScalarField.C*/
-/*derivedFvPatchFields/mixedUnburntEnthalpy/mixedUnburntEnthalpyFvPatchScalarField.C*/
-
-LIB = $(FOAM_USER_LIBBIN)/libFlameletreactionThermophysicalModels
+LIB = $(FOAM_USER_LIBBIN)/libFlameletReactionThermophysicalModels

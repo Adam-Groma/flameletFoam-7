@@ -23,12 +23,12 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "multiComponentMixture.H"
+#include "flameletMultiComponentMixture.H"
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
 template<class ThermoType>
-const ThermoType& Foam::multiComponentMixture<ThermoType>::constructSpeciesData
+const ThermoType& Foam::flameletMultiComponentMixture<ThermoType>::constructSpeciesData
 (
     const dictionary& thermoDict
 )
@@ -47,7 +47,7 @@ const ThermoType& Foam::multiComponentMixture<ThermoType>::constructSpeciesData
 
 
 template<class ThermoType>
-void Foam::multiComponentMixture<ThermoType>::correctMassFractions()
+void Foam::flameletMultiComponentMixture<ThermoType>::correctMassFractions()
 {
     // Multiplication by 1.0 changes Yt patches to "calculated"
     volScalarField Yt("Yt", 1.0*Y_[0]);
@@ -69,7 +69,7 @@ void Foam::multiComponentMixture<ThermoType>::correctMassFractions()
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template<class ThermoType>
-Foam::multiComponentMixture<ThermoType>::multiComponentMixture
+Foam::flameletMultiComponentMixture<ThermoType>::flameletMultiComponentMixture
 (
     const dictionary& thermoDict,
     const wordList& specieNames,
@@ -78,7 +78,7 @@ Foam::multiComponentMixture<ThermoType>::multiComponentMixture
     const word& phaseName
 )
 :
-    basicSpecieMixture(thermoDict, specieNames, mesh, phaseName),
+    flameletBasicSpecieMixture(thermoDict, specieNames, mesh, phaseName),
     speciesData_(species_.size()),
     mixture_("mixture", *thermoData[specieNames[0]]),
     mixtureVol_("volMixture", *thermoData[specieNames[0]])
@@ -95,14 +95,14 @@ Foam::multiComponentMixture<ThermoType>::multiComponentMixture
 
 
 template<class ThermoType>
-Foam::multiComponentMixture<ThermoType>::multiComponentMixture
+Foam::flameletMultiComponentMixture<ThermoType>::flameletMultiComponentMixture
 (
     const dictionary& thermoDict,
     const fvMesh& mesh,
     const word& phaseName
 )
 :
-    basicSpecieMixture
+    flameletBasicSpecieMixture
     (
         thermoDict,
         thermoDict.lookup("species"),
@@ -120,7 +120,7 @@ Foam::multiComponentMixture<ThermoType>::multiComponentMixture
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 template<class ThermoType>
-const ThermoType& Foam::multiComponentMixture<ThermoType>::cellMixture
+const ThermoType& Foam::flameletMultiComponentMixture<ThermoType>::cellMixture
 (
     const label celli
 ) const
@@ -137,7 +137,7 @@ const ThermoType& Foam::multiComponentMixture<ThermoType>::cellMixture
 
 
 template<class ThermoType>
-const ThermoType& Foam::multiComponentMixture<ThermoType>::patchFaceMixture
+const ThermoType& Foam::flameletMultiComponentMixture<ThermoType>::patchFaceMixture
 (
     const label patchi,
     const label facei
@@ -155,7 +155,7 @@ const ThermoType& Foam::multiComponentMixture<ThermoType>::patchFaceMixture
 
 
 template<class ThermoType>
-const ThermoType& Foam::multiComponentMixture<ThermoType>::cellVolMixture
+const ThermoType& Foam::flameletMultiComponentMixture<ThermoType>::cellVolMixture
 (
     const scalar p,
     const scalar T,
@@ -182,7 +182,7 @@ const ThermoType& Foam::multiComponentMixture<ThermoType>::cellVolMixture
 
 
 template<class ThermoType>
-const ThermoType& Foam::multiComponentMixture<ThermoType>::
+const ThermoType& Foam::flameletMultiComponentMixture<ThermoType>::
 patchFaceVolMixture
 (
     const scalar p,
@@ -214,7 +214,7 @@ patchFaceVolMixture
 
 
 template<class ThermoType>
-void Foam::multiComponentMixture<ThermoType>::read
+void Foam::flameletMultiComponentMixture<ThermoType>::read
 (
     const dictionary& thermoDict
 )

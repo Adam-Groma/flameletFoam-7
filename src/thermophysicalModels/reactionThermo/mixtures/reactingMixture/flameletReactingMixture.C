@@ -23,52 +23,50 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "basicMultiComponentMixture.H"
-
-// * * * * * * * * * * * * * Static Member Functions * * * * * * * * * * * * //
-
-namespace Foam
-{
-    defineTypeNameAndDebug(basicMultiComponentMixture, 0);
-}
+#include "flameletReactingMixture.H"
+#include "fvMesh.H"
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::basicMultiComponentMixture::basicMultiComponentMixture
+template<class ThermoType>
+Foam::flameletReactingMixture<ThermoType>::flameletReactingMixture
 (
     const dictionary& thermoDict,
-    const wordList& specieNames,
     const fvMesh& mesh,
     const word& phaseName
 )
 :
-    basicMixture(thermoDict, mesh, phaseName),
-    species_(specieNames),
-    active_(species_.size(), true),
-    Y_(species_.size())
+    speciesTable(),
+    autoPtr<chemistryReader<ThermoType>>
+    (
+        chemistryReader<ThermoType>::New(thermoDict, *this)
+    ),
+    flameletMultiComponentMixture<ThermoType>
+    (
+        thermoDict,
+        *this,
+        autoPtr<chemistryReader<ThermoType>>::operator()().speciesThermo(),
+        mesh,
+        phaseName
+    ),
+    PtrList<Reaction<ThermoType>>
+    (
+        autoPtr<chemistryReader<ThermoType>>::operator()().reactions()
+    ),
+    speciesComposition_
+    (
+        autoPtr<chemistryReader<ThermoType>>::operator()().specieComposition()
+    )
 {
-
-    forAll(species_, i)
-    {
-        Y_.set
-        (
-            i,
-            new volScalarField
-            (
-                IOobject
-                (
-                    IOobject::groupName(species_[i], phaseName),
-                    mesh.time().timeName(),
-                    mesh,
-                    IOobject::MUST_READ,
-                    IOobject::NO_WRITE
-                ),
-                mesh,
-                dimensionedScalar(species_[i], dimless, 0.0)
-            )
-        );
-    }
+    autoPtr<chemistryReader<ThermoType>>::clear();
 }
+
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+template<class ThermoType>
+void Foam::flameletReactingMixture<ThermoType>::read(const dictionary& thermoDict)
+{}
 
 
 // ************************************************************************* //

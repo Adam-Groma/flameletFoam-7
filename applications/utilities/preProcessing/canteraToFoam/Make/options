@@ -20,7 +20,7 @@ EXE_LIBS = \
     -lFlameletspecie \
     -lFlameletchemistryModel \
     -lFlameletCombustionModels \
-    -lFlameletreactionThermophysicalModels \
+    -lFlameletReactionThermophysicalModels \
     -lFlameletturbulenceModels \
     -lFlameletcompressibleTurbulenceModels \
     -lfiniteVolume \

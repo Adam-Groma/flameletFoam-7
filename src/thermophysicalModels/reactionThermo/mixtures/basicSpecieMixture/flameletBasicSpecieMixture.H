@@ -22,21 +22,21 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::basicSpecieMixture
+    Foam::flameletBasicSpecieMixture
 
 Description
-    Specialization of basicMultiComponentMixture for a mixture consisting
+    Specialization of flameletBasicMultiComponentMixture for a mixture consisting
     of a number for molecular species.
 
 SourceFiles
-    basicSpecieMixture.C
+    flameletBasicSpecieMixture.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef basicSpecieMixture_H
-#define basicSpecieMixture_H
+#ifndef flameletBasicSpecieMixture_H
+#define flameletBasicSpecieMixture_H
 
-#include "basicMultiComponentMixture.H"
+#include "flameletBasicMultiComponentMixture.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -44,27 +44,27 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                 Class basicSpecieMixture Declaration
+                 Class flameletBasicSpecieMixture Declaration
 \*---------------------------------------------------------------------------*/
 
-class basicSpecieMixture
+class flameletBasicSpecieMixture
 :
-    public basicMultiComponentMixture
+    public flameletBasicMultiComponentMixture
 {
 
 public:
 
     //- Run time type information
-    TypeName("basicSpecieMixture");
+    TypeName("flameletBasicSpecieMixture");
 
     //- The base class of the mixture
-    typedef basicSpecieMixture basicMixtureType;
+    typedef flameletBasicSpecieMixture basicMixtureType;
 
 
     // Constructors
 
         //- Construct from dictionary, species names, mesh and phase name
-        basicSpecieMixture
+        flameletBasicSpecieMixture
         (
             const dictionary&,
             const wordList& specieNames,
@@ -74,7 +74,7 @@ public:
 
 
     //- Destructor
-    virtual ~basicSpecieMixture()
+    virtual ~flameletBasicSpecieMixture()
     {}
 
 

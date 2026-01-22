@@ -46,7 +46,7 @@ Contributors/Copyright
 #include "List.H"
 #include "HashTable.H"
 #include "scalar.H"
-#include "rhoReactionThermo.H"    
+#include "flameletRhoReactionThermo.H"    
 #include <FlexLexer.h>
 #include "OFstream.H"
 
@@ -103,8 +103,8 @@ private:
 
         bool noSecondLine;
 
-        basicSpecieMixture& composition;
-        rhoReactionThermo& thermo;        
+        flameletBasicSpecieMixture& composition;
+        flameletRhoReactionThermo& thermo;        
 
         PtrList<volScalarField>& Y_;
         volScalarField& he_;             
@@ -143,7 +143,7 @@ public:
         // Constructors
 
         //construct from filename
-        canteraReader(const IOdictionary& canteraDict, rhoReactionThermo& thermo, basicSpecieMixture& composition);    
+        canteraReader(const IOdictionary& canteraDict, flameletRhoReactionThermo& thermo, flameletBasicSpecieMixture& composition);    
 
         //- Destructor
         virtual ~canteraReader();

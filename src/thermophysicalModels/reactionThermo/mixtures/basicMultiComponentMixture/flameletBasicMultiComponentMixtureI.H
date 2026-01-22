@@ -24,13 +24,13 @@ License
 \*---------------------------------------------------------------------------*/
 
 inline const Foam::speciesTable&
-Foam::basicMultiComponentMixture::species() const
+Foam::flameletBasicMultiComponentMixture::species() const
 {
     return species_;
 }
 
 
-inline bool Foam::basicMultiComponentMixture::contains
+inline bool Foam::flameletBasicMultiComponentMixture::contains
 (
     const word& specieName
 ) const
@@ -39,51 +39,51 @@ inline bool Foam::basicMultiComponentMixture::contains
 }
 
 
-inline bool Foam::basicMultiComponentMixture::active(label speciei) const
+inline bool Foam::flameletBasicMultiComponentMixture::active(label speciei) const
 {
     return active_[speciei];
 }
 
 
-inline const Foam::List<bool>& Foam::basicMultiComponentMixture::active() const
+inline const Foam::List<bool>& Foam::flameletBasicMultiComponentMixture::active() const
 {
     return active_;
 }
 
 
-inline void Foam::basicMultiComponentMixture::setActive(label speciei)
+inline void Foam::flameletBasicMultiComponentMixture::setActive(label speciei)
 {
     active_[speciei] = true;
 }
 
 
-inline void Foam::basicMultiComponentMixture::setInactive(label speciei)
+inline void Foam::flameletBasicMultiComponentMixture::setInactive(label speciei)
 {
     active_[speciei] = false;
 }
 
 
 inline Foam::PtrList<Foam::volScalarField>&
-Foam::basicMultiComponentMixture::Y()
+Foam::flameletBasicMultiComponentMixture::Y()
 {
     return Y_;
 }
 
 
 inline const Foam::PtrList<Foam::volScalarField>&
-Foam::basicMultiComponentMixture::Y() const
+Foam::flameletBasicMultiComponentMixture::Y() const
 {
     return Y_;
 }
 
 
-inline Foam::volScalarField& Foam::basicMultiComponentMixture::Y(const label i)
+inline Foam::volScalarField& Foam::flameletBasicMultiComponentMixture::Y(const label i)
 {
     return Y_[i];
 }
 
 
-inline const Foam::volScalarField& Foam::basicMultiComponentMixture::Y
+inline const Foam::volScalarField& Foam::flameletBasicMultiComponentMixture::Y
 (
     const label i
 ) const
@@ -92,7 +92,7 @@ inline const Foam::volScalarField& Foam::basicMultiComponentMixture::Y
 }
 
 
-inline Foam::volScalarField& Foam::basicMultiComponentMixture::Y
+inline Foam::volScalarField& Foam::flameletBasicMultiComponentMixture::Y
 (
     const word& specieName
 )
@@ -101,7 +101,7 @@ inline Foam::volScalarField& Foam::basicMultiComponentMixture::Y
 }
 
 
-inline const Foam::volScalarField& Foam::basicMultiComponentMixture::Y
+inline const Foam::volScalarField& Foam::flameletBasicMultiComponentMixture::Y
 (
     const word& specieName
 ) const

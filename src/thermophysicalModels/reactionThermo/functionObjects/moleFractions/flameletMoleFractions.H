@@ -22,11 +22,11 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::moleFractions
+    Foam::flameletMoleFractions
 
 Description
     This function object calculates mole-fraction fields from the mass-fraction
-    fields of the psi/rhoReactionThermo and caches them for output and further
+    fields of the psi/flameletRhoReactionThermo and caches them for output and further
     post-processing.
 
     The names of the mole-fraction fields are obtained from the corresponding
@@ -34,16 +34,16 @@ Description
 
     Example of function object specification:
     \verbatim
-    moleFractions
+    flameletMoleFractions
     {
         type psiReactionThermoMoleFractions;
     }
     \endverbatim
     or
     \verbatim
-    moleFractions
+    flameletMoleFractions
     {
-        type rhoReactionThermoMoleFractions;
+        type flameletRhoReactionThermoMoleFractions;
     }
     \endverbatim
     depending on the thermodynamics package used in the solver.
@@ -52,12 +52,12 @@ See also
     Foam::functionObjects::fvMeshFunctionObject
 
 SourceFiles
-    moleFractions.C
+    flameletMoleFractions.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef moleFractions_H
-#define moleFractions_H
+#ifndef flameletMoleFractions_H
+#define flameletMoleFractions_H
 
 #include "fvMeshFunctionObject.H"
 #include "volFieldsFwd.H"
@@ -68,11 +68,11 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                    Class moleFractions Declaration
+                    Class flameletMoleFractions Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class ThermoType>
-class moleFractions
+class flameletMoleFractions
 :
     public functionObjects::fvMeshFunctionObject
 {
@@ -91,13 +91,13 @@ class moleFractions
 public:
 
     //- Runtime type information
-    TypeName("moleFractions");
+    TypeName("flameletMoleFractions");
 
 
     // Constructors
 
         //- Construct from Time and dictionary
-        moleFractions
+        flameletMoleFractions
         (
             const word& name,
             const Time& t,
@@ -105,16 +105,16 @@ public:
         );
 
         //- Disallow default bitwise copy construction
-        moleFractions(const moleFractions&) = delete;
+        flameletMoleFractions(const flameletMoleFractions&) = delete;
 
 
     //- Destructor
-    virtual ~moleFractions();
+    virtual ~flameletMoleFractions();
 
 
     // Member Functions
 
-        //- Read the moleFractions data
+        //- Read the flameletMoleFractions data
         virtual bool read(const dictionary&);
 
         //- Calculate the mole-fraction fields
@@ -127,7 +127,7 @@ public:
     // Member Operators
 
         //- Disallow default bitwise assignment
-        void operator=(const moleFractions&) = delete;
+        void operator=(const flameletMoleFractions&) = delete;
 };
 
 
@@ -138,7 +138,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "moleFractions.C"
+    #include "flameletMoleFractions.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

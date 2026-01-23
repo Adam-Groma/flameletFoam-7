@@ -1,4 +1,4 @@
-/*---------------------------------------------------------------------------*\
+a*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "gradientUnburntEnthalpyFvPatchScalarField.H"
+#include "flameletGradientUnburntEnthalpyFvPatchScalarField.H"
 #include "addToRunTimeSelectionTable.H"
 #include "fvPatchFieldMapper.H"
 #include "volFields.H"
@@ -31,8 +31,8 @@ License
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::gradientUnburntEnthalpyFvPatchScalarField::
-gradientUnburntEnthalpyFvPatchScalarField
+Foam::flameletGradientUnburntEnthalpyFvPatchScalarField::
+flameletGradientUnburntEnthalpyFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF
@@ -42,10 +42,10 @@ gradientUnburntEnthalpyFvPatchScalarField
 {}
 
 
-Foam::gradientUnburntEnthalpyFvPatchScalarField::
-gradientUnburntEnthalpyFvPatchScalarField
+Foam::flameletGradientUnburntEnthalpyFvPatchScalarField::
+flameletGradientUnburntEnthalpyFvPatchScalarField
 (
-    const gradientUnburntEnthalpyFvPatchScalarField& ptf,
+    const flameletGradientUnburntEnthalpyFvPatchScalarField& ptf,
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
@@ -55,8 +55,8 @@ gradientUnburntEnthalpyFvPatchScalarField
 {}
 
 
-Foam::gradientUnburntEnthalpyFvPatchScalarField::
-gradientUnburntEnthalpyFvPatchScalarField
+Foam::flameletGradientUnburntEnthalpyFvPatchScalarField::
+flameletGradientUnburntEnthalpyFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
@@ -67,20 +67,20 @@ gradientUnburntEnthalpyFvPatchScalarField
 {}
 
 
-Foam::gradientUnburntEnthalpyFvPatchScalarField::
-gradientUnburntEnthalpyFvPatchScalarField
+Foam::flameletGradientUnburntEnthalpyFvPatchScalarField::
+flameletGradientUnburntEnthalpyFvPatchScalarField
 (
-    const gradientUnburntEnthalpyFvPatchScalarField& tppsf
+    const flameletGradientUnburntEnthalpyFvPatchScalarField& tppsf
 )
 :
     fixedGradientFvPatchScalarField(tppsf)
 {}
 
 
-Foam::gradientUnburntEnthalpyFvPatchScalarField::
-gradientUnburntEnthalpyFvPatchScalarField
+Foam::flameletGradientUnburntEnthalpyFvPatchScalarField::
+flameletGradientUnburntEnthalpyFvPatchScalarField
 (
-    const gradientUnburntEnthalpyFvPatchScalarField& tppsf,
+    const flameletGradientUnburntEnthalpyFvPatchScalarField& tppsf,
     const DimensionedField<scalar, volMesh>& iF
 )
 :
@@ -90,7 +90,7 @@ gradientUnburntEnthalpyFvPatchScalarField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::gradientUnburntEnthalpyFvPatchScalarField::updateCoeffs()
+void Foam::flameletGradientUnburntEnthalpyFvPatchScalarField::updateCoeffs()
 {
     if (updated())
     {
@@ -99,7 +99,7 @@ void Foam::gradientUnburntEnthalpyFvPatchScalarField::updateCoeffs()
 
     const psiuReactionThermo& thermo = db().lookupObject<psiuReactionThermo>
     (
-        basicThermo::dictName
+        flameletBasicThermo::dictName
     );
 
     const label patchi = patch().index();
@@ -128,7 +128,7 @@ namespace Foam
     makePatchTypeField
     (
         fvPatchScalarField,
-        gradientUnburntEnthalpyFvPatchScalarField
+        flameletGradientUnburntEnthalpyFvPatchScalarField
     );
 }
 

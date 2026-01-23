@@ -42,7 +42,7 @@ Foam::flameletRhoReactionThermo::flameletRhoReactionThermo
     const word& phaseName
 )
 :
-    rhoThermo(mesh, phaseName)
+    flameletRhoThermo(mesh, phaseName)
 {}
 
 
@@ -54,7 +54,7 @@ Foam::autoPtr<Foam::flameletRhoReactionThermo> Foam::flameletRhoReactionThermo::
     const word& phaseName
 )
 {
-    return basicThermo::New<flameletRhoReactionThermo>(mesh, phaseName);
+    return flameletBasicThermo::New<flameletRhoReactionThermo>(mesh, phaseName);
 }
 
 

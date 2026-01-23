@@ -23,78 +23,75 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "mixedUnburntEnthalpyFvPatchScalarField.H"
+#include "flameletFixedUnburntEnthalpyFvPatchScalarField.H"
 #include "addToRunTimeSelectionTable.H"
 #include "fvPatchFieldMapper.H"
 #include "volFields.H"
 #include "psiuReactionThermo.H"
 
+
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::mixedUnburntEnthalpyFvPatchScalarField::
-mixedUnburntEnthalpyFvPatchScalarField
+Foam::flameletFixedUnburntEnthalpyFvPatchScalarField::
+flameletFixedUnburntEnthalpyFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF
 )
 :
-    mixedFvPatchScalarField(p, iF)
-{
-    valueFraction() = 0.0;
-    refValue() = 0.0;
-    refGrad() = 0.0;
-}
+    fixedValueFvPatchScalarField(p, iF)
+{}
 
 
-Foam::mixedUnburntEnthalpyFvPatchScalarField::
-mixedUnburntEnthalpyFvPatchScalarField
+Foam::flameletFixedUnburntEnthalpyFvPatchScalarField::
+flameletFixedUnburntEnthalpyFvPatchScalarField
 (
-    const mixedUnburntEnthalpyFvPatchScalarField& ptf,
+    const flameletFixedUnburntEnthalpyFvPatchScalarField& ptf,
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
 )
 :
-    mixedFvPatchScalarField(ptf, p, iF, mapper)
+    fixedValueFvPatchScalarField(ptf, p, iF, mapper)
 {}
 
 
-Foam::mixedUnburntEnthalpyFvPatchScalarField::
-mixedUnburntEnthalpyFvPatchScalarField
+Foam::flameletFixedUnburntEnthalpyFvPatchScalarField::
+flameletFixedUnburntEnthalpyFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const dictionary& dict
 )
 :
-    mixedFvPatchScalarField(p, iF, dict)
+    fixedValueFvPatchScalarField(p, iF, dict)
 {}
 
 
-Foam::mixedUnburntEnthalpyFvPatchScalarField::
-mixedUnburntEnthalpyFvPatchScalarField
+Foam::flameletFixedUnburntEnthalpyFvPatchScalarField::
+flameletFixedUnburntEnthalpyFvPatchScalarField
 (
-    const mixedUnburntEnthalpyFvPatchScalarField& tppsf
+    const flameletFixedUnburntEnthalpyFvPatchScalarField& tppsf
 )
 :
-    mixedFvPatchScalarField(tppsf)
+    fixedValueFvPatchScalarField(tppsf)
 {}
 
 
-Foam::mixedUnburntEnthalpyFvPatchScalarField::
-mixedUnburntEnthalpyFvPatchScalarField
+Foam::flameletFixedUnburntEnthalpyFvPatchScalarField::
+flameletFixedUnburntEnthalpyFvPatchScalarField
 (
-    const mixedUnburntEnthalpyFvPatchScalarField& tppsf,
+    const flameletFixedUnburntEnthalpyFvPatchScalarField& tppsf,
     const DimensionedField<scalar, volMesh>& iF
 )
 :
-    mixedFvPatchScalarField(tppsf, iF)
+    fixedValueFvPatchScalarField(tppsf, iF)
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::mixedUnburntEnthalpyFvPatchScalarField::updateCoeffs()
+void Foam::flameletFixedUnburntEnthalpyFvPatchScalarField::updateCoeffs()
 {
     if (updated())
     {
@@ -103,29 +100,18 @@ void Foam::mixedUnburntEnthalpyFvPatchScalarField::updateCoeffs()
 
     const psiuReactionThermo& thermo = db().lookupObject<psiuReactionThermo>
     (
-        basicThermo::dictName
+        flameletBasicThermo::dictName
     );
 
     const label patchi = patch().index();
 
     const scalarField& pw = thermo.p().boundaryField()[patchi];
-    mixedFvPatchScalarField& Tw = refCast<mixedFvPatchScalarField>
-    (
-        const_cast<fvPatchScalarField&>(thermo.Tu().boundaryField()[patchi])
-    );
-
+    fvPatchScalarField& Tw =
+        const_cast<fvPatchScalarField&>(thermo.Tu().boundaryField()[patchi]);
     Tw.evaluate();
+    operator==(thermo.heu(pw, Tw, patchi));
 
-    valueFraction() = Tw.valueFraction();
-    refValue() = thermo.heu(pw, Tw.refValue(), patchi);
-    refGrad() = thermo.Cp(pw, Tw, patchi)*Tw.refGrad()
-      + patch().deltaCoeffs()*
-        (
-            thermo.heu(pw, Tw, patchi)
-          - thermo.heu(pw, Tw, patch().faceCells())
-        );
-
-    mixedFvPatchScalarField::updateCoeffs();
+    fixedValueFvPatchScalarField::updateCoeffs();
 }
 
 
@@ -136,7 +122,7 @@ namespace Foam
     makePatchTypeField
     (
         fvPatchScalarField,
-        mixedUnburntEnthalpyFvPatchScalarField
+        flameletFixedUnburntEnthalpyFvPatchScalarField
     );
 }
 

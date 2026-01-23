@@ -22,21 +22,21 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::chemkinReader
+    Foam::flameletChemkinReader
 
 Description
-    Foam::chemkinReader
+    Foam::flameletChemkinReader
 
 SourceFiles
-    chemkinReader.C
-    chemkinLexer.C
+    flameletChemkinReader.C
+    flameletChemkinLexer.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef chemkinReader_H
-#define chemkinReader_H
+#ifndef flameletChemkinReader_H
+#define flameletChemkinReader_H
 
-#include "chemistryReader.H"
+#include "flameletChemistryReader.H"
 #include "fileName.H"
 #include "typeInfo.H"
 #include "Switch.H"
@@ -45,8 +45,8 @@ SourceFiles
 #include "DynamicList.H"
 #include "labelList.H"
 #include "speciesTable.H"
-#include "atomicWeights.H"
-#include "reactionTypes.H"
+#include "flameletAtomicWeights.H"
+#include "flameletReactionTypes.H"
 
 #include <FlexLexer.h>
 
@@ -56,12 +56,12 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                       Class chemkinReader Declaration
+                       Class flameletChemkinReader Declaration
 \*---------------------------------------------------------------------------*/
 
-class chemkinReader
+class flameletChemkinReader
 :
-    public chemistryReader<gasHThermoPhysics>,
+    public flameletChemistryReader<gasHThermoPhysics>,
     public yyFlexLexer
 {
 
@@ -282,22 +282,22 @@ private:
         );
 
         //- Disallow default bitwise copy construction
-        chemkinReader(const chemkinReader&) = delete;
+        flameletChemkinReader(const flameletChemkinReader&) = delete;
 
         //- Disallow default bitwise assignment
-        void operator=(const chemkinReader&) = delete;
+        void operator=(const flameletChemkinReader&) = delete;
 
 
 public:
 
     //- Runtime type information
-    TypeName("chemkinReader");
+    TypeName("flameletChemkinReader");
 
 
     // Constructors
 
         //- Construct from CHEMKIN III file name
-        chemkinReader
+        flameletChemkinReader
         (
             speciesTable& species,
             const fileName& CHEMKINFileName,
@@ -307,11 +307,11 @@ public:
         );
 
         //- Construct by getting the CHEMKIN III file name from dictionary
-        chemkinReader(const dictionary& thermoDict, speciesTable& species);
+        flameletChemkinReader(const dictionary& thermoDict, speciesTable& species);
 
 
     //- Destructor
-    virtual ~chemkinReader()
+    virtual ~flameletChemkinReader()
     {}
 
 

@@ -22,18 +22,18 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::gradientUnburntEnthalpyFvPatchScalarField
+    Foam::flameletGradientUnburntEnthalpyFvPatchScalarField
 
 Description
     gradient boundary condition for unburnt
 
 SourceFiles
-    gradientUnburntEnthalpyFvPatchScalarField.C
+    flameletGradientUnburntEnthalpyFvPatchScalarField.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef gradientUnburntEnthalpyFvPatchScalarField_H
-#define gradientUnburntEnthalpyFvPatchScalarField_H
+#ifndef flameletGradientUnburntEnthalpyFvPatchScalarField_H
+#define flameletGradientUnburntEnthalpyFvPatchScalarField_H
 
 #include "fixedGradientFvPatchFields.H"
 
@@ -43,10 +43,10 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-         Class gradientUnburntEnthalpyFvPatchScalarField Declaration
+         Class flameletGradientUnburntEnthalpyFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class gradientUnburntEnthalpyFvPatchScalarField
+class flameletGradientUnburntEnthalpyFvPatchScalarField
 :
     public fixedGradientFvPatchScalarField
 {
@@ -54,40 +54,40 @@ class gradientUnburntEnthalpyFvPatchScalarField
 public:
 
     //- Runtime type information
-    TypeName("gradientUnburntEnthalpy");
+    TypeName("flameletGradientUnburntEnthalpy");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        gradientUnburntEnthalpyFvPatchScalarField
+        flameletGradientUnburntEnthalpyFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        gradientUnburntEnthalpyFvPatchScalarField
+        flameletGradientUnburntEnthalpyFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const dictionary&
         );
 
-        //- Construct by mapping given gradientUnburntEnthalpyFvPatchScalarField
+        //- Construct by mapping given flameletGradientUnburntEnthalpyFvPatchScalarField
         // onto a new patch
-        gradientUnburntEnthalpyFvPatchScalarField
+        flameletGradientUnburntEnthalpyFvPatchScalarField
         (
-            const gradientUnburntEnthalpyFvPatchScalarField&,
+            const flameletGradientUnburntEnthalpyFvPatchScalarField&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Copy constructor
-        gradientUnburntEnthalpyFvPatchScalarField
+        flameletGradientUnburntEnthalpyFvPatchScalarField
         (
-            const gradientUnburntEnthalpyFvPatchScalarField&
+            const flameletGradientUnburntEnthalpyFvPatchScalarField&
         );
 
         //- Construct and return a clone
@@ -95,14 +95,14 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new gradientUnburntEnthalpyFvPatchScalarField(*this)
+                new flameletGradientUnburntEnthalpyFvPatchScalarField(*this)
             );
         }
 
         //- Copy constructor setting internal field reference
-        gradientUnburntEnthalpyFvPatchScalarField
+        flameletGradientUnburntEnthalpyFvPatchScalarField
         (
-            const gradientUnburntEnthalpyFvPatchScalarField&,
+            const flameletGradientUnburntEnthalpyFvPatchScalarField&,
             const DimensionedField<scalar, volMesh>&
         );
 
@@ -114,7 +114,7 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new gradientUnburntEnthalpyFvPatchScalarField(*this, iF)
+                new flameletGradientUnburntEnthalpyFvPatchScalarField(*this, iF)
             );
         }
 

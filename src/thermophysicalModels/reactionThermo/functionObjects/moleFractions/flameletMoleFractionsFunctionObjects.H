@@ -25,35 +25,35 @@ Typedef
     Foam::psiReactionThermoMoleFractionsFunctionObject
 
 Description
-    Instantiate the moleFractions functionObject for psiReactionThermo
+    Instantiate the flameletMoleFractions functionObject for psiReactionThermo
 
 Typedef
-    Foam::rhoReactionThermoMoleFractionsFunctionObject
+    Foam::flameletRhoReactionThermoMoleFractionsFunctionObject
 
 Description
-    Instantiate the moleFractions functionObject for rhoReactionThermo
+    Instantiate the flameletMoleFractions functionObject for flameletRhoReactionThermo
 
 SourceFiles
-    moleFractionsFunctionObjects.C
+    flameletMoleFractionsFunctionObjects.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef moleFractionsFunctionObjects_H
-#define moleFractionsFunctionObjects_H
+#ifndef flameletMoleFractionsFunctionObjects_H
+#define flameletMoleFractionsFunctionObjects_H
 
-#include "moleFractions.H"
+#include "flameletMoleFractions.H"
 #include "psiReactionThermo.H"
-#include "rhoReactionThermo.H"
+#include "flameletRhoReactionThermo.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-    typedef moleFractions<psiReactionThermo>
+    typedef flameletMoleFractions<psiReactionThermo>
         psiReactionThermoMoleFractionsFunctionObject;
 
-    typedef moleFractions<rhoReactionThermo>
-        rhoReactionThermoMoleFractionsFunctionObject;
+    typedef flameletMoleFractions<flameletRhoReactionThermo>
+        flameletRhoReactionThermoMoleFractionsFunctionObject;
 }
 
 

@@ -22,26 +22,26 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::foamChemistryReader
+    Foam::flameletFoamChemistryReader
 
 Description
     Chemistry reader for OpenFOAM format
 
 SourceFiles
-    foamChemistryReader.C
+    flameletFoamChemistryReader.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef foamChemistryReader_H
-#define foamChemistryReader_H
+#ifndef flameletFoamChemistryReader_H
+#define flameletFoamChemistryReader_H
 
-#include "chemistryReader.H"
+#include "flameletChemistryReader.H"
 #include "fileName.H"
 #include "typeInfo.H"
 #include "HashPtrTable.H"
 #include "labelList.H"
 #include "speciesTable.H"
-#include "atomicWeights.H"
+#include "flameletAtomicWeights.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -49,13 +49,13 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                       Class foamChemistry Declaration
+                       Class flameletFoamChemistry Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class ThermoType>
-class foamChemistryReader
+class flameletFoamChemistryReader
 :
-    public chemistryReader<ThermoType>
+    public flameletChemistryReader<ThermoType>
 {
         //- Chemistry/reactions dictionary
         dictionary chemDict_;
@@ -94,13 +94,13 @@ class foamChemistryReader
 public:
 
     //- Runtime type information
-    TypeName("foamChemistryReader");
+    TypeName("flameletFoamChemistryReader");
 
 
     // Constructors
 
         //- Construct from foamChemistry and thermodynamics file names
-        foamChemistryReader
+        flameletFoamChemistryReader
         (
             const fileName& reactionsFileName,
             speciesTable& species,
@@ -109,18 +109,18 @@ public:
 
         //- Construct by getting the foamChemistry and thermodynamics file names
         //  from dictionary
-        foamChemistryReader
+        flameletFoamChemistryReader
         (
             const dictionary& thermoDict,
             speciesTable& species
         );
 
         //- Disallow default bitwise copy construction
-        foamChemistryReader(const foamChemistryReader&) = delete;
+        flameletFoamChemistryReader(const flameletFoamChemistryReader&) = delete;
 
 
     //- Destructor
-    virtual ~foamChemistryReader()
+    virtual ~flameletFoamChemistryReader()
     {}
 
 
@@ -166,7 +166,7 @@ public:
     // Member Operators
 
         //- Disallow default bitwise assignment
-        void operator=(const foamChemistryReader&) = delete;
+        void operator=(const flameletFoamChemistryReader&) = delete;
 };
 
 
@@ -177,7 +177,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "foamChemistryReader.C"
+    #include "flameletFoamChemistryReader.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

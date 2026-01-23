@@ -23,14 +23,14 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "foamChemistryReader.H"
+#include "flameletFoamChemistryReader.H"
 #include "IFstream.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
 template<class ThermoType>
-Foam::speciesTable& Foam::foamChemistryReader<ThermoType>::setSpecies
+Foam::speciesTable& Foam::flameletFoamChemistryReader<ThermoType>::setSpecies
 (
     const dictionary& dict,
     speciesTable& species
@@ -43,7 +43,7 @@ Foam::speciesTable& Foam::foamChemistryReader<ThermoType>::setSpecies
 
 
 template<class ThermoType>
-void Foam::foamChemistryReader<ThermoType>::readSpeciesComposition()
+void Foam::flameletFoamChemistryReader<ThermoType>::readSpeciesComposition()
 {
     if (!chemDict_.found("elements"))
     {
@@ -124,14 +124,14 @@ void Foam::foamChemistryReader<ThermoType>::readSpeciesComposition()
 // * * * * * * * * * * * * * * * * Constructor * * * * * * * * * * * * * * * //
 
 template<class ThermoType>
-Foam::foamChemistryReader<ThermoType>::foamChemistryReader
+Foam::flameletFoamChemistryReader<ThermoType>::flameletFoamChemistryReader
 (
     const fileName& reactionsFileName,
     speciesTable& species,
     const fileName& thermoFileName
 )
 :
-    chemistryReader<ThermoType>(),
+    flameletChemistryReader<ThermoType>(),
     chemDict_
     (
         IFstream
@@ -155,13 +155,13 @@ Foam::foamChemistryReader<ThermoType>::foamChemistryReader
 
 
 template<class ThermoType>
-Foam::foamChemistryReader<ThermoType>::foamChemistryReader
+Foam::flameletFoamChemistryReader<ThermoType>::flameletFoamChemistryReader
 (
     const dictionary& thermoDict,
     speciesTable& species
 )
 :
-    chemistryReader<ThermoType>(),
+    flameletChemistryReader<ThermoType>(),
     chemDict_
     (
         IFstream

@@ -23,9 +23,9 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "chemkinReader.H"
+#include "flameletChemkinReader.H"
 #include <fstream>
-#include "atomicWeights.H"
+#include "flameletAtomicWeights.H"
 #include "ReactionProxy.H"
 #include "IrreversibleReaction.H"
 #include "ReversibleReaction.H"
@@ -47,13 +47,13 @@ License
 
 namespace Foam
 {
-    addChemistryReaderType(chemkinReader, gasHThermoPhysics);
+    addChemistryReaderType(flameletChemkinReader, gasHThermoPhysics);
 }
 
 
 /* * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * */
 
-const char* Foam::chemkinReader::reactionTypeNames[4] =
+const char* Foam::flameletChemkinReader::reactionTypeNames[4] =
 {
     "irreversible",
     "reversible",
@@ -61,7 +61,7 @@ const char* Foam::chemkinReader::reactionTypeNames[4] =
     "unknownReactionType"
 };
 
-const char* Foam::chemkinReader::reactionRateTypeNames[8] =
+const char* Foam::flameletChemkinReader::reactionRateTypeNames[8] =
 {
     "Arrhenius",
     "thirdBodyArrhenius",
@@ -73,7 +73,7 @@ const char* Foam::chemkinReader::reactionRateTypeNames[8] =
     "unknownReactionRateType"
 };
 
-const char* Foam::chemkinReader::fallOffFunctionNames[4] =
+const char* Foam::flameletChemkinReader::fallOffFunctionNames[4] =
 {
     "Lindemann",
     "Troe",
@@ -81,7 +81,7 @@ const char* Foam::chemkinReader::fallOffFunctionNames[4] =
     "unknownFallOffFunctionType"
 };
 
-void Foam::chemkinReader::initReactionKeywordTable()
+void Foam::flameletChemkinReader::initReactionKeywordTable()
 {
     reactionKeywordTable_.insert("M", thirdBodyReactionType);
     reactionKeywordTable_.insert("LOW", unimolecularFallOffReactionType);
@@ -111,7 +111,7 @@ void Foam::chemkinReader::initReactionKeywordTable()
 }
 
 
-Foam::scalar Foam::chemkinReader::molecularWeight
+Foam::scalar Foam::flameletChemkinReader::molecularWeight
 (
     const List<specieElement>& specieComposition
 ) const
@@ -127,9 +127,9 @@ Foam::scalar Foam::chemkinReader::molecularWeight
         {
             molWt += nAtoms*isotopeAtomicWts_[elementName];
         }
-        else if (atomicWeights.found(elementName))
+        else if (flameletAtomicWeights.found(elementName))
         {
-            molWt += nAtoms*atomicWeights[elementName];
+            molWt += nAtoms*flameletAtomicWeights[elementName];
         }
         else
         {
@@ -145,7 +145,7 @@ Foam::scalar Foam::chemkinReader::molecularWeight
 }
 
 
-void Foam::chemkinReader::checkCoeffs
+void Foam::flameletChemkinReader::checkCoeffs
 (
     const scalarList& reactionCoeffs,
     const char* reactionRateName,
@@ -166,7 +166,7 @@ void Foam::chemkinReader::checkCoeffs
 }
 
 template<class ReactionRateType>
-void Foam::chemkinReader::addReactionType
+void Foam::flameletChemkinReader::addReactionType
 (
     const reactionType rType,
     DynamicList<specieCoeffs>& lhs,
@@ -237,7 +237,7 @@ void Foam::chemkinReader::addReactionType
 }
 
 template<template<class, class> class PressureDependencyType>
-void Foam::chemkinReader::addPressureDependentReaction
+void Foam::flameletChemkinReader::addPressureDependentReaction
 (
     const reactionType rType,
     const fallOffFunctionType fofType,
@@ -409,7 +409,7 @@ void Foam::chemkinReader::addPressureDependentReaction
 }
 
 
-void Foam::chemkinReader::addReaction
+void Foam::flameletChemkinReader::addReaction
 (
     DynamicList<specieCoeffs>& lhs,
     DynamicList<specieCoeffs>& rhs,
@@ -778,7 +778,7 @@ void Foam::chemkinReader::addReaction
 }
 
 
-void Foam::chemkinReader::read
+void Foam::flameletChemkinReader::read
 (
     const fileName& CHEMKINFileName,
     const fileName& thermoFileName,
@@ -835,7 +835,7 @@ void Foam::chemkinReader::read
 
 // * * * * * * * * * * * * * * * * Constructor * * * * * * * * * * * * * * * //
 
-Foam::chemkinReader::chemkinReader
+Foam::flameletChemkinReader::flameletChemkinReader
 (
     speciesTable& species,
     const fileName& CHEMKINFileName,
@@ -855,7 +855,7 @@ Foam::chemkinReader::chemkinReader
 }
 
 
-Foam::chemkinReader::chemkinReader
+Foam::flameletChemkinReader::flameletChemkinReader
 (
     const dictionary& thermoDict,
     speciesTable& species

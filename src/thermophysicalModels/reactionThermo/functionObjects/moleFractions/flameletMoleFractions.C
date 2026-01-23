@@ -23,16 +23,16 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "moleFractions.H"
-#include "basicThermo.H"
+#include "flameletMoleFractions.H"
+#include "flameletBasicThermo.H"
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
 template<class ThermoType>
-void Foam::moleFractions<ThermoType>::calculateMoleFractions()
+void Foam::flameletMoleFractions<ThermoType>::calculateMoleFractions()
 {
     const ThermoType& thermo =
-        mesh_.lookupObject<ThermoType>(basicThermo::dictName);
+        mesh_.lookupObject<ThermoType>(flameletBasicThermo::dictName);
 
     const PtrList<volScalarField>& Y = thermo.composition().Y();
 
@@ -55,7 +55,7 @@ void Foam::moleFractions<ThermoType>::calculateMoleFractions()
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template<class ThermoType>
-Foam::moleFractions<ThermoType>::moleFractions
+Foam::flameletMoleFractions<ThermoType>::flameletMoleFractions
 (
     const word& name,
     const Time& runTime,
@@ -64,10 +64,10 @@ Foam::moleFractions<ThermoType>::moleFractions
 :
     fvMeshFunctionObject(name, runTime, dict)
 {
-    if (mesh_.foundObject<ThermoType>(basicThermo::dictName))
+    if (mesh_.foundObject<ThermoType>(flameletBasicThermo::dictName))
     {
         const ThermoType& thermo =
-            mesh_.lookupObject<ThermoType>(basicThermo::dictName);
+            mesh_.lookupObject<ThermoType>(flameletBasicThermo::dictName);
 
         const PtrList<volScalarField>& Y = thermo.composition().Y();
 
@@ -107,14 +107,14 @@ Foam::moleFractions<ThermoType>::moleFractions
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
 template<class ThermoType>
-Foam::moleFractions<ThermoType>::~moleFractions()
+Foam::flameletMoleFractions<ThermoType>::~flameletMoleFractions()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 template<class ThermoType>
-bool Foam::moleFractions<ThermoType>::read
+bool Foam::flameletMoleFractions<ThermoType>::read
 (
     const dictionary& dict
 )
@@ -124,7 +124,7 @@ bool Foam::moleFractions<ThermoType>::read
 
 
 template<class ThermoType>
-bool Foam::moleFractions<ThermoType>::execute()
+bool Foam::flameletMoleFractions<ThermoType>::execute()
 {
     calculateMoleFractions();
     return true;
@@ -132,7 +132,7 @@ bool Foam::moleFractions<ThermoType>::execute()
 
 
 template<class ThermoType>
-bool Foam::moleFractions<ThermoType>::write()
+bool Foam::flameletMoleFractions<ThermoType>::write()
 {
     forAll(X_, i)
     {

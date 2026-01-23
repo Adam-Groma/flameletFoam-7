@@ -36,7 +36,7 @@ SourceFiles
 #define flameletReactingMixture_H
 
 #include "speciesTable.H"
-#include "chemistryReader.H"
+#include "flameletChemistryReader.H"
 #include "flameletMultiComponentMixture.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -52,7 +52,7 @@ template<class ThermoType>
 class flameletReactingMixture
 :
     public speciesTable,
-    public autoPtr<chemistryReader<ThermoType>>,
+    public autoPtr<flameletChemistryReader<ThermoType>>,
     public flameletMultiComponentMixture<ThermoType>,
     public PtrList<Reaction<ThermoType>>
 {

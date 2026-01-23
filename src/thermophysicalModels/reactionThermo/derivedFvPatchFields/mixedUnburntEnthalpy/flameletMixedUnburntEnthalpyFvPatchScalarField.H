@@ -22,18 +22,18 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::mixedUnburntEnthalpyFvPatchScalarField
+    Foam::flameletMixedUnburntEnthalpyFvPatchScalarField
 
 Description
     Mixed boundary condition for unburnt
 
 SourceFiles
-    mixedUnburntEnthalpyFvPatchScalarField.C
+    flameletMixedUnburntEnthalpyFvPatchScalarField.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef mixedUnburntEnthalpyFvPatchScalarField_H
-#define mixedUnburntEnthalpyFvPatchScalarField_H
+#ifndef flameletMixedUnburntEnthalpyFvPatchScalarField_H
+#define flameletMixedUnburntEnthalpyFvPatchScalarField_H
 
 #include "mixedFvPatchFields.H"
 
@@ -43,10 +43,10 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-           Class mixedUnburntEnthalpyFvPatchScalarField Declaration
+           Class flameletMixedUnburntEnthalpyFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class mixedUnburntEnthalpyFvPatchScalarField
+class flameletMixedUnburntEnthalpyFvPatchScalarField
 :
     public mixedFvPatchScalarField
 {
@@ -54,40 +54,40 @@ class mixedUnburntEnthalpyFvPatchScalarField
 public:
 
     //- Runtime type information
-    TypeName("mixedUnburntEnthalpy");
+    TypeName("flameletMixedUnburntEnthalpy");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        mixedUnburntEnthalpyFvPatchScalarField
+        flameletMixedUnburntEnthalpyFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        mixedUnburntEnthalpyFvPatchScalarField
+        flameletMixedUnburntEnthalpyFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const dictionary&
         );
 
-        //- Construct by mapping given mixedUnburntEnthalpyFvPatchScalarField
+        //- Construct by mapping given flameletMixedUnburntEnthalpyFvPatchScalarField
         // onto a new patch
-        mixedUnburntEnthalpyFvPatchScalarField
+        flameletMixedUnburntEnthalpyFvPatchScalarField
         (
-            const mixedUnburntEnthalpyFvPatchScalarField&,
+            const flameletMixedUnburntEnthalpyFvPatchScalarField&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Copy constructor
-        mixedUnburntEnthalpyFvPatchScalarField
+        flameletMixedUnburntEnthalpyFvPatchScalarField
         (
-            const mixedUnburntEnthalpyFvPatchScalarField&
+            const flameletMixedUnburntEnthalpyFvPatchScalarField&
         );
 
         //- Construct and return a clone
@@ -95,14 +95,14 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new mixedUnburntEnthalpyFvPatchScalarField(*this)
+                new flameletMixedUnburntEnthalpyFvPatchScalarField(*this)
             );
         }
 
         //- Copy constructor setting internal field reference
-        mixedUnburntEnthalpyFvPatchScalarField
+        flameletMixedUnburntEnthalpyFvPatchScalarField
         (
-            const mixedUnburntEnthalpyFvPatchScalarField&,
+            const flameletMixedUnburntEnthalpyFvPatchScalarField&,
             const DimensionedField<scalar, volMesh>&
         );
 
@@ -114,7 +114,7 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new mixedUnburntEnthalpyFvPatchScalarField(*this, iF)
+                new flameletMixedUnburntEnthalpyFvPatchScalarField(*this, iF)
             );
         }
 

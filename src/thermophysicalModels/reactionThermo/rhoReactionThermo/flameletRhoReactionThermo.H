@@ -35,7 +35,7 @@ SourceFiles
 #ifndef flameletRhoReactionThermo_H
 #define flameletRhoReactionThermo_H
 
-#include "rhoThermo.H"
+#include "flameletRhoThermo.H"
 #include "flameletBasicSpecieMixture.H"
 #include "autoPtr.H"
 #include "runTimeSelectionTables.H"
@@ -51,7 +51,7 @@ namespace Foam
 
 class flameletRhoReactionThermo
 :
-    public rhoThermo
+    public flameletRhoThermo
 {
 
 public:

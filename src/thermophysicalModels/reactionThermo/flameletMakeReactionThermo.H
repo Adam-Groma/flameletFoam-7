@@ -23,11 +23,11 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef makeReactionThermo_H
-#define makeReactionThermo_H
+#ifndef flameletMakeReactionThermo_H
+#define flameletMakeReactionThermo_H
 
 #include "addToRunTimeSelectionTable.H"
-#include "makeThermo.H"
+#include "flameletMakeThermo.H"
 #include "SpecieMixture.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -54,7 +54,7 @@ License
     )
 
 
-#define makeThermoPhysicsReactionThermos(BaseThermo,BaseReactionThermo,CThermo,Mixture,ThermoPhys) \
+#define flameletMakeThermoPhysicsReactionThermos(BaseThermo,BaseReactionThermo,CThermo,Mixture,ThermoPhys) \
                                                                                \
     defineThermoPhysicsReactionThermo                                          \
     (                                                                          \
@@ -64,13 +64,13 @@ License
         ThermoPhys                                                             \
     );                                                                         \
                                                                                \
-    addThermoPhysicsThermo(basicThermo, CThermo##Mixture##ThermoPhys);         \
-    addThermoPhysicsThermo(fluidThermo, CThermo##Mixture##ThermoPhys);         \
+    addThermoPhysicsThermo(flameletBasicThermo, CThermo##Mixture##ThermoPhys);         \
+    addThermoPhysicsThermo(flameletFluidThermo, CThermo##Mixture##ThermoPhys);         \
     addThermoPhysicsThermo(BaseThermo, CThermo##Mixture##ThermoPhys);          \
     addThermoPhysicsThermo(BaseReactionThermo, CThermo##Mixture##ThermoPhys)
 
 
-#define makeThermoPhysicsReactionThermo(BaseReactionThermo,CThermo,Mixture,ThermoPhys) \
+#define flameletMakeThermoPhysicsReactionThermo(BaseReactionThermo,CThermo,Mixture,ThermoPhys) \
                                                                                \
     defineThermoPhysicsReactionThermo                                          \
     (                                                                          \
@@ -83,11 +83,11 @@ License
     addThermoPhysicsThermo(BaseReactionThermo, CThermo##Mixture##ThermoPhys)
 
 
-#define makeReactionThermos(BaseThermo,BaseReactionThermo,CThermo,Mixture,Transport,Type,Thermo,EqnOfState,Specie) \
+#define flameletMakeReactionThermos(BaseThermo,BaseReactionThermo,CThermo,Mixture,Transport,Type,Thermo,EqnOfState,Specie) \
                                                                                \
     typedefThermoPhysics(Transport,Type,Thermo,EqnOfState,Specie);             \
                                                                                \
-    makeThermoPhysicsReactionThermos                                           \
+    flameletMakeThermoPhysicsReactionThermos                                           \
     (                                                                          \
         BaseThermo,                                                            \
         BaseReactionThermo,                                                    \
@@ -97,11 +97,11 @@ License
     )
 
 
-#define makeReactionThermo(BaseReactionThermo,CThermo,Mixture,Transport,Type,Thermo,EqnOfState,Specie) \
+#define flameletMakeReactionThermo(BaseReactionThermo,CThermo,Mixture,Transport,Type,Thermo,EqnOfState,Specie) \
                                                                                \
     typedefThermoPhysics(Transport,Type,Thermo,EqnOfState,Specie);             \
                                                                                \
-    makeThermoPhysicsReactionThermo                                            \
+    flameletMakeThermoPhysicsReactionThermo                                            \
     (                                                                          \
         BaseReactionThermo,                                                    \
         CThermo,                                                               \

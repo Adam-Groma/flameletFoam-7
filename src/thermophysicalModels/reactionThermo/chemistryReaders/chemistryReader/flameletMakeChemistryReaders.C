@@ -23,11 +23,11 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "makeReactionThermo.H"
-#include "thermoPhysicsTypes.H"
+#include "flameletMakeReactionThermo.H"
+#include "flameletThermoPhysicsTypes.H"
 
-#include "chemistryReader.H"
-#include "foamChemistryReader.H"
+#include "flameletChemistryReader.H"
+#include "flameletFoamChemistryReader.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -38,27 +38,27 @@ namespace Foam
 
 // Solid chemistry readers based on sensibleEnthalpy
 
-makeChemistryReader(constGasHThermoPhysics);
-makeChemistryReader(gasHThermoPhysics);
-makeChemistryReader(constIncompressibleGasHThermoPhysics);
-makeChemistryReader(incompressibleGasHThermoPhysics);
-makeChemistryReader(icoPoly8HThermoPhysics);
-makeChemistryReader(constFluidHThermoPhysics);
-makeChemistryReader(constAdiabaticFluidHThermoPhysics);
-makeChemistryReader(constHThermoPhysics);
+flameletMakeChemistryReader(constGasHThermoPhysics);
+flameletMakeChemistryReader(gasHThermoPhysics);
+flameletMakeChemistryReader(constIncompressibleGasHThermoPhysics);
+flameletMakeChemistryReader(incompressibleGasHThermoPhysics);
+flameletMakeChemistryReader(icoPoly8HThermoPhysics);
+flameletMakeChemistryReader(constFluidHThermoPhysics);
+flameletMakeChemistryReader(constAdiabaticFluidHThermoPhysics);
+flameletMakeChemistryReader(constHThermoPhysics);
 
-makeChemistryReaderType(foamChemistryReader, constGasHThermoPhysics);
-makeChemistryReaderType(foamChemistryReader, gasHThermoPhysics);
-makeChemistryReaderType
+flameletMakeChemistryReaderType(flameletFoamChemistryReader, constGasHThermoPhysics);
+flameletMakeChemistryReaderType(flameletFoamChemistryReader, gasHThermoPhysics);
+flameletMakeChemistryReaderType
 (
-    foamChemistryReader,
+    flameletFoamChemistryReader,
     constIncompressibleGasHThermoPhysics
 );
-makeChemistryReaderType(foamChemistryReader, incompressibleGasHThermoPhysics);
-makeChemistryReaderType(foamChemistryReader, icoPoly8HThermoPhysics);
-makeChemistryReaderType(foamChemistryReader, constFluidHThermoPhysics);
-makeChemistryReaderType(foamChemistryReader, constAdiabaticFluidHThermoPhysics);
-makeChemistryReaderType(foamChemistryReader, constHThermoPhysics);
+flameletMakeChemistryReaderType(flameletFoamChemistryReader, incompressibleGasHThermoPhysics);
+flameletMakeChemistryReaderType(flameletFoamChemistryReader, icoPoly8HThermoPhysics);
+flameletMakeChemistryReaderType(flameletFoamChemistryReader, constFluidHThermoPhysics);
+flameletMakeChemistryReaderType(flameletFoamChemistryReader, constAdiabaticFluidHThermoPhysics);
+flameletMakeChemistryReaderType(flameletFoamChemistryReader, constHThermoPhysics);
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

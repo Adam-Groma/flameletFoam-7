@@ -23,10 +23,10 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "makeReactionThermo.H"
+#include "flameletMakeReactionThermo.H"
 
 #include "flameletRhoReactionThermo.H"
-#include "heRhoThermo.H"
+#include "flameletHeRhoThermo.H"
 
 #include "specie.H"
 #include "perfectGas.H"
@@ -39,14 +39,14 @@ License
 #include "perfectFluid.H"
 #include "adiabaticPerfectFluid.H"
 
-#include "constTransport.H"
+#include "flameletConstTransport.H"
 #include "sutherlandTransport.H"
 #include "WLFTransport.H"
 
 #include "flameletMultiComponentMixture.H"
 #include "flameletReactingMixture.H"
 
-#include "thermoPhysicsTypes.H"
+#include "flameletThermoPhysicsTypes.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -57,74 +57,74 @@ namespace Foam
 
 // Reaction thermo for sensible enthalpy
 
-makeThermoPhysicsReactionThermos
+flameletMakeThermoPhysicsReactionThermos
 (
-    rhoThermo,
+    flameletRhoThermo,
     flameletRhoReactionThermo,
-    heRhoThermo,
+    flameletHeRhoThermo,
     flameletReactingMixture,
     constGasHThermoPhysics
 );
 
-makeThermoPhysicsReactionThermos
+flameletMakeThermoPhysicsReactionThermos
 (
-    rhoThermo,
+    flameletRhoThermo,
     flameletRhoReactionThermo,
-    heRhoThermo,
+    flameletHeRhoThermo,
     flameletReactingMixture,
     gasHThermoPhysics
 );
 
-makeThermoPhysicsReactionThermos
+flameletMakeThermoPhysicsReactionThermos
 (
-    rhoThermo,
+    flameletRhoThermo,
     flameletRhoReactionThermo,
-    heRhoThermo,
+    flameletHeRhoThermo,
     flameletReactingMixture,
     constIncompressibleGasHThermoPhysics
 );
 
-makeThermoPhysicsReactionThermos
+flameletMakeThermoPhysicsReactionThermos
 (
-    rhoThermo,
+    flameletRhoThermo,
     flameletRhoReactionThermo,
-    heRhoThermo,
+    flameletHeRhoThermo,
     flameletReactingMixture,
     incompressibleGasHThermoPhysics
 );
 
-makeThermoPhysicsReactionThermos
+flameletMakeThermoPhysicsReactionThermos
 (
-    rhoThermo,
+    flameletRhoThermo,
     flameletRhoReactionThermo,
-    heRhoThermo,
+    flameletHeRhoThermo,
     flameletReactingMixture,
     icoPoly8HThermoPhysics
 );
 
-makeThermoPhysicsReactionThermos
+flameletMakeThermoPhysicsReactionThermos
 (
-    rhoThermo,
+    flameletRhoThermo,
     flameletRhoReactionThermo,
-    heRhoThermo,
+    flameletHeRhoThermo,
     flameletReactingMixture,
     constFluidHThermoPhysics
 );
 
-makeThermoPhysicsReactionThermos
+flameletMakeThermoPhysicsReactionThermos
 (
-    rhoThermo,
+    flameletRhoThermo,
     flameletRhoReactionThermo,
-    heRhoThermo,
+    flameletHeRhoThermo,
     flameletReactingMixture,
     constAdiabaticFluidHThermoPhysics
 );
 
-makeThermoPhysicsReactionThermos
+flameletMakeThermoPhysicsReactionThermos
 (
-    rhoThermo,
+    flameletRhoThermo,
     flameletRhoReactionThermo,
-    heRhoThermo,
+    flameletHeRhoThermo,
     flameletReactingMixture,
     constHThermoPhysics
 );

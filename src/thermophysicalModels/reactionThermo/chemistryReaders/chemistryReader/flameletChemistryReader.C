@@ -23,13 +23,13 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "chemistryReader.H"
+#include "flameletChemistryReader.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 template<class ThermoType>
-Foam::autoPtr<Foam::chemistryReader<ThermoType>>
-Foam::chemistryReader<ThermoType>::New
+Foam::autoPtr<Foam::flameletChemistryReader<ThermoType>>
+Foam::flameletChemistryReader<ThermoType>::New
 (
     const dictionary& thermoDict,
     speciesTable& species
@@ -37,27 +37,27 @@ Foam::chemistryReader<ThermoType>::New
 {
     // Let the chemistry reader type default to CHEMKIN
     // for backward compatibility
-    word chemistryReaderTypeName("chemkinReader");
+    word flameletChemistryReaderTypeName("flameletChemkinReader");
 
     // otherwise use the specified reader
-    thermoDict.readIfPresent("chemistryReader", chemistryReaderTypeName);
+    thermoDict.readIfPresent("flameletChemistryReader", flameletChemistryReaderTypeName);
 
-    Info<< "Selecting chemistryReader " << chemistryReaderTypeName << endl;
+    Info<< "Selecting flameletChemistryReader " << flameletChemistryReaderTypeName << endl;
 
     typename dictionaryConstructorTable::iterator cstrIter =
-        dictionaryConstructorTablePtr_->find(chemistryReaderTypeName);
+        dictionaryConstructorTablePtr_->find(flameletChemistryReaderTypeName);
 
     if (cstrIter == dictionaryConstructorTablePtr_->end())
     {
         FatalErrorInFunction
-            << "Unknown chemistryReader type "
-            << chemistryReaderTypeName << nl << nl
-            << "Valid chemistryReader types are:" << nl
+            << "Unknown flameletChemistryReader type "
+            << flameletChemistryReaderTypeName << nl << nl
+            << "Valid flameletChemistryReader types are:" << nl
             << dictionaryConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
 
-    return autoPtr<chemistryReader<ThermoType>>
+    return autoPtr<flameletChemistryReader<ThermoType>>
     (
         cstrIter()(thermoDict, species)
     );

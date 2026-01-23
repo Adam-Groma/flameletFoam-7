@@ -37,28 +37,28 @@ Foam::flameletReactingMixture<ThermoType>::flameletReactingMixture
 )
 :
     speciesTable(),
-    autoPtr<chemistryReader<ThermoType>>
+    autoPtr<flameletChemistryReader<ThermoType>>
     (
-        chemistryReader<ThermoType>::New(thermoDict, *this)
+        flameletChemistryReader<ThermoType>::New(thermoDict, *this)
     ),
     flameletMultiComponentMixture<ThermoType>
     (
         thermoDict,
         *this,
-        autoPtr<chemistryReader<ThermoType>>::operator()().speciesThermo(),
+        autoPtr<flameletChemistryReader<ThermoType>>::operator()().speciesThermo(),
         mesh,
         phaseName
     ),
     PtrList<Reaction<ThermoType>>
     (
-        autoPtr<chemistryReader<ThermoType>>::operator()().reactions()
+        autoPtr<flameletChemistryReader<ThermoType>>::operator()().reactions()
     ),
     speciesComposition_
     (
-        autoPtr<chemistryReader<ThermoType>>::operator()().specieComposition()
+        autoPtr<flameletChemistryReader<ThermoType>>::operator()().specieComposition()
     )
 {
-    autoPtr<chemistryReader<ThermoType>>::clear();
+    autoPtr<flameletChemistryReader<ThermoType>>::clear();
 }
 
 

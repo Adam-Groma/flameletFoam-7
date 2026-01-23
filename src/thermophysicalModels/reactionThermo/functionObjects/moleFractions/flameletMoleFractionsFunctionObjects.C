@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "moleFractionsFunctionObjects.H"
+#include "flameletMoleFractionsFunctionObjects.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -46,15 +46,15 @@ namespace Foam
 
     defineTemplateTypeNameAndDebugWithName
     (
-        rhoReactionThermoMoleFractionsFunctionObject,
-        "rhoReactionThermoMoleFractions",
+        flameletRhoReactionThermoMoleFractionsFunctionObject,
+        "flameletRhoReactionThermoMoleFractions",
         0
     );
 
     addToRunTimeSelectionTable
     (
         functionObject,
-        rhoReactionThermoMoleFractionsFunctionObject,
+        flameletRhoReactionThermoMoleFractionsFunctionObject,
         dictionary
     );
 }

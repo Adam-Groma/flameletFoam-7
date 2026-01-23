@@ -27,7 +27,7 @@ License
 
 #undef yyFlexLexer
 
-#include "chemkinReader.H"
+#include "flameletChemkinReader.H"
 
 #include "error.H"
 #include "IStringStream.H"
@@ -35,7 +35,7 @@ License
 #include <cstdio>
 
 // flex input buffer size
-int Foam::chemkinReader::yyBufSize = YY_BUF_SIZE;
+int Foam::flameletChemkinReader::yyBufSize = YY_BUF_SIZE;
 
 // Dummy yyFlexLexer::yylex() to keep the linker happy. It is not called
 //! \cond dummy
@@ -92,7 +92,7 @@ Foam::word foamName(const Foam::string& s)
    ------ cppLexer::yylex()
  \* ------------------------------------------------------------------------- */
 
-#define YY_DECL int Foam::chemkinReader::lex()
+#define YY_DECL int Foam::flameletChemkinReader::lex()
 
 %}
 
@@ -1554,5 +1554,5 @@ bool finishReaction = false;
 %%
 
  /* ------------------------------------------------------------------------- *\
-    ------ End of chemkinLexer.L
+    ------ End of flameletChemkinLexer.L
  \* ------------------------------------------------------------------------- */

@@ -22,18 +22,18 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::chemistryReader
+    Foam::flameletChemistryReader
 
 Description
     Abstract class for reading chemistry
 
 SourceFiles
-    chemistryReader.C
+    flameletChemistryReader.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef chemistryReader_H
-#define chemistryReader_H
+#ifndef flameletChemistryReader_H
+#define flameletChemistryReader_H
 
 #include "typeInfo.H"
 #include "specieElement.H"
@@ -50,16 +50,16 @@ typedef HashTable<List<specieElement>> speciesCompositionTable;
 
 
 /*---------------------------------------------------------------------------*\
-                      Class chemistryReader Declaration
+                      Class flameletChemistryReader Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class ThermoType>
-class chemistryReader
+class flameletChemistryReader
 {
 public:
 
     //- Runtime type information
-    TypeName("chemistryReader");
+    TypeName("flameletChemistryReader");
 
     //- The type of thermo package the reader was instantiated for
     typedef ThermoType thermoType;
@@ -68,11 +68,11 @@ public:
     // Constructors
 
         //- Construct null
-        chemistryReader()
+        flameletChemistryReader()
         {}
 
         //- Disallow default bitwise copy construction
-        chemistryReader(const chemistryReader&) = delete;
+        flameletChemistryReader(const flameletChemistryReader&) = delete;
 
 
     // Declare run-time constructor selection table
@@ -80,7 +80,7 @@ public:
         declareRunTimeSelectionTable
         (
             autoPtr,
-            chemistryReader,
+            flameletChemistryReader,
             dictionary,
             (
                 const dictionary& thermoDict,
@@ -93,7 +93,7 @@ public:
     // Selectors
 
         //- Select constructed from dictionary
-        static autoPtr<chemistryReader> New
+        static autoPtr<flameletChemistryReader> New
         (
             const dictionary& thermoDict,
             speciesTable& species
@@ -101,7 +101,7 @@ public:
 
 
     //- Destructor
-    virtual ~chemistryReader()
+    virtual ~flameletChemistryReader()
     {}
 
 
@@ -123,7 +123,7 @@ public:
     // Member Operators
 
         //- Disallow default bitwise assignment
-        void operator=(const chemistryReader&) = delete;
+        void operator=(const flameletChemistryReader&) = delete;
 };
 
 
@@ -134,35 +134,35 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "chemistryReader.C"
+    #include "flameletChemistryReader.C"
 #endif
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 
-#define makeChemistryReader(Thermo)                                            \
-    defineTemplateTypeNameAndDebug(chemistryReader<Thermo>, 0);                \
-    defineTemplateRunTimeSelectionTable(chemistryReader<Thermo>, dictionary)
+#define flameletMakeChemistryReader(Thermo)                                            \
+    defineTemplateTypeNameAndDebug(flameletChemistryReader<Thermo>, 0);                \
+    defineTemplateRunTimeSelectionTable(flameletChemistryReader<Thermo>, dictionary)
 
 
-#define makeChemistryReaderType(Reader, Thermo)                                \
+#define flameletMakeChemistryReaderType(Reader, Thermo)                                \
     defineNamedTemplateTypeNameAndDebug(Reader<Thermo>, 0);                    \
-    chemistryReader<Thermo>::adddictionaryConstructorToTable<Reader<Thermo>> \
+    flameletChemistryReader<Thermo>::adddictionaryConstructorToTable<Reader<Thermo>> \
         add##Reader##Thermo##ConstructorToTable_
 
 
 // for non-templated chemistry readers
 #define addChemistryReaderType(Reader, Thermo)                                 \
     defineTypeNameAndDebug(Reader, 0);                                         \
-    chemistryReader<Thermo>::adddictionaryConstructorToTable<Reader>           \
+    flameletChemistryReader<Thermo>::adddictionaryConstructorToTable<Reader>           \
         add##Reader##Thermo##ConstructorToTable_
 
 
 // for templated chemistry readers
 #define addTemplateChemistryReaderType(Reader, Thermo)                         \
     defineNamedTemplateTypeNameAndDebug(Reader, 0);                            \
-    chemistryReader<Thermo>::adddictionaryConstructorToTable<Reader>           \
+    flameletChemistryReader<Thermo>::adddictionaryConstructorToTable<Reader>           \
         add##Reader##Thermo##ConstructorToTable_
 
 

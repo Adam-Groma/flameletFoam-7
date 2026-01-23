@@ -22,18 +22,18 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::fixedUnburntEnthalpyFvPatchScalarField
+    Foam::flameletFixedUnburntEnthalpyFvPatchScalarField
 
 Description
     Fixed boundary condition for unburnt
 
 SourceFiles
-    fixedUnburntEnthalpyFvPatchScalarField.C
+    flameletFixedUnburntEnthalpyFvPatchScalarField.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef fixedUnburntEnthalpyFvPatchScalarField_H
-#define fixedUnburntEnthalpyFvPatchScalarField_H
+#ifndef flameletFixedUnburntEnthalpyFvPatchScalarField_H
+#define flameletFixedUnburntEnthalpyFvPatchScalarField_H
 
 #include "fixedValueFvPatchFields.H"
 
@@ -43,10 +43,10 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-          Class fixedUnburntEnthalpyFvPatchScalarField Declaration
+          Class flameletFixedUnburntEnthalpyFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class fixedUnburntEnthalpyFvPatchScalarField
+class flameletFixedUnburntEnthalpyFvPatchScalarField
 :
     public fixedValueFvPatchScalarField
 {
@@ -54,40 +54,40 @@ class fixedUnburntEnthalpyFvPatchScalarField
 public:
 
     //- Runtime type information
-    TypeName("fixedUnburntEnthalpy");
+    TypeName("flameletFixedUnburntEnthalpy");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        fixedUnburntEnthalpyFvPatchScalarField
+        flameletFixedUnburntEnthalpyFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        fixedUnburntEnthalpyFvPatchScalarField
+        flameletFixedUnburntEnthalpyFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const dictionary&
         );
 
-        //- Construct by mapping given fixedUnburntEnthalpyFvPatchScalarField
+        //- Construct by mapping given flameletFixedUnburntEnthalpyFvPatchScalarField
         // onto a new patch
-        fixedUnburntEnthalpyFvPatchScalarField
+        flameletFixedUnburntEnthalpyFvPatchScalarField
         (
-            const fixedUnburntEnthalpyFvPatchScalarField&,
+            const flameletFixedUnburntEnthalpyFvPatchScalarField&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Copy constructor
-        fixedUnburntEnthalpyFvPatchScalarField
+        flameletFixedUnburntEnthalpyFvPatchScalarField
         (
-            const fixedUnburntEnthalpyFvPatchScalarField&
+            const flameletFixedUnburntEnthalpyFvPatchScalarField&
         );
 
         //- Construct and return a clone
@@ -95,14 +95,14 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new fixedUnburntEnthalpyFvPatchScalarField(*this)
+                new flameletFixedUnburntEnthalpyFvPatchScalarField(*this)
             );
         }
 
         //- Copy constructor setting internal field reference
-        fixedUnburntEnthalpyFvPatchScalarField
+        flameletFixedUnburntEnthalpyFvPatchScalarField
         (
-            const fixedUnburntEnthalpyFvPatchScalarField&,
+            const flameletFixedUnburntEnthalpyFvPatchScalarField&,
             const DimensionedField<scalar, volMesh>&
         );
 
@@ -114,7 +114,7 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new fixedUnburntEnthalpyFvPatchScalarField(*this, iF)
+                new flameletFixedUnburntEnthalpyFvPatchScalarField(*this, iF)
             );
         }
 

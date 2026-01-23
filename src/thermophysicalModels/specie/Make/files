@@ -2,4 +2,4 @@ atomicWeights/flameletAtomicWeights.C
 reaction/reactions/flameletMakeReactions.C
 reaction/reactions/flameletMakeLangmuirHinshelwoodReactions.C
 
-LIB = $(FOAM_USER_LIBBIN)/libFlameletSpecie
+LIB = $(FOAM_USER_LIBBIN)/libflameletSpecie

@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "basicChemistryModel.H"
+#include "flameletBasicChemistryModel.H"
 #include "fvMesh.H"
 #include "Time.H"
 
@@ -31,18 +31,18 @@ License
 
 namespace Foam
 {
-    defineTypeNameAndDebug(basicChemistryModel, 0);
+    defineTypeNameAndDebug(flameletBasicChemistryModel, 0);
 }
 
 // * * * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * //
 
-void Foam::basicChemistryModel::correct()
+void Foam::flameletBasicChemistryModel::correct()
 {}
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::basicChemistryModel::basicChemistryModel(basicThermo& thermo)
+Foam::flameletBasicChemistryModel::flameletBasicChemistryModel(flameletBasicThermo& thermo)
 :
     IOdictionary
     (
@@ -77,7 +77,7 @@ Foam::basicChemistryModel::basicChemistryModel(basicThermo& thermo)
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::basicChemistryModel::~basicChemistryModel()
+Foam::flameletBasicChemistryModel::~flameletBasicChemistryModel()
 {}
 
 

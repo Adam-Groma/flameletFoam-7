@@ -11,4 +11,4 @@ derivedFvPatchFields/mixedEnergy/flameletMixedEnergyFvPatchScalarField.C
 derivedFvPatchFields/energyJump/energyJump/flameletEnergyJumpFvPatchScalarField.C
 derivedFvPatchFields/energyJump/energyJumpAMI/flameletEnergyJumpAMIFvPatchScalarField.C
 
-LIB = $(FOAM_USER_LIBBIN)/libFlameletFluidThermophysicalModels
+LIB = $(FOAM_USER_LIBBIN)/libflameletFluidThermophysicalModels

@@ -1,6 +1,8 @@
-chemistryModel/basicChemistryModel/basicChemistryModel.C
-chemistryModel/BasicChemistryModel/BasicChemistryModels.C
+chemistryModel/basicChemistryModel/flameletBasicChemistryModel.C
+chemistryModel/BasicChemistryModel/FlameletBasicChemistryModels.C
 
-chemistrySolver/chemistrySolver/makeChemistrySolvers.C
+chemistrySolver/chemistrySolver/flameletMakeChemistrySolvers.C
 
-LIB = $(FOAM_USER_LIBBIN)/libFlameletchemistryModel
+/*functionObjects/specieReactionRates/flameletSpecieReactionRates.C*/
+
+LIB = $(FOAM_USER_LIBBIN)/libflameletChemistryModel

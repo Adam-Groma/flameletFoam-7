@@ -22,11 +22,11 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::functionObjects::specieReactionRates
+    Foam::functionObjects::flameletSpecieReactionRates
 
 Description
     Writes the domain averaged reaction rates for each specie for each reaction
-    into the file \<timeDir\>/specieReactionRates.dat
+    into the file \<timeDir\>/flameletSpecieReactionRates.dat
 
 See also
     Foam::functionObjects::fvMeshFunctionObject
@@ -34,12 +34,12 @@ See also
     Foam::functionObjects::logFiles
 
 SourceFiles
-    specieReactionRates.C
+    flameletSpecieReactionRates.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef functionObjects_specieReactionRates_H
-#define functionObjects_specieReactionRates_H
+#ifndef functionObjects_flameletSpecieReactionRates_H
+#define functionObjects_flameletSpecieReactionRates_H
 
 #include "fvMeshFunctionObject.H"
 #include "volRegion.H"
@@ -53,11 +53,11 @@ namespace functionObjects
 {
 
 /*---------------------------------------------------------------------------*\
-                          Class specieReactionRates Declaration
+                          Class flameletSpecieReactionRates Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class ChemistryModelType>
-class specieReactionRates
+class flameletSpecieReactionRates
 :
     public fvMeshFunctionObject,
     public volRegion,
@@ -77,13 +77,13 @@ class specieReactionRates
 public:
 
     //- Runtime type information
-    TypeName("specieReactionRates");
+    TypeName("flameletSpecieReactionRates");
 
 
     // Constructors
 
         //- Construct from Time and dictionary
-        specieReactionRates
+        flameletSpecieReactionRates
         (
             const word& name,
             const Time& runTime,
@@ -91,16 +91,16 @@ public:
         );
 
         //- Disallow default bitwise copy construction
-        specieReactionRates(const specieReactionRates&) = delete;
+        flameletSpecieReactionRates(const flameletSpecieReactionRates&) = delete;
 
 
     //- Destructor
-    virtual ~specieReactionRates();
+    virtual ~flameletSpecieReactionRates();
 
 
     // Member Functions
 
-        //- Read the specieReactionRates data
+        //- Read the flameletSpecieReactionRates data
         virtual bool read(const dictionary&);
 
         //- Do nothing
@@ -113,7 +113,7 @@ public:
     // Member Operators
 
         //- Disallow default bitwise assignment
-        void operator=(const specieReactionRates&) = delete;
+        void operator=(const flameletSpecieReactionRates&) = delete;
 };
 
 

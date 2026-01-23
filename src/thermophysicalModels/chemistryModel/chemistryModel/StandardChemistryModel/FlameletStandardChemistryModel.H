@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::StandardChemistryModel
+    Foam::FlameletStandardChemistryModel
 
 Description
     Extends base chemistry model by adding a thermo package, and ODE functions.
@@ -30,15 +30,15 @@ Description
     terms.
 
 SourceFiles
-    StandardChemistryModelI.H
-    StandardChemistryModel.C
+    FlameletStandardChemistryModelI.H
+    FlameletStandardChemistryModel.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef StandardChemistryModel_H
-#define StandardChemistryModel_H
+#ifndef FlameletStandardChemistryModel_H
+#define FlameletStandardChemistryModel_H
 
-#include "BasicChemistryModel.H"
+#include "FlameletBasicChemistryModel.H"
 #include "Reaction.H"
 #include "ODESystem.H"
 #include "volFields.H"
@@ -53,13 +53,13 @@ namespace Foam
 class fvMesh;
 
 /*---------------------------------------------------------------------------*\
-                      Class StandardChemistryModel Declaration
+                      Class FlameletStandardChemistryModel Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class ReactionThermo, class ThermoType>
-class StandardChemistryModel
+class FlameletStandardChemistryModel
 :
-    public BasicChemistryModel<ReactionThermo>,
+    public FlameletBasicChemistryModel<ReactionThermo>,
     public ODESystem
 {
     // Private Member Functions
@@ -115,20 +115,20 @@ protected:
 public:
 
     //- Runtime type information
-    TypeName("standard");
+    TypeName("flameletStandard");
 
 
     // Constructors
 
         //- Construct from thermo
-        StandardChemistryModel(ReactionThermo& thermo);
+        FlameletStandardChemistryModel(ReactionThermo& thermo);
 
         //- Disallow default bitwise copy construction
-        StandardChemistryModel(const StandardChemistryModel&);
+        FlameletStandardChemistryModel(const FlameletStandardChemistryModel&);
 
 
     //- Destructor
-    virtual ~StandardChemistryModel();
+    virtual ~FlameletStandardChemistryModel();
 
 
     // Member Functions
@@ -244,7 +244,7 @@ public:
     // Member Operators
 
         //- Disallow default bitwise assignment
-        void operator=(const StandardChemistryModel&) = delete;
+        void operator=(const FlameletStandardChemistryModel&) = delete;
 };
 
 
@@ -254,12 +254,12 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include "StandardChemistryModelI.H"
+#include "FlameletStandardChemistryModelI.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "StandardChemistryModel.C"
+    #include "FlameletStandardChemistryModel.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

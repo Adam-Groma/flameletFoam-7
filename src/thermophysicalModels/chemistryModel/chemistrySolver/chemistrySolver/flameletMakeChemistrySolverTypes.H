@@ -23,12 +23,12 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef makeChemistrySolverTypes_H
-#define makeChemistrySolverTypes_H
+#ifndef flameletMakeChemistrySolverTypes_H
+#define flameletMakeChemistrySolverTypes_H
 
 #include "chemistrySolver.H"
 
-#include "StandardChemistryModel.H"
+#include "FlameletStandardChemistryModel.H"
 
 #include "noChemistrySolver.H"
 #include "EulerImplicit.H"
@@ -36,41 +36,41 @@ License
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#define makeChemistrySolverType(SS, Comp, Thermo)                              \
+#define flameletMakeChemistrySolverType(SS, Comp, Thermo)                              \
                                                                                \
-    typedef SS<StandardChemistryModel<Comp, Thermo>> SS##Comp##Thermo;         \
+    typedef SS<FlameletStandardChemistryModel<Comp, Thermo>> SS##Comp##Thermo;         \
                                                                                \
     defineTemplateTypeNameAndDebugWithName                                     \
     (                                                                          \
         SS##Comp##Thermo,                                                      \
-        (#SS"<" + word(StandardChemistryModel<Comp, Thermo>::typeName_()) + "<"\
+        (#SS"<" + word(FlameletStandardChemistryModel<Comp, Thermo>::typeName_()) + "<"\
         + word(Comp::typeName_()) + "," + Thermo::typeName() + ">>").c_str(),  \
         0                                                                      \
     );                                                                         \
                                                                                \
-    BasicChemistryModel<Comp>::                                                \
+    FlameletBasicChemistryModel<Comp>::                                                \
         add##thermo##ConstructorToTable<SS##Comp##Thermo>                      \
-        add##SS##Comp##Thermo##thermo##ConstructorTo##BasicChemistryModel##Comp\
+        add##SS##Comp##Thermo##thermo##ConstructorTo##FlameletBasicChemistryModel##Comp\
 ##Table_;
 
 
-#define makeChemistrySolverTypes(Comp, Thermo)                                 \
+#define flameletMakeChemistrySolverTypes(Comp, Thermo)                                 \
                                                                                \
-    makeChemistrySolverType                                                    \
+    flameletMakeChemistrySolverType                                                    \
     (                                                                          \
         noChemistrySolver,                                                     \
         Comp,                                                                  \
         Thermo                                                                 \
     );                                                                         \
                                                                                \
-    makeChemistrySolverType                                                    \
+    flameletMakeChemistrySolverType                                                    \
     (                                                                          \
         EulerImplicit,                                                         \
         Comp,                                                                  \
         Thermo                                                                 \
     );                                                                         \
                                                                                \
-    makeChemistrySolverType                                                    \
+    flameletMakeChemistrySolverType                                                    \
     (                                                                          \
         ode,                                                                   \
         Comp,                                                                  \

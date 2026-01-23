@@ -23,23 +23,39 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "BasicChemistryModel.H"
+#include "FlameletBasicChemistryModel.H"
 
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template<class ReactionThermo>
-inline ReactionThermo& Foam::BasicChemistryModel<ReactionThermo>::thermo()
+Foam::FlameletBasicChemistryModel<ReactionThermo>::FlameletBasicChemistryModel
+(
+    ReactionThermo& thermo
+)
+:
+    flameletBasicChemistryModel(thermo),
+    thermo_(thermo)
+{}
+
+
+// * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * * //
+
+template<class ReactionThermo>
+Foam::autoPtr<Foam::FlameletBasicChemistryModel<ReactionThermo>>
+Foam::FlameletBasicChemistryModel<ReactionThermo>::New(ReactionThermo& thermo)
 {
-    return thermo_;
+    return flameletBasicChemistryModel::New<FlameletBasicChemistryModel<ReactionThermo>>
+    (
+        thermo
+    );
 }
 
 
+// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
+
 template<class ReactionThermo>
-inline const ReactionThermo&
-Foam::BasicChemistryModel<ReactionThermo>::thermo() const
-{
-    return thermo_;
-}
+Foam::FlameletBasicChemistryModel<ReactionThermo>::~FlameletBasicChemistryModel()
+{}
 
 
 // ************************************************************************* //

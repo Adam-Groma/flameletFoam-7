@@ -29,133 +29,133 @@ Description
 
 \*---------------------------------------------------------------------------*/
 
-#include "makeChemistryModel.H"
+#include "flameletMakeChemistryModel.H"
 
-#include "rhoReactionThermo.H"
+#include "flameletRhoReactionThermo.H"
 
-#include "StandardChemistryModel.H"
-#include "thermoPhysicsTypes.H"
+#include "FlameletStandardChemistryModel.H"
+#include "flameletThermoPhysicsTypes.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
     // Make base types
-    makeChemistryModel(rhoReactionThermo);
+    flameletMakeChemistryModel(flameletRhoReactionThermo);
 
     // Chemistry moldels based on sensibleEnthalpy
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         constGasHThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         gasHThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         constIncompressibleGasHThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         incompressibleGasHThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         icoPoly8HThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         constFluidHThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         constAdiabaticFluidHThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         constHThermoPhysics
     );
 
 
 
     // Chemistry moldels based on sensibleInternalEnergy
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         constGasEThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         gasEThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         constIncompressibleGasEThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         incompressibleGasEThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         icoPoly8EThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         constFluidEThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         constAdiabaticFluidEThermoPhysics
     );
 
-    makeChemistryModelType
+    flameletMakeChemistryModelType
     (
-        StandardChemistryModel,
-        rhoReactionThermo,
+        FlameletStandardChemistryModel,
+        flameletRhoReactionThermo,
         constEThermoPhysics
     );
 }

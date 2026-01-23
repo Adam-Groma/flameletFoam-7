@@ -1,4 +1,4 @@
-thermophysicalModels/specie:
+|thermophysicalModels/specie:
 -+-+---+++++---+---++++--+---
 atomicWeights
 thermoPhysicsTypes
@@ -9,7 +9,7 @@ makeMichaelisMentenReactions
 constTransport
 /////////////////////////////
 /////////////////////////////
-thermophysicalModels/basic
+|thermophysicalModels/basic
 -+-+---+++++---+---++++--+---
 basicThermo
 basicThermoTemplates
@@ -27,7 +27,7 @@ rhoThermo
 rhoThermos
 /////////////////////////////
 /////////////////////////////
-thermophysicalModels/reactionThermo
+|thermophysicalModels/reactionThermo
 -+-+---+++++---+---++++--+---
 basicMultiComponentMixture
 basicMultiComponentMixtureI
@@ -47,3 +47,20 @@ multiComponentMixture
 reactingMixture
 rhoReactionThermo
 rhoReactionThermos
+/////////////////////////////
+/////////////////////////////
+|thermophysicalModels/chemistryModel
+-+-+---+++++---+---++++--+---
+basicChemistryModel
+basicChemistryModelI
+basicChemistryModelTemplates
+basicChemistryModels
+makeChemistryModel
+makeChemistrySolverTypes
+makeChemistrySolvers
+specieReactionRates
+-BasicChemistryModel
+-BasicChemistryModelI
+-BasicChemistryModels
+-StandardChemistryModel
+-StandardChemistryModelI

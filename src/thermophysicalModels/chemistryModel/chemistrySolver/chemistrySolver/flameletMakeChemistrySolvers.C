@@ -23,58 +23,58 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "makeChemistrySolverTypes.H"
+#include "flameletMakeChemistrySolverTypes.H"
 
-#include "thermoPhysicsTypes.H"
-#include "rhoReactionThermo.H"
+#include "flameletThermoPhysicsTypes.H"
+#include "flameletRhoReactionThermo.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
     // Chemistry solvers based on sensibleEnthalpy
-    makeChemistrySolverTypes(rhoReactionThermo, constGasHThermoPhysics);
-    makeChemistrySolverTypes(rhoReactionThermo, gasHThermoPhysics);
-    makeChemistrySolverTypes
+    flameletMakeChemistrySolverTypes(flameletRhoReactionThermo, constGasHThermoPhysics);
+    flameletMakeChemistrySolverTypes(flameletRhoReactionThermo, gasHThermoPhysics);
+    flameletMakeChemistrySolverTypes
     (
-        rhoReactionThermo,
+        flameletRhoReactionThermo,
         constIncompressibleGasHThermoPhysics
     );
-    makeChemistrySolverTypes
+    flameletMakeChemistrySolverTypes
     (
-        rhoReactionThermo,
+        flameletRhoReactionThermo,
         incompressibleGasHThermoPhysics
     );
-    makeChemistrySolverTypes(rhoReactionThermo, icoPoly8HThermoPhysics);
-    makeChemistrySolverTypes(rhoReactionThermo, constFluidHThermoPhysics);
-    makeChemistrySolverTypes
+    flameletMakeChemistrySolverTypes(flameletRhoReactionThermo, icoPoly8HThermoPhysics);
+    flameletMakeChemistrySolverTypes(flameletRhoReactionThermo, constFluidHThermoPhysics);
+    flameletMakeChemistrySolverTypes
     (
-        rhoReactionThermo,
+        flameletRhoReactionThermo,
         constAdiabaticFluidHThermoPhysics
     );
-    makeChemistrySolverTypes(rhoReactionThermo, constHThermoPhysics);
+    flameletMakeChemistrySolverTypes(flameletRhoReactionThermo, constHThermoPhysics);
 
     // Chemistry solvers based on sensibleInternalEnergy
-    makeChemistrySolverTypes(rhoReactionThermo, constGasEThermoPhysics);
-    makeChemistrySolverTypes(rhoReactionThermo, gasEThermoPhysics);
-    makeChemistrySolverTypes
+    flameletMakeChemistrySolverTypes(flameletRhoReactionThermo, constGasEThermoPhysics);
+    flameletMakeChemistrySolverTypes(flameletRhoReactionThermo, gasEThermoPhysics);
+    flameletMakeChemistrySolverTypes
     (
-        rhoReactionThermo,
+        flameletRhoReactionThermo,
         constIncompressibleGasEThermoPhysics
     );
-    makeChemistrySolverTypes
+    flameletMakeChemistrySolverTypes
     (
-        rhoReactionThermo,
+        flameletRhoReactionThermo,
         incompressibleGasEThermoPhysics
     );
-    makeChemistrySolverTypes(rhoReactionThermo, icoPoly8EThermoPhysics);
-    makeChemistrySolverTypes(rhoReactionThermo, constFluidEThermoPhysics);
-    makeChemistrySolverTypes
+    flameletMakeChemistrySolverTypes(flameletRhoReactionThermo, icoPoly8EThermoPhysics);
+    flameletMakeChemistrySolverTypes(flameletRhoReactionThermo, constFluidEThermoPhysics);
+    flameletMakeChemistrySolverTypes
     (
-        rhoReactionThermo,
+        flameletRhoReactionThermo,
         constAdiabaticFluidEThermoPhysics
     );
-    makeChemistrySolverTypes(rhoReactionThermo, constEThermoPhysics);
+    flameletMakeChemistrySolverTypes(flameletRhoReactionThermo, constEThermoPhysics);
 }
 
 

@@ -23,13 +23,13 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "basicChemistryModel.H"
-#include "basicThermo.H"
+#include "flameletBasicChemistryModel.H"
+#include "flameletBasicThermo.H"
 
 // * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * * //
 
 template<class ChemistryModel>
-Foam::autoPtr<ChemistryModel> Foam::basicChemistryModel::New
+Foam::autoPtr<ChemistryModel> Foam::flameletBasicChemistryModel::New
 (
     typename ChemistryModel::reactionThermo& thermo
 )
@@ -53,7 +53,7 @@ Foam::autoPtr<ChemistryModel> Foam::basicChemistryModel::New
             << "Template parameter based chemistry solver selection is no "
             << "longer supported. Please create a chemistryType dictionary"
             << "instead." << endl << endl << "For example, the entry:" << endl
-            << "    chemistrySolver ode<StandardChemistryModel<"
+            << "    chemistrySolver ode<FlameletStandardChemistryModel<"
             << "rhoChemistryModel,sutherlandspecie<janaf<perfectGas>,"
             << "sensibleInternalEnergy>>" << endl << endl << "becomes:" << endl
             << "    chemistryType" << endl << "    {" << endl
@@ -113,7 +113,7 @@ Foam::autoPtr<ChemistryModel> Foam::basicChemistryModel::New
         thisCmpts.append(word::null);
         thisCmpts.append(word::null);
         thisCmpts.append(ChemistryModel::reactionThermo::typeName);
-        thisCmpts.append(basicThermo::splitThermoName(thermo.thermoName(), 5));
+        thisCmpts.append(flameletBasicThermo::splitThermoName(thermo.thermoName(), 5));
 
         List<wordList> validNames;
         validNames.append(wordList(2, word::null));
@@ -121,7 +121,7 @@ Foam::autoPtr<ChemistryModel> Foam::basicChemistryModel::New
         validNames[0][1] = "method";
         forAll(names, i)
         {
-            const wordList cmpts(basicThermo::splitThermoName(names[i], 8));
+            const wordList cmpts(flameletBasicThermo::splitThermoName(names[i], 8));
 
             bool isValid = true;
             for (label i = 2; i < cmpts.size() && isValid; ++ i)
@@ -155,7 +155,7 @@ Foam::autoPtr<ChemistryModel> Foam::basicChemistryModel::New
         validCmpts[0][7] = "energy";
         forAll(names, i)
         {
-            validCmpts.append(basicThermo::splitThermoName(names[i], 8));
+            validCmpts.append(flameletBasicThermo::splitThermoName(names[i], 8));
         }
 
         FatalErrorInFunction

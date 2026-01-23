@@ -23,39 +23,32 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "BasicChemistryModel.H"
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
-
-template<class ReactionThermo>
-Foam::BasicChemistryModel<ReactionThermo>::BasicChemistryModel
-(
-    ReactionThermo& thermo
-)
-:
-    basicChemistryModel(thermo),
-    thermo_(thermo)
-{}
-
-
-// * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * * //
-
-template<class ReactionThermo>
-Foam::autoPtr<Foam::BasicChemistryModel<ReactionThermo>>
-Foam::BasicChemistryModel<ReactionThermo>::New(ReactionThermo& thermo)
+inline const Foam::fvMesh& Foam::flameletBasicChemistryModel::mesh() const
 {
-    return basicChemistryModel::New<BasicChemistryModel<ReactionThermo>>
-    (
-        thermo
-    );
+    return mesh_;
 }
 
 
-// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
+inline Foam::Switch Foam::flameletBasicChemistryModel::chemistry() const
+{
+    return chemistry_;
+}
 
-template<class ReactionThermo>
-Foam::BasicChemistryModel<ReactionThermo>::~BasicChemistryModel()
-{}
+
+inline const Foam::DimensionedField<Foam::scalar, Foam::volMesh>&
+Foam::flameletBasicChemistryModel::deltaTChem() const
+{
+    return deltaTChem_;
+}
+
+
+inline Foam::DimensionedField<Foam::scalar, Foam::volMesh>&
+Foam::flameletBasicChemistryModel::deltaTChem()
+{
+    return deltaTChem_;
+}
 
 
 // ************************************************************************* //

@@ -22,25 +22,25 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::basicChemistryModel
+    Foam::flameletBasicChemistryModel
 
 Description
     Base class for chemistry models
 
 SourceFiles
-    basicChemistryModelI.H
-    basicChemistryModel.C
+    flameletBasicChemistryModelI.H
+    flameletBasicChemistryModel.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef basicChemistryModel_H
-#define basicChemistryModel_H
+#ifndef flameletBasicChemistryModel_H
+#define flameletBasicChemistryModel_H
 
 #include "IOdictionary.H"
 #include "Switch.H"
 #include "scalarField.H"
 #include "volFields.H"
-#include "basicThermo.H"
+#include "flameletBasicThermo.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -51,10 +51,10 @@ namespace Foam
 class fvMesh;
 
 /*---------------------------------------------------------------------------*\
-                   class basicChemistryModel Declaration
+                   class flameletBasicChemistryModel Declaration
 \*---------------------------------------------------------------------------*/
 
-class basicChemistryModel
+class flameletBasicChemistryModel
 :
     public IOdictionary
 {
@@ -91,16 +91,16 @@ protected:
 public:
 
     //- Runtime type information
-    TypeName("basicChemistryModel");
+    TypeName("flameletBasicChemistryModel");
 
 
     // Constructors
 
         //- Construct from thermo
-        basicChemistryModel(basicThermo& thermo);
+        flameletBasicChemistryModel(flameletBasicThermo& thermo);
 
         //- Construct as copy (not implemented)
-        basicChemistryModel(const basicChemistryModel&);
+        flameletBasicChemistryModel(const flameletBasicChemistryModel&);
 
 
     // Selectors
@@ -114,7 +114,7 @@ public:
 
 
     //- Destructor
-    virtual ~basicChemistryModel();
+    virtual ~flameletBasicChemistryModel();
 
 
     // Member Functions
@@ -175,7 +175,7 @@ public:
     // Member Operators
 
         //- Disallow default bitwise assignment
-        void operator=(const basicChemistryModel&) = delete;
+        void operator=(const flameletBasicChemistryModel&) = delete;
 };
 
 
@@ -185,10 +185,10 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include "basicChemistryModelI.H"
+#include "flameletBasicChemistryModelI.H"
 
 #ifdef NoRepository
-    #include "basicChemistryModelTemplates.C"
+    #include "flameletBasicChemistryModelTemplates.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

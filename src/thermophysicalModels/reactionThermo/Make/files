@@ -11,4 +11,4 @@ rhoReactionThermo/flameletRhoReactionThermos.C
 /*derivedFvPatchFields/gradientUnburntEnthalpy/flameletGradientUnburntEnthalpyFvPatchScalarField.C*/
 /*derivedFvPatchFields/mixedUnburntEnthalpy/flameletMixedUnburntEnthalpyFvPatchScalarField.C*/
 
-LIB = $(FOAM_USER_LIBBIN)/libFlameletReactionThermophysicalModels
+LIB = $(FOAM_USER_LIBBIN)/libflameletReactionThermophysicalModels

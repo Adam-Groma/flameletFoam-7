@@ -27,8 +27,8 @@ Description
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef makeChemistryModel_H
-#define makeChemistryModel_H
+#ifndef flameletMakeChemistryModel_H
+#define flameletMakeChemistryModel_H
 
 #include "addToRunTimeSelectionTable.H"
 
@@ -39,25 +39,25 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#define makeChemistryModel(Comp)                                               \
+#define flameletMakeChemistryModel(Comp)                                               \
                                                                                \
-    typedef BasicChemistryModel<Comp> BasicChemistryModel##Comp;               \
+    typedef FlameletBasicChemistryModel<Comp> FlameletBasicChemistryModel##Comp;               \
                                                                                \
     defineTemplateTypeNameAndDebugWithName                                     \
     (                                                                          \
-        BasicChemistryModel##Comp,                                             \
-        "BasicChemistryModel<"#Comp">",                                        \
+        FlameletBasicChemistryModel##Comp,                                             \
+        "FlameletBasicChemistryModel<"#Comp">",                                        \
         0                                                                      \
     );                                                                         \
                                                                                \
     defineTemplateRunTimeSelectionTable                                        \
     (                                                                          \
-        BasicChemistryModel##Comp,                                             \
+        FlameletBasicChemistryModel##Comp,                                             \
         thermo                                                                 \
     );
 
 
-#define makeChemistryModelType(SS, Comp, Thermo)                               \
+#define flameletMakeChemistryModelType(SS, Comp, Thermo)                               \
                                                                                \
     typedef SS<Comp, Thermo> SS##Comp##Thermo;                                 \
                                                                                \

@@ -23,29 +23,29 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "StandardChemistryModel.H"
-#include "reactingMixture.H"
+#include "FlameletStandardChemistryModel.H"
+#include "flameletReactingMixture.H"
 #include "UniformField.H"
 #include "extrapolatedCalculatedFvPatchFields.H"
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template<class ReactionThermo, class ThermoType>
-Foam::StandardChemistryModel<ReactionThermo, ThermoType>::StandardChemistryModel
+Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::FlameletStandardChemistryModel
 (
     ReactionThermo& thermo
 )
 :
-    BasicChemistryModel<ReactionThermo>(thermo),
+    FlameletBasicChemistryModel<ReactionThermo>(thermo),
     ODESystem(),
     Y_(this->thermo().composition().Y()),
     reactions_
     (
-        dynamic_cast<const reactingMixture<ThermoType>&>(this->thermo())
+        dynamic_cast<const flameletReactingMixture<ThermoType>&>(this->thermo())
     ),
     specieThermo_
     (
-        dynamic_cast<const reactingMixture<ThermoType>&>
+        dynamic_cast<const flameletReactingMixture<ThermoType>&>
             (this->thermo()).speciesData()
     ),
 
@@ -53,7 +53,7 @@ Foam::StandardChemistryModel<ReactionThermo, ThermoType>::StandardChemistryModel
     nReaction_(reactions_.size()),
     Treact_
     (
-        BasicChemistryModel<ReactionThermo>::template lookupOrDefault<scalar>
+        FlameletBasicChemistryModel<ReactionThermo>::template lookupOrDefault<scalar>
         (
             "Treact",
             0
@@ -85,7 +85,7 @@ Foam::StandardChemistryModel<ReactionThermo, ThermoType>::StandardChemistryModel
         );
     }
 
-    Info<< "StandardChemistryModel: Number of species = " << nSpecie_
+    Info<< "FlameletStandardChemistryModel: Number of species = " << nSpecie_
         << " and reactions = " << nReaction_ << endl;
 }
 
@@ -93,15 +93,15 @@ Foam::StandardChemistryModel<ReactionThermo, ThermoType>::StandardChemistryModel
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
 template<class ReactionThermo, class ThermoType>
-Foam::StandardChemistryModel<ReactionThermo, ThermoType>::
-~StandardChemistryModel()
+Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::
+~FlameletStandardChemistryModel()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 template<class ReactionThermo, class ThermoType>
-void Foam::StandardChemistryModel<ReactionThermo, ThermoType>::omega
+void Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::omega
 (
     const scalarField& c,
     const scalar T,
@@ -122,7 +122,7 @@ void Foam::StandardChemistryModel<ReactionThermo, ThermoType>::omega
 
 
 template<class ReactionThermo, class ThermoType>
-Foam::scalar Foam::StandardChemistryModel<ReactionThermo, ThermoType>::omegaI
+Foam::scalar Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::omegaI
 (
     const label index,
     const scalarField& c,
@@ -143,7 +143,7 @@ Foam::scalar Foam::StandardChemistryModel<ReactionThermo, ThermoType>::omegaI
 
 
 template<class ReactionThermo, class ThermoType>
-void Foam::StandardChemistryModel<ReactionThermo, ThermoType>::derivatives
+void Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::derivatives
 (
     const scalar time,
     const scalarField& c,
@@ -193,7 +193,7 @@ void Foam::StandardChemistryModel<ReactionThermo, ThermoType>::derivatives
 
 
 template<class ReactionThermo, class ThermoType>
-void Foam::StandardChemistryModel<ReactionThermo, ThermoType>::jacobian
+void Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::jacobian
 (
     const scalar t,
     const scalarField& c,
@@ -272,7 +272,7 @@ void Foam::StandardChemistryModel<ReactionThermo, ThermoType>::jacobian
 
 template<class ReactionThermo, class ThermoType>
 Foam::tmp<Foam::volScalarField>
-Foam::StandardChemistryModel<ReactionThermo, ThermoType>::tc() const
+Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::tc() const
 {
     tmp<volScalarField> ttc
     (
@@ -338,7 +338,7 @@ Foam::StandardChemistryModel<ReactionThermo, ThermoType>::tc() const
 
 template<class ReactionThermo, class ThermoType>
 Foam::tmp<Foam::volScalarField>
-Foam::StandardChemistryModel<ReactionThermo, ThermoType>::Qdot() const
+Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::Qdot() const
 {
     tmp<volScalarField> tQdot
     (
@@ -369,7 +369,7 @@ Foam::StandardChemistryModel<ReactionThermo, ThermoType>::Qdot() const
 
 
 template<class ReactionThermo, class ThermoType>
-void Foam::StandardChemistryModel<ReactionThermo, ThermoType>::calculate()
+void Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::calculate()
 {
     if (!this->chemistry_)
     {
@@ -406,12 +406,12 @@ void Foam::StandardChemistryModel<ReactionThermo, ThermoType>::calculate()
 
 template<class ReactionThermo, class ThermoType>
 template<class DeltaTType>
-Foam::scalar Foam::StandardChemistryModel<ReactionThermo, ThermoType>::solve
+Foam::scalar Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::solve
 (
     const DeltaTType& deltaT
 )
 {
-    BasicChemistryModel<ReactionThermo>::correct();
+    FlameletBasicChemistryModel<ReactionThermo>::correct();
 
     scalar deltaTMin = great;
 
@@ -479,7 +479,7 @@ Foam::scalar Foam::StandardChemistryModel<ReactionThermo, ThermoType>::solve
 
 
 template<class ReactionThermo, class ThermoType>
-Foam::scalar Foam::StandardChemistryModel<ReactionThermo, ThermoType>::solve
+Foam::scalar Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::solve
 (
     const scalar deltaT
 )
@@ -494,7 +494,7 @@ Foam::scalar Foam::StandardChemistryModel<ReactionThermo, ThermoType>::solve
 
 
 template<class ReactionThermo, class ThermoType>
-Foam::scalar Foam::StandardChemistryModel<ReactionThermo, ThermoType>::solve
+Foam::scalar Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::solve
 (
     const scalarField& deltaT
 )

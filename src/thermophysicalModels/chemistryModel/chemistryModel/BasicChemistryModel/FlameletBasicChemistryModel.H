@@ -22,21 +22,21 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::BasicChemistryModel
+    Foam::FlameletBasicChemistryModel
 
 Description
     Basic chemistry model templated on thermodynamics
 
 SourceFiles
-    BasicChemistryModelI.H
-    BasicChemistryModel.C
+    FlameletBasicChemistryModelI.H
+    FlameletBasicChemistryModel.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef BasicChemistryModel_H
-#define BasicChemistryModel_H
+#ifndef FlameletBasicChemistryModel_H
+#define FlameletBasicChemistryModel_H
 
-#include "basicChemistryModel.H"
+#include "flameletBasicChemistryModel.H"
 #include "autoPtr.H"
 #include "runTimeSelectionTables.H"
 
@@ -49,13 +49,13 @@ namespace Foam
 class fvMesh;
 
 /*---------------------------------------------------------------------------*\
-                     class BasicChemistryModel Declaration
+                     class FlameletBasicChemistryModel Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class ReactionThermo>
-class BasicChemistryModel
+class FlameletBasicChemistryModel
 :
-    public basicChemistryModel
+    public flameletBasicChemistryModel
 {
 protected:
 
@@ -68,7 +68,7 @@ protected:
 public:
 
     //- Runtime type information
-    TypeName("BasicChemistryModel");
+    TypeName("FlameletBasicChemistryModel");
 
 
     //- Thermo type
@@ -79,7 +79,7 @@ public:
     declareRunTimeSelectionTable
     (
         autoPtr,
-        BasicChemistryModel,
+        FlameletBasicChemistryModel,
         thermo,
         (ReactionThermo& thermo),
         (thermo)
@@ -89,18 +89,18 @@ public:
     // Constructors
 
         //- Construct from thermo
-        BasicChemistryModel(ReactionThermo& thermo);
+        FlameletBasicChemistryModel(ReactionThermo& thermo);
 
 
     //- Selector
-    static autoPtr<BasicChemistryModel<ReactionThermo>> New
+    static autoPtr<FlameletBasicChemistryModel<ReactionThermo>> New
     (
         ReactionThermo& thermo
     );
 
 
     //- Destructor
-    virtual ~BasicChemistryModel();
+    virtual ~FlameletBasicChemistryModel();
 
 
     // Member Functions
@@ -120,10 +120,10 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "BasicChemistryModel.C"
+    #include "FlameletBasicChemistryModel.C"
 #endif
 
-#include "BasicChemistryModelI.H"
+#include "FlameletBasicChemistryModelI.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

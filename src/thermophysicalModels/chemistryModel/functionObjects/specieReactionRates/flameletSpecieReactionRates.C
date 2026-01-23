@@ -23,14 +23,14 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "specieReactionRates.H"
+#include "flameletSpecieReactionRates.H"
 #include "volFields.H"
 #include "fvcVolumeIntegrate.H"
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
 template<class ChemistryModelType>
-void Foam::functionObjects::specieReactionRates<ChemistryModelType>::
+void Foam::functionObjects::flameletSpecieReactionRates<ChemistryModelType>::
 writeFileHeader
 (
     const label i
@@ -59,8 +59,8 @@ writeFileHeader
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template<class ChemistryModelType>
-Foam::functionObjects::specieReactionRates<ChemistryModelType>::
-specieReactionRates
+Foam::functionObjects::flameletSpecieReactionRates<ChemistryModelType>::
+flameletSpecieReactionRates
 (
     const word& name,
     const Time& runTime,
@@ -78,22 +78,22 @@ specieReactionRates
         )
     )
 {
-    resetName("specieReactionRates");
+    resetName("flameletSpecieReactionRates");
 }
 
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
 template<class ChemistryModelType>
-Foam::functionObjects::specieReactionRates<ChemistryModelType>::
-~specieReactionRates()
+Foam::functionObjects::flameletSpecieReactionRates<ChemistryModelType>::
+~flameletSpecieReactionRates()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 template<class ChemistryModelType>
-bool Foam::functionObjects::specieReactionRates<ChemistryModelType>::read
+bool Foam::functionObjects::flameletSpecieReactionRates<ChemistryModelType>::read
 (
     const dictionary& dict
 )
@@ -105,14 +105,14 @@ bool Foam::functionObjects::specieReactionRates<ChemistryModelType>::read
 
 
 template<class ChemistryModelType>
-bool Foam::functionObjects::specieReactionRates<ChemistryModelType>::execute()
+bool Foam::functionObjects::flameletSpecieReactionRates<ChemistryModelType>::execute()
 {
     return true;
 }
 
 
 template<class ChemistryModelType>
-bool Foam::functionObjects::specieReactionRates<ChemistryModelType>::write()
+bool Foam::functionObjects::flameletSpecieReactionRates<ChemistryModelType>::write()
 {
     logFiles::write();
 
@@ -175,16 +175,16 @@ bool Foam::functionObjects::specieReactionRates<ChemistryModelType>::write()
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 #include "addToRunTimeSelectionTable.H"
-#include "BasicChemistryModel.H"
+#include "FlameletBasicChemistryModel.H"
 #include "psiReactionThermo.H"
-#include "rhoReactionThermo.H"
+#include "flameletRhoReactionThermo.H"
 
 namespace Foam
 {
     typedef
-        functionObjects::specieReactionRates
+        functionObjects::flameletSpecieReactionRates
         <
-            BasicChemistryModel
+            FlameletBasicChemistryModel
             <
                 psiReactionThermo
             >
@@ -207,11 +207,11 @@ namespace Foam
 
 
     typedef
-        functionObjects::specieReactionRates
+        functionObjects::flameletSpecieReactionRates
         <
-            BasicChemistryModel
+            FlameletBasicChemistryModel
             <
-                rhoReactionThermo
+                flameletRhoReactionThermo
             >
         >
         rhoSpecieReactionRates;

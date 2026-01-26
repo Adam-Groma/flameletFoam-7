@@ -1,20 +1,44 @@
-turbulenceModel.C
-RAS/v2f/v2fBase.C
+flameletTurbulenceModel.C
+RAS/v2f/flameletv2fBase.C
 
 LESdelta = LES/LESdeltas
 
-$(LESdelta)/LESdelta/LESdelta.C
+$(LESdelta)/LESdelta/flameletLESdelta.C
+$(LESdelta)/cubeRootVolDelta/flameletCubeRootVolDelta.C
+$(LESdelta)/PrandtlDelta/flameletPrandtlDelta.C
+$(LESdelta)/vanDriestDelta/flameletVanDriestDelta.C
+$(LESdelta)/smoothDelta/flameletSmoothDelta.C
+$(LESdelta)/maxDeltaxyz/flameletMaxDeltaxyz.C
+$(LESdelta)/IDDESDelta/flameletIDDESDelta.C
 
 
-LESfilters = LES/LESfilters
+/*LESfilters = LES/LESfilters*/
 
-$(LESfilters)/LESfilter/LESfilter.C
+/*$(LESfilters)/LESfilter/flameletLESfilter.C*/
+/*$(LESfilters)/simpleFilter/flameletSimpleFilter.C*/
+/*$(LESfilters)/laplaceFilter/flameletLaplaceFilter.C*/
+/*$(LESfilters)/anisotropicFilter/flameletAnisotropicFilter.C*/
+
+
+/* Turbulence BCs */
+derivedFvPatchFields/fixedShearStress/flameletFixedShearStressFvPatchVectorField.C
+derivedFvPatchFields/porousBafflePressure/flameletPorousBafflePressureFvPatchField.C
+
 
 /* Wall function BCs */
 wallFunctions = derivedFvPatchFields/wallFunctions
 
 nutWallFunctions = $(wallFunctions)/nutWallFunctions
-$(nutWallFunctions)/nutWallFunction/nutWallFunctionFvPatchScalarField.C
+$(nutWallFunctions)/nutWallFunction/flameletNutWallFunctionFvPatchScalarField.C
+
+$(nutWallFunctions)/nutkWallFunction/flameletNutkWallFunctionFvPatchScalarField.C
+$(nutWallFunctions)/nutkRoughWallFunction/flameletNutkRoughWallFunctionFvPatchScalarField.C
+
+$(nutWallFunctions)/nutUWallFunction/flameletNutUWallFunctionFvPatchScalarField.C
+$(nutWallFunctions)/nutUSpaldingWallFunction/flameletNutUSpaldingWallFunctionFvPatchScalarField.C
+$(nutWallFunctions)/nutUTabulatedWallFunction/flameletNutUTabulatedWallFunctionFvPatchScalarField.C
+$(nutWallFunctions)/nutLowReWallFunction/flameletNutLowReWallFunctionFvPatchScalarField.C
+$(nutWallFunctions)/nutURoughWallFunction/flameletNutURoughWallFunctionFvPatchScalarField.C
 
 epsilonWallFunctions = $(wallFunctions)/epsilonWallFunctions
 $(epsilonWallFunctions)/epsilonWallFunction/flameletEpsilonWallFunctionFvPatchScalarField.C
@@ -22,8 +46,33 @@ $(epsilonWallFunctions)/epsilonWallFunction/flameletEpsilonWallFunctionFvPatchSc
 omegaWallFunctions = $(wallFunctions)/omegaWallFunctions
 $(omegaWallFunctions)/omegaWallFunction/flameletOmegaWallFunctionFvPatchScalarField.C
 
+kqRWallFunctions = $(wallFunctions)/kqRWallFunctions
+$(kqRWallFunctions)/kqRWallFunction/flameletKqRWallFunctionFvPatchFields.C
+$(kqRWallFunctions)/kLowReWallFunction/flameletKLowReWallFunctionFvPatchScalarField.C
+
+v2WallFunctions = $(wallFunctions)/v2WallFunctions
+$(v2WallFunctions)/v2WallFunction/flameletV2WallFunctionFvPatchScalarField.C
+
+fWallFunctions = $(wallFunctions)/fWallFunctions
+$(fWallFunctions)/fWallFunction/flameletFWallFunctionFvPatchScalarField.C
+
+
+RASBCs = RAS/derivedFvPatchFields
+
+/* Inlet turbulence BCs */
+$(RASBCs)/turbulentMixingLengthDissipationRateInlet/flameletTurbulentMixingLengthDissipationRateInletFvPatchScalarField.C
+$(RASBCs)/turbulentMixingLengthFrequencyInlet/flameletTurbulentMixingLengthFrequencyInletFvPatchScalarField.C
+
+/*
 generalizedNewtonianViscosityModels = laminar/generalizedNewtonian/generalizedNewtonianViscosityModels
 $(generalizedNewtonianViscosityModels)/generalizedNewtonianViscosityModel/generalizedNewtonianViscosityModel.C
 $(generalizedNewtonianViscosityModels)/generalizedNewtonianViscosityModel/generalizedNewtonianViscosityModelNew.C
+$(generalizedNewtonianViscosityModels)/CrossPowerLaw/CrossPowerLaw.C
+$(generalizedNewtonianViscosityModels)/BirdCarreau/BirdCarreau.C
+$(generalizedNewtonianViscosityModels)/Casson/Casson.C
+$(generalizedNewtonianViscosityModels)/HerschelBulkley/HerschelBulkley.C
+$(generalizedNewtonianViscosityModels)/powerLaw/powerLaw.C
+$(generalizedNewtonianViscosityModels)/strainRateFunction/strainRateFunction.C
+*/
 
-LIB = $(FOAM_USER_LIBBIN)/libFlameletturbulenceModels
+LIB = $(FOAM_USER_LIBBIN)/libflameletTurbulenceModels

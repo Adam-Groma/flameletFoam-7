@@ -51,7 +51,7 @@ flameletGeneralizedNewtonian<BasicTurbulenceModel>::flameletGeneralizedNewtonian
     const word& propertiesName
 )
 :
-    linearViscousStress<laminarModel<BasicTurbulenceModel>>
+    flameletLinearViscousStress<flameletLaminarModel<BasicTurbulenceModel>>
     (
         typeName,
         alpha,
@@ -200,7 +200,7 @@ template<class BasicTurbulenceModel>
 void flameletGeneralizedNewtonian<BasicTurbulenceModel>::correct()
 {
     nu_ = viscosityModel_->nu(this->nu(), strainRate());
-    laminarModel<BasicTurbulenceModel>::correct();
+    flameletLaminarModel<BasicTurbulenceModel>::correct();
 }
 
 

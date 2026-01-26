@@ -35,8 +35,8 @@ SourceFiles
 #ifndef flameletGeneralizedNewtonian_H
 #define flameletGeneralizedNewtonian_H
 
-#include "laminarModel.H"
-#include "linearViscousStress.H"
+#include "flameletLaminarModel.H"
+#include "flameletLinearViscousStress.H"
 #include "generalizedNewtonianViscosityModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -53,7 +53,7 @@ namespace laminarModels
 template<class BasicTurbulenceModel>
 class flameletGeneralizedNewtonian
 :
-    public linearViscousStress<laminarModel<BasicTurbulenceModel>>
+    public flameletLinearViscousStress<flameletLaminarModel<BasicTurbulenceModel>>
 {
 
 protected:
@@ -94,7 +94,7 @@ public:
             const surfaceScalarField& alphaRhoPhi,
             const surfaceScalarField& phi,
             transportModel& transport,
-            const word& propertiesName = turbulenceModel::propertiesName
+            const word& propertiesName = flameletTurbulenceModel::propertiesName
         );
 
 
@@ -109,7 +109,7 @@ public:
             const surfaceScalarField& alphaRhoPhi,
             const surfaceScalarField& phi,
             transportModel& transport,
-            const word& propertiesName = turbulenceModel::propertiesName
+            const word& propertiesName = flameletTurbulenceModel::propertiesName
         );
 
 

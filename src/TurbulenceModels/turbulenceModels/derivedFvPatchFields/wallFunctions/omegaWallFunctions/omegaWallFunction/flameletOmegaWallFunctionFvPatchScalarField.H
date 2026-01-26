@@ -51,7 +51,7 @@ Description
     \endverbatim
 
     or switched between these values based on the laminar-to-turbulent y+ value
-    derived from kappa and E specified in the corresponding nutWallFunction.
+    derived from kappa and E specified in the corresponding flameletNutWallFunction.
     Recent tests have shown that the standard switching method provides more
     accurate results for 10 < y+ < 30 when used with high Reynolds number
     wall-functions and both methods provide accurate results when used with
@@ -92,7 +92,7 @@ SourceFiles
 namespace Foam
 {
 
-class turbulenceModel;
+class flameletTurbulenceModel;
 
 /*---------------------------------------------------------------------------*\
              Class flameletOmegaWallFunctionFvPatchScalarField Declaration
@@ -150,7 +150,7 @@ protected:
         //- Main driver to calculate the turbulence fields
         virtual void calculateTurbulenceFields
         (
-            const turbulenceModel& turbulence,
+            const flameletTurbulenceModel& turbulence,
             scalarField& G0,
             scalarField& omega0
         );
@@ -158,7 +158,7 @@ protected:
         //- Calculate the omega and G
         virtual void calculate
         (
-            const turbulenceModel& turbulence,
+            const flameletTurbulenceModel& turbulence,
             const List<scalar>& cornerWeights,
             const fvPatch& patch,
             scalarField& G,

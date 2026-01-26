@@ -41,7 +41,7 @@ Description
 
     The model switches between laminar and turbulent functions based on the
     laminar-to-turbulent y+ value derived from the kappa and E specified in the
-    corresponding nutWallFunction.
+    corresponding flameletNutWallFunction.
 
 Usage
     Example of the boundary condition specification:
@@ -71,7 +71,7 @@ SourceFiles
 namespace Foam
 {
 
-class turbulenceModel;
+class flameletTurbulenceModel;
 
 /*---------------------------------------------------------------------------*\
            Class flameletEpsilonWallFunctionFvPatchScalarField Declaration
@@ -123,7 +123,7 @@ protected:
         //- Main driver to calculate the turbulence fields
         virtual void calculateTurbulenceFields
         (
-            const turbulenceModel& turbulence,
+            const flameletTurbulenceModel& turbulence,
             scalarField& G0,
             scalarField& epsilon0
         );
@@ -131,7 +131,7 @@ protected:
         //- Calculate the epsilon and G
         virtual void calculate
         (
-            const turbulenceModel& turbulence,
+            const flameletTurbulenceModel& turbulence,
             const List<scalar>& cornerWeights,
             const fvPatch& patch,
             scalarField& G,

@@ -24,8 +24,8 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "flameletEpsilonWallFunctionFvPatchScalarField.H"
-#include "nutWallFunctionFvPatchScalarField.H"
-#include "turbulenceModel.H"
+#include "flameletNutWallFunctionFvPatchScalarField.H"
+#include "flameletTurbulenceModel.H"
 #include "fvMatrix.H"
 #include "addToRunTimeSelectionTable.H"
 
@@ -141,7 +141,7 @@ Foam::flameletEpsilonWallFunctionFvPatchScalarField::epsilonPatch(const label pa
 
 void Foam::flameletEpsilonWallFunctionFvPatchScalarField::calculateTurbulenceFields
 (
-    const turbulenceModel& turbulence,
+    const flameletTurbulenceModel& turbulence,
     scalarField& G0,
     scalarField& epsilon0
 )
@@ -174,7 +174,7 @@ void Foam::flameletEpsilonWallFunctionFvPatchScalarField::calculateTurbulenceFie
 
 void Foam::flameletEpsilonWallFunctionFvPatchScalarField::calculate
 (
-    const turbulenceModel& turbModel,
+    const flameletTurbulenceModel& turbModel,
     const List<scalar>& cornerWeights,
     const fvPatch& patch,
     scalarField& G0,
@@ -183,8 +183,8 @@ void Foam::flameletEpsilonWallFunctionFvPatchScalarField::calculate
 {
     const label patchi = patch.index();
 
-    const nutWallFunctionFvPatchScalarField& nutw =
-        nutWallFunctionFvPatchScalarField::nutw(turbModel, patchi);
+    const flameletNutWallFunctionFvPatchScalarField& nutw =
+        flameletNutWallFunctionFvPatchScalarField::nutw(turbModel, patchi);
 
     const scalarField& y = turbModel.y()[patchi];
 
@@ -361,11 +361,11 @@ void Foam::flameletEpsilonWallFunctionFvPatchScalarField::updateCoeffs()
         return;
     }
 
-    const turbulenceModel& turbModel = db().lookupObject<turbulenceModel>
+    const flameletTurbulenceModel& turbModel = db().lookupObject<flameletTurbulenceModel>
     (
         IOobject::groupName
         (
-            turbulenceModel::propertiesName,
+            flameletTurbulenceModel::propertiesName,
             internalField().group()
         )
     );
@@ -413,11 +413,11 @@ void Foam::flameletEpsilonWallFunctionFvPatchScalarField::updateWeightedCoeffs
         return;
     }
 
-    const turbulenceModel& turbModel = db().lookupObject<turbulenceModel>
+    const flameletTurbulenceModel& turbModel = db().lookupObject<flameletTurbulenceModel>
     (
         IOobject::groupName
         (
-            turbulenceModel::propertiesName,
+            flameletTurbulenceModel::propertiesName,
             internalField().group()
         )
     );

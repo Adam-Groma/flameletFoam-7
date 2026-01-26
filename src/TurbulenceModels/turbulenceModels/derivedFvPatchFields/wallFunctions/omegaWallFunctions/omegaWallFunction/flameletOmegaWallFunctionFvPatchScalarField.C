@@ -24,8 +24,8 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "flameletOmegaWallFunctionFvPatchScalarField.H"
-#include "nutWallFunctionFvPatchScalarField.H"
-#include "turbulenceModel.H"
+#include "flameletNutWallFunctionFvPatchScalarField.H"
+#include "flameletTurbulenceModel.H"
 #include "fvMatrix.H"
 #include "addToRunTimeSelectionTable.H"
 
@@ -147,7 +147,7 @@ flameletOmegaWallFunctionFvPatchScalarField::omegaPatch(const label patchi)
 
 void flameletOmegaWallFunctionFvPatchScalarField::calculateTurbulenceFields
 (
-    const turbulenceModel& turbModel,
+    const flameletTurbulenceModel& turbModel,
     scalarField& G0,
     scalarField& omega0
 )
@@ -180,7 +180,7 @@ void flameletOmegaWallFunctionFvPatchScalarField::calculateTurbulenceFields
 
 void flameletOmegaWallFunctionFvPatchScalarField::calculate
 (
-    const turbulenceModel& turbModel,
+    const flameletTurbulenceModel& turbModel,
     const List<scalar>& cornerWeights,
     const fvPatch& patch,
     scalarField& G0,
@@ -189,8 +189,8 @@ void flameletOmegaWallFunctionFvPatchScalarField::calculate
 {
     const label patchi = patch.index();
 
-    const nutWallFunctionFvPatchScalarField& nutw =
-        nutWallFunctionFvPatchScalarField::nutw(turbModel, patchi);
+    const flameletNutWallFunctionFvPatchScalarField& nutw =
+        flameletNutWallFunctionFvPatchScalarField::nutw(turbModel, patchi);
 
     const scalarField& y = turbModel.y()[patchi];
 
@@ -405,11 +405,11 @@ void flameletOmegaWallFunctionFvPatchScalarField::updateCoeffs()
         return;
     }
 
-    const turbulenceModel& turbModel = db().lookupObject<turbulenceModel>
+    const flameletTurbulenceModel& turbModel = db().lookupObject<flameletTurbulenceModel>
     (
         IOobject::groupName
         (
-            turbulenceModel::propertiesName,
+            flameletTurbulenceModel::propertiesName,
             internalField().group()
         )
     );
@@ -455,11 +455,11 @@ void flameletOmegaWallFunctionFvPatchScalarField::updateWeightedCoeffs
         return;
     }
 
-    const turbulenceModel& turbModel = db().lookupObject<turbulenceModel>
+    const flameletTurbulenceModel& turbModel = db().lookupObject<flameletTurbulenceModel>
     (
         IOobject::groupName
         (
-            turbulenceModel::propertiesName,
+            flameletTurbulenceModel::propertiesName,
             internalField().group()
         )
     );

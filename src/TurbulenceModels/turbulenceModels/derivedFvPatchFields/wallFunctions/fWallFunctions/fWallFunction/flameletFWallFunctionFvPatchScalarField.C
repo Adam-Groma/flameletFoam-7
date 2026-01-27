@@ -26,7 +26,7 @@ License
 #include "flameletFWallFunctionFvPatchScalarField.H"
 #include "flameletNutWallFunctionFvPatchScalarField.H"
 #include "flameletTurbulenceModel.H"
-#include "flameletv2f.H"
+#include "flameletV2f.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -109,7 +109,7 @@ void flameletFWallFunctionFvPatchScalarField::updateCoeffs()
             internalField().group()
         )
     );
-    const flameletv2fBase& v2fModel = refCast<const flameletv2fBase>(turbModel);
+    const flameletV2fBase& v2fModel = refCast<const flameletV2fBase>(turbModel);
 
     const flameletNutWallFunctionFvPatchScalarField& nutw =
         flameletNutWallFunctionFvPatchScalarField::nutw(turbModel, patchi);

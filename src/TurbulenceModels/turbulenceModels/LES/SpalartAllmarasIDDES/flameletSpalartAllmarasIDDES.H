@@ -45,7 +45,7 @@ SourceFiles
 #define flameletSpalartAllmarasIDDES_H
 
 #include "flameletSpalartAllmarasDES.H"
-#include "IDDESDelta.H"
+#include "flameletIDDESDelta.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -73,7 +73,7 @@ class flameletSpalartAllmarasIDDES
 
         // Fields
 
-            const IDDESDelta& IDDESDelta_;
+            const flameletIDDESDelta& IDDESDelta_;
 
 
     // Private Member Functions
@@ -127,7 +127,7 @@ public:
             const surfaceScalarField& alphaRhoPhi,
             const surfaceScalarField& phi,
             transportModel& transport,
-            const word& propertiesName = turbulenceModel::propertiesName,
+            const word& propertiesName = flameletTurbulenceModel::propertiesName,
             const word& type = typeName
         );
 

@@ -22,18 +22,18 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::LESModels::flameletLESflameletLESModel
+    Foam::LESModels::flameletLESeddyViscosity
 
 Description
     Eddy viscosity LES SGS model base class
 
 SourceFiles
-    flameletLESflameletLESModel.C
+    flameletLESeddyViscosity.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef flameletLESflameletLESModel_H
-#define flameletLESflameletLESModel_H
+#ifndef flameletLESeddyViscosity_H
+#define flameletLESeddyViscosity_H
 
 #include "flameletLESModel.H"
 #include "flameletEddyViscosity.H"
@@ -46,11 +46,11 @@ namespace LESModels
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class flameletLESflameletLESModel Declaration
+                           Class flameletLESeddyViscosity Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class BasicTurbulenceModel>
-class flameletLESflameletLESModel
+class flameletLESeddyViscosity
 :
     public flameletEddyViscosity<flameletLESModel<BasicTurbulenceModel>>
 {
@@ -71,7 +71,7 @@ public:
     // Constructors
 
         //- Construct from components
-        flameletLESflameletLESModel
+        flameletLESeddyViscosity
         (
             const word& type,
             const alphaField& alpha,
@@ -80,15 +80,15 @@ public:
             const surfaceScalarField& alphaRhoPhi,
             const surfaceScalarField& phi,
             transportModel& transport,
-            const word& propertiesName = turbulenceModel::propertiesName
+            const word& propertiesName = flameletTurbulenceModel::propertiesName
         );
 
         //- Disallow default bitwise copy construction
-        flameletLESflameletLESModel(const flameletLESflameletLESModel&) = delete;
+        flameletLESeddyViscosity(const flameletLESeddyViscosity&) = delete;
 
 
     //- Destructor
-    virtual ~flameletLESflameletLESModel()
+    virtual ~flameletLESeddyViscosity()
     {}
 
 
@@ -104,7 +104,7 @@ public:
     // Member Operators
 
         //- Disallow default bitwise assignment
-        void operator=(const flameletLESflameletLESModel&) = delete;
+        void operator=(const flameletLESeddyViscosity&) = delete;
 };
 
 
@@ -116,7 +116,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "flameletLESflameletLESModel.C"
+    #include "flameletLESeddyViscosity.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

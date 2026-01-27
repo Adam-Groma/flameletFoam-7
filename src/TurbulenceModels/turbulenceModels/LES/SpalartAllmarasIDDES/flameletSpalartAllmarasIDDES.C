@@ -197,7 +197,7 @@ flameletSpalartAllmarasIDDES<BasicTurbulenceModel>::flameletSpalartAllmarasIDDES
             1.63
         )
     ),
-    IDDESDelta_(refCast<IDDESDelta>(this->delta_()))
+    IDDESDelta_(refCast<flameletIDDESDelta>(this->delta_()))
 {}
 
 

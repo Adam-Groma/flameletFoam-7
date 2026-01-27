@@ -119,7 +119,7 @@ public:
             const surfaceScalarField& alphaRhoPhi,
             const surfaceScalarField& phi,
             transportModel& transport,
-            const word& propertiesName = turbulenceModel::propertiesName,
+            const word& propertiesName = flameletTurbulenceModel::propertiesName,
             const word& type = typeName
         );
 

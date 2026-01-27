@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "flameletLESModel.H"
+#include "flameletLESeddyViscosity.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -35,7 +35,7 @@ namespace LESModels
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template<class BasicTurbulenceModel>
-flameletLESModel<BasicTurbulenceModel>::flameletLESModel
+flameletLESeddyViscosity<BasicTurbulenceModel>::flameletLESeddyViscosity
 (
     const word& type,
     const alphaField& alpha,
@@ -74,7 +74,7 @@ flameletLESModel<BasicTurbulenceModel>::flameletLESModel
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 template<class BasicTurbulenceModel>
-bool flameletLESModel<BasicTurbulenceModel>::read()
+bool flameletLESeddyViscosity<BasicTurbulenceModel>::read()
 {
     if (flameletEddyViscosity<flameletLESModel<BasicTurbulenceModel>>::read())
     {
@@ -90,7 +90,7 @@ bool flameletLESModel<BasicTurbulenceModel>::read()
 
 
 template<class BasicTurbulenceModel>
-tmp<volScalarField> flameletLESModel<BasicTurbulenceModel>::epsilon() const
+tmp<volScalarField> flameletLESeddyViscosity<BasicTurbulenceModel>::epsilon() const
 {
     tmp<volScalarField> tk(this->k());
 

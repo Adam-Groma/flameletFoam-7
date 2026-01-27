@@ -41,8 +41,8 @@ SourceFiles
 #ifndef flameletLESModel_H
 #define flameletLESModel_H
 
-#include "TurbulenceModel.H"
-#include "LESdelta.H"
+#include "FlameletTurbulenceModel.H"
+#include "flameletLESdelta.H"
 #include "flameletRhoReactionThermo.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -104,7 +104,7 @@ protected:
         dimensionedScalar omegaMin_;
 
         //- Run-time selectable delta model
-        autoPtr<Foam::LESdelta> delta_;
+        autoPtr<Foam::flameletLESdelta> delta_;
 
         //- Mixture fraction variance
         volScalarField& varZ_;
@@ -180,7 +180,7 @@ public:
             const surfaceScalarField& alphaRhoPhi,
             const surfaceScalarField& phi,
             transportModel& transport,
-            const word& propertiesName = turbulenceModel::propertiesName
+            const word& propertiesName = flameletTurbulenceModel::propertiesName
         );
 
 

@@ -147,7 +147,7 @@ Foam::flameletLESModel<BasicTurbulenceModel>::flameletLESModel
 
     delta_
     (
-        LESdelta::New
+        flameletLESdelta::New
         (
             IOobject::groupName("delta", alphaRhoPhi.group()),
             *this,

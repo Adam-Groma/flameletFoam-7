@@ -94,7 +94,7 @@ License
     }
 
 
-#define makeTemplatedTurbulenceModel(BaseModel, SType, Type)                   \
+#define flameletMakeTemplatedTurbulenceModel(BaseModel, SType, Type)                   \
     defineNamedTemplateTypeNameAndDebug                                        \
         (Foam::SType##Models::Type<Foam::BaseModel>, 0);                       \
                                                                                \
@@ -114,7 +114,7 @@ License
     }
 
 
-#define makeTurbulenceModel(BaseModel, SType, Type)                            \
+#define flameletMakeTurbulenceModel(BaseModel, SType, Type)                            \
     namespace Foam                                                             \
     {                                                                          \
         namespace SType##Models                                                \

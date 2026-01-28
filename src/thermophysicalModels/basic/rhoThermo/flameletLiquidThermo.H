@@ -25,10 +25,10 @@ License
 
 #include "flameletRhoThermo.H"
 #include "flameletHeRhoThermo.H"
-#include "pureMixture.H"
-#include "thermo.H"
-#include "sensibleInternalEnergy.H"
-#include "sensibleEnthalpy.H"
+#include "flameletPureMixture.H"
+#include "flameletThermo.H"
+#include "flameletSensibleInternalEnergy.H"
+#include "flameletSensibleEnthalpy.H"
 #include "thermophysicalPropertiesSelector.H"
 #include "liquidProperties.H"
 
@@ -42,12 +42,12 @@ namespace Foam
 typedef flameletHeRhoThermo
 <
     flameletRhoThermo,
-    pureMixture
+    flameletPureMixture
     <
-        species::thermo
+        species::flameletThermo
         <
             thermophysicalPropertiesSelector<liquidProperties>,
-            sensibleInternalEnergy
+            flameletSensibleInternalEnergy
         >
     >
 > flameletHeRhoThermopureMixtureliquidProperties;
@@ -56,12 +56,12 @@ typedef flameletHeRhoThermo
 typedef flameletHeRhoThermo
 <
     flameletRhoThermo,
-    pureMixture
+    flameletPureMixture
     <
-        species::thermo
+        species::flameletThermo
         <
             thermophysicalPropertiesSelector<liquidProperties>,
-            sensibleEnthalpy
+            flameletSensibleEnthalpy
         >
     >
 > flameletHeRhoThermopureMixtureEnthalpyliquidProperties;

@@ -3,6 +3,7 @@ fluidThermo/flameletFluidThermo.C
 
 rhoThermo/flameletRhoThermo.C
 rhoThermo/flameletRhoThermos.C
+rhoThermo/flameletLiquidThermo.C
 
 derivedFvPatchFields/fixedEnergy/flameletFixedEnergyFvPatchScalarField.C
 derivedFvPatchFields/gradientEnergy/flameletGradientEnergyFvPatchScalarField.C

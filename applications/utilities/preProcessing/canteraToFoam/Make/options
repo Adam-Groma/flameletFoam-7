@@ -15,10 +15,10 @@ EXE_INC = \
 EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) \
     -lODE \
-    -lFlameletspecie \
-    -lFlameletfluidThermophysicalModels \
-    -lFlameletspecie \
-    -lFlameletchemistryModel \
+    -lflameletSpecie \
+    -lflameletFluidThermophysicalModels \
+    -lflameletSpecie \
+    -lflameletChemistryModel \
     -lFlameletCombustionModels \
     -lFlameletReactionThermophysicalModels \
     -lFlameletturbulenceModels \

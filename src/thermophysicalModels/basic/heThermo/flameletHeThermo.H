@@ -35,7 +35,7 @@ SourceFiles
 #ifndef flameletHeThermo_H
 #define flameletHeThermo_H
 
-#include "basicMixture.H"
+#include "flameletBasicMixture.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

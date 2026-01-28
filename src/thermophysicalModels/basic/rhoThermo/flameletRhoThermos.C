@@ -26,30 +26,30 @@ License
 #include "flameletRhoThermo.H"
 #include "flameletMakeThermo.H"
 
-#include "specie.H"
-#include "perfectGas.H"
-#include "incompressiblePerfectGas.H"
-#include "Boussinesq.H"
-#include "rhoConst.H"
-#include "perfectFluid.H"
+#include "flameletSpecie.H"
+#include "flameletPerfectGas.H"
+#include "flameletIncompressiblePerfectGas.H"
+#include "flameletBoussinesq.H"
+#include "flameletRhoConst.H"
+#include "flameletPerfectFluid.H"
 
-#include "hConstThermo.H"
-#include "eConstThermo.H"
-#include "janafThermo.H"
-#include "sensibleEnthalpy.H"
-#include "sensibleInternalEnergy.H"
-#include "thermo.H"
+#include "flameletHConstThermo.H"
+#include "flameletEConstThermo.H"
+#include "flameletJanafThermo.H"
+#include "flameletSensibleEnthalpy.H"
+#include "flameletSensibleInternalEnergy.H"
+#include "flameletThermo.H"
 
 #include "flameletConstTransport.H"
-#include "sutherlandTransport.H"
-#include "WLFTransport.H"
+#include "flameletSutherlandTransport.H"
+#include "flameletWLFTransport.H"
 
-#include "icoPolynomial.H"
-#include "hPolynomialThermo.H"
-#include "polynomialTransport.H"
+#include "flameletIcoPolynomial.H"
+#include "flameletHPolynomialThermo.H"
+#include "flameletPolynomialTransport.H"
 
 #include "flameletHeRhoThermo.H"
-#include "pureMixture.H"
+#include "flameletPureMixture.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -62,144 +62,144 @@ flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    perfectGas,
-    specie
+    flameletSensibleEnthalpy,
+    flameletHConstThermo,
+    flameletPerfectGas,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    sutherlandTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    perfectGas,
-    specie
+    flameletPureMixture,
+    flameletSutherlandTransport,
+    flameletSensibleEnthalpy,
+    flameletHConstThermo,
+    flameletPerfectGas,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    sutherlandTransport,
-    sensibleEnthalpy,
-    janafThermo,
-    perfectGas,
-    specie
+    flameletPureMixture,
+    flameletSutherlandTransport,
+    flameletSensibleEnthalpy,
+    flameletJanafThermo,
+    flameletPerfectGas,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    rhoConst,
-    specie
+    flameletSensibleEnthalpy,
+    flameletHConstThermo,
+    flameletRhoConst,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    perfectFluid,
-    specie
+    flameletSensibleEnthalpy,
+    flameletHConstThermo,
+    flameletPerfectFluid,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    polynomialTransport,
-    sensibleEnthalpy,
-    hPolynomialThermo,
-    icoPolynomial,
-    specie
+    flameletPureMixture,
+    flameletPolynomialTransport,
+    flameletSensibleEnthalpy,
+    flameletHPolynomialThermo,
+    flameletIcoPolynomial,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    incompressiblePerfectGas,
-    specie
+    flameletSensibleEnthalpy,
+    flameletHConstThermo,
+    flameletIncompressiblePerfectGas,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    sutherlandTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    incompressiblePerfectGas,
-    specie
+    flameletPureMixture,
+    flameletSutherlandTransport,
+    flameletSensibleEnthalpy,
+    flameletHConstThermo,
+    flameletIncompressiblePerfectGas,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    sutherlandTransport,
-    sensibleEnthalpy,
-    janafThermo,
-    incompressiblePerfectGas,
-    specie
+    flameletPureMixture,
+    flameletSutherlandTransport,
+    flameletSensibleEnthalpy,
+    flameletJanafThermo,
+    flameletIncompressiblePerfectGas,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    Boussinesq,
-    specie
+    flameletSensibleEnthalpy,
+    flameletHConstThermo,
+    flameletBoussinesq,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    sutherlandTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    Boussinesq,
-    specie
+    flameletPureMixture,
+    flameletSutherlandTransport,
+    flameletSensibleEnthalpy,
+    flameletHConstThermo,
+    flameletBoussinesq,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    sutherlandTransport,
-    sensibleEnthalpy,
-    janafThermo,
-    Boussinesq,
-    specie
+    flameletPureMixture,
+    flameletSutherlandTransport,
+    flameletSensibleEnthalpy,
+    flameletJanafThermo,
+    flameletBoussinesq,
+    flameletSpecie
 );
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -208,192 +208,192 @@ flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleInternalEnergy,
-    hConstThermo,
-    perfectGas,
-    specie
+    flameletSensibleInternalEnergy,
+    flameletHConstThermo,
+    flameletPerfectGas,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    sutherlandTransport,
-    sensibleInternalEnergy,
-    hConstThermo,
-    perfectGas,
-    specie
+    flameletPureMixture,
+    flameletSutherlandTransport,
+    flameletSensibleInternalEnergy,
+    flameletHConstThermo,
+    flameletPerfectGas,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    sutherlandTransport,
-    sensibleInternalEnergy,
-    janafThermo,
-    perfectGas,
-    specie
+    flameletPureMixture,
+    flameletSutherlandTransport,
+    flameletSensibleInternalEnergy,
+    flameletJanafThermo,
+    flameletPerfectGas,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleInternalEnergy,
-    hConstThermo,
-    rhoConst,
-    specie
+    flameletSensibleInternalEnergy,
+    flameletHConstThermo,
+    flameletRhoConst,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleInternalEnergy,
-    eConstThermo,
-    rhoConst,
-    specie
+    flameletSensibleInternalEnergy,
+    flameletEConstThermo,
+    flameletRhoConst,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleInternalEnergy,
-    hConstThermo,
-    perfectFluid,
-    specie
+    flameletSensibleInternalEnergy,
+    flameletHConstThermo,
+    flameletPerfectFluid,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleInternalEnergy,
-    eConstThermo,
-    perfectFluid,
-    specie
+    flameletSensibleInternalEnergy,
+    flameletEConstThermo,
+    flameletPerfectFluid,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    polynomialTransport,
-    sensibleInternalEnergy,
-    hPolynomialThermo,
-    icoPolynomial,
-    specie
+    flameletPureMixture,
+    flameletPolynomialTransport,
+    flameletSensibleInternalEnergy,
+    flameletHPolynomialThermo,
+    flameletIcoPolynomial,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleInternalEnergy,
-    hConstThermo,
-    incompressiblePerfectGas,
-    specie
+    flameletSensibleInternalEnergy,
+    flameletHConstThermo,
+    flameletIncompressiblePerfectGas,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    sutherlandTransport,
-    sensibleInternalEnergy,
-    hConstThermo,
-    incompressiblePerfectGas,
-    specie
+    flameletPureMixture,
+    flameletSutherlandTransport,
+    flameletSensibleInternalEnergy,
+    flameletHConstThermo,
+    flameletIncompressiblePerfectGas,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    sutherlandTransport,
-    sensibleInternalEnergy,
-    janafThermo,
-    incompressiblePerfectGas,
-    specie
+    flameletPureMixture,
+    flameletSutherlandTransport,
+    flameletSensibleInternalEnergy,
+    flameletJanafThermo,
+    flameletIncompressiblePerfectGas,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleInternalEnergy,
-    eConstThermo,
-    Boussinesq,
-    specie
+    flameletSensibleInternalEnergy,
+    flameletEConstThermo,
+    flameletBoussinesq,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
+    flameletPureMixture,
     flameletConstTransport,
-    sensibleInternalEnergy,
-    hConstThermo,
-    Boussinesq,
-    specie
+    flameletSensibleInternalEnergy,
+    flameletHConstThermo,
+    flameletBoussinesq,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    sutherlandTransport,
-    sensibleInternalEnergy,
-    hConstThermo,
-    Boussinesq,
-    specie
+    flameletPureMixture,
+    flameletSutherlandTransport,
+    flameletSensibleInternalEnergy,
+    flameletHConstThermo,
+    flameletBoussinesq,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    sutherlandTransport,
-    sensibleInternalEnergy,
-    janafThermo,
-    Boussinesq,
-    specie
+    flameletPureMixture,
+    flameletSutherlandTransport,
+    flameletSensibleInternalEnergy,
+    flameletJanafThermo,
+    flameletBoussinesq,
+    flameletSpecie
 );
 
 flameletMakeThermos
 (
     flameletRhoThermo,
     flameletHeRhoThermo,
-    pureMixture,
-    WLFTransport,
-    sensibleInternalEnergy,
-    eConstThermo,
-    rhoConst,
-    specie
+    flameletPureMixture,
+    flameletWLFTransport,
+    flameletSensibleInternalEnergy,
+    flameletEConstThermo,
+    flameletRhoConst,
+    flameletSpecie
 );
 
 

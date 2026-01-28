@@ -37,12 +37,12 @@ Description
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#define typedefThermoPhysics(Transport,Type,Thermo,EqnOfState,Specie)          \
+#define flameletTypedefThermoPhysics(Transport,Type,Thermo,EqnOfState,Specie)          \
                                                                                \
     typedef                                                                    \
         Transport                                                              \
         <                                                                      \
-            species::thermo                                                    \
+            species::flameletThermo                                                    \
             <                                                                  \
                 Thermo                                                         \
                 <                                                              \
@@ -57,7 +57,7 @@ Description
         Transport##Type##Thermo##EqnOfState##Specie
 
 
-#define defineThermoPhysicsThermo(BaseThermo,CThermo,Mixture,ThermoPhys)       \
+#define flameletDefineThermoPhysicsThermo(BaseThermo,CThermo,Mixture,ThermoPhys)       \
                                                                                \
     typedef                                                                    \
         CThermo                                                                \
@@ -75,7 +75,7 @@ Description
     )
 
 
-#define addThermoPhysicsThermo(BaseThermo,CThermoMixtureThermoPhys)            \
+#define flameletAddThermoPhysicsThermo(BaseThermo,CThermoMixtureThermoPhys)            \
                                                                                \
     addToRunTimeSelectionTable                                                 \
     (                                                                          \
@@ -87,23 +87,23 @@ Description
 
 #define flameletMakeThermoPhysicsThermo(BaseThermo,CThermo,Mixture,ThermoPhys)         \
                                                                                \
-    defineThermoPhysicsThermo(BaseThermo, CThermo, Mixture, ThermoPhys);       \
+    flameletDefineThermoPhysicsThermo(BaseThermo, CThermo, Mixture, ThermoPhys);       \
                                                                                \
-    addThermoPhysicsThermo(BaseThermo, CThermo##Mixture##ThermoPhys)
+    flameletAddThermoPhysicsThermo(BaseThermo, CThermo##Mixture##ThermoPhys)
 
 
 #define flameletMakeThermoPhysicsThermos(BaseThermo,CThermo,Mixture,ThermoPhys)        \
                                                                                \
-    defineThermoPhysicsThermo(BaseThermo, CThermo, Mixture, ThermoPhys);       \
+    flameletDefineThermoPhysicsThermo(BaseThermo, CThermo, Mixture, ThermoPhys);       \
                                                                                \
-    addThermoPhysicsThermo(flameletBasicThermo, CThermo##Mixture##ThermoPhys);         \
-    addThermoPhysicsThermo(flameletFluidThermo, CThermo##Mixture##ThermoPhys);         \
-    addThermoPhysicsThermo(BaseThermo, CThermo##Mixture##ThermoPhys)
+    flameletAddThermoPhysicsThermo(flameletBasicThermo, CThermo##Mixture##ThermoPhys);         \
+    flameletAddThermoPhysicsThermo(flameletFluidThermo, CThermo##Mixture##ThermoPhys);         \
+    flameletAddThermoPhysicsThermo(BaseThermo, CThermo##Mixture##ThermoPhys)
 
 
 #define flameletMakeThermo(BaseThermo,CThermo,Mixture,Transport,Type,Thermo,EqnOfState,Specie) \
                                                                                \
-    typedefThermoPhysics(Transport,Type,Thermo,EqnOfState,Specie);             \
+    flameletTypedefThermoPhysics(Transport,Type,Thermo,EqnOfState,Specie);             \
                                                                                \
     flameletMakeThermoPhysicsThermo                                                    \
     (                                                                          \
@@ -116,7 +116,7 @@ Description
 
 #define flameletMakeThermos(BaseThermo,CThermo,Mixture,Transport,Type,Thermo,EqnOfState,Specie) \
                                                                                \
-    typedefThermoPhysics(Transport,Type,Thermo,EqnOfState,Specie);             \
+    flameletTypedefThermoPhysics(Transport,Type,Thermo,EqnOfState,Specie);             \
                                                                                \
     flameletMakeThermoPhysicsThermos                                                   \
     (                                                                          \

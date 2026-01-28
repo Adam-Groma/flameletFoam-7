@@ -21,33 +21,55 @@ License
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
+Class
+    Foam::flameletBasicMixture
+
+Description
+    Foam::flameletBasicMixture
+
+SourceFiles
+    flameletBasicMixture.C
+
 \*---------------------------------------------------------------------------*/
 
-#include "pureMixture.H"
-#include "fvMesh.H"
+#ifndef flameletBasicMixture_H
+#define flameletBasicMixture_H
 
-// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-template<class ThermoType>
-Foam::pureMixture<ThermoType>::pureMixture
-(
-    const dictionary& thermoDict,
-    const fvMesh& mesh,
-    const word& phaseName
-)
-:
-    basicMixture(thermoDict, mesh, phaseName),
-    mixture_(thermoDict.subDict("mixture"))
-{}
-
-
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-
-template<class ThermoType>
-void Foam::pureMixture<ThermoType>::read(const dictionary& thermoDict)
+namespace Foam
 {
-    mixture_ = ThermoType(thermoDict.subDict("mixture"));
-}
 
+class fvMesh;
+class dictionary;
+
+/*---------------------------------------------------------------------------*\
+                        Class flameletBasicMixture Declaration
+\*---------------------------------------------------------------------------*/
+
+class flameletBasicMixture
+{
+
+public:
+
+    //- The base class of the mixture
+    typedef flameletBasicMixture basicMixtureType;
+
+
+    // Constructors
+
+        //- Construct from dictionary, mesh and phase name
+        flameletBasicMixture(const dictionary&, const fvMesh&, const word&)
+        {}
+};
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
 
 // ************************************************************************* //

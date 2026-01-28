@@ -22,20 +22,20 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::pureMixture
+    Foam::flameletPureMixture
 
 Description
-    Foam::pureMixture
+    Foam::flameletPureMixture
 
 SourceFiles
-    pureMixture.C
+    flameletPureMixture.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef pureMixture_H
-#define pureMixture_H
+#ifndef flameletPureMixture_H
+#define flameletPureMixture_H
 
-#include "basicMixture.H"
+#include "flameletBasicMixture.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -43,20 +43,20 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                         Class pureMixture Declaration
+                         Class flameletPureMixture Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class ThermoType>
-class pureMixture
+class flameletPureMixture
 :
-    public basicMixture
+    public flameletBasicMixture
 {
     // Private Data
 
         ThermoType mixture_;
 
         //- Construct as copy (not implemented)
-        pureMixture(const pureMixture<ThermoType>&);
+        flameletPureMixture(const flameletPureMixture<ThermoType>&);
 
 
 public:
@@ -68,7 +68,7 @@ public:
     // Constructors
 
         //- Construct from dictionary, mesh and phase name
-        pureMixture(const dictionary&, const fvMesh&, const word&);
+        flameletPureMixture(const dictionary&, const fvMesh&, const word&);
 
 
     // Member Functions
@@ -76,7 +76,7 @@ public:
         //- Return the instantiated type name
         static word typeName()
         {
-            return "pureMixture<" + ThermoType::typeName() + '>';
+            return "flameletPureMixture<" + ThermoType::typeName() + '>';
         }
 
         const ThermoType& mixture() const
@@ -131,7 +131,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 #ifdef NoRepository
-    #include "pureMixture.C"
+    #include "flameletPureMixture.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -104,6 +104,7 @@ thirdBodyEfficienciesI
 /////////////////////////////
 |thermophysicalModels/basic
 -+-+---+++++---+---++++--+---
+basicMixture
 basicThermo
 basicThermoTemplates
 energyJumpAMIFvPatchScalarField
@@ -116,6 +117,7 @@ heThermo
 liquidThermo
 makeThermo
 mixedEnergyFvPatchScalarField
+pureMixture
 rhoThermo
 rhoThermos
 /////////////////////////////

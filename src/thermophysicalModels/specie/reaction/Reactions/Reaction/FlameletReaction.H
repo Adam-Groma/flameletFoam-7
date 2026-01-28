@@ -34,8 +34,8 @@ SourceFiles
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef Reaction_H
-#define Reaction_H
+#ifndef FlameletReaction_H
+#define FlameletReaction_H
 
 #include "flameletSpeciesTable.H"
 #include "flameletSpecieCoeffs.H"

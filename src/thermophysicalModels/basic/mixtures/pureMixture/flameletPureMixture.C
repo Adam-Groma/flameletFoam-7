@@ -21,55 +21,33 @@ License
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
-Class
-    Foam::basicMixture
-
-Description
-    Foam::basicMixture
-
-SourceFiles
-    basicMixture.C
-
 \*---------------------------------------------------------------------------*/
 
-#ifndef basicMixture_H
-#define basicMixture_H
+#include "flameletPureMixture.H"
+#include "fvMesh.H"
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-namespace Foam
+template<class ThermoType>
+Foam::flameletPureMixture<ThermoType>::flameletPureMixture
+(
+    const dictionary& thermoDict,
+    const fvMesh& mesh,
+    const word& phaseName
+)
+:
+    flameletBasicMixture(thermoDict, mesh, phaseName),
+    mixture_(thermoDict.subDict("mixture"))
+{}
+
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+template<class ThermoType>
+void Foam::flameletPureMixture<ThermoType>::read(const dictionary& thermoDict)
 {
+    mixture_ = ThermoType(thermoDict.subDict("mixture"));
+}
 
-class fvMesh;
-class dictionary;
-
-/*---------------------------------------------------------------------------*\
-                        Class basicMixture Declaration
-\*---------------------------------------------------------------------------*/
-
-class basicMixture
-{
-
-public:
-
-    //- The base class of the mixture
-    typedef basicMixture basicMixtureType;
-
-
-    // Constructors
-
-        //- Construct from dictionary, mesh and phase name
-        basicMixture(const dictionary&, const fvMesh&, const word&)
-        {}
-};
-
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-} // End namespace Foam
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-#endif
 
 // ************************************************************************* //

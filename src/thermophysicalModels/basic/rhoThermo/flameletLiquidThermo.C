@@ -36,7 +36,7 @@ namespace Foam
 defineTemplateTypeNameAndDebugWithName
 (
     flameletHeRhoThermopureMixtureliquidProperties,
-    "flameletHeRhoThermo<pureMixture<liquid,sensibleInternalEnergy>>",
+    "flameletHeRhoThermo<flameletPureMixture<liquid,flameletSensibleInternalEnergy>>",
     0
 );
 
@@ -65,7 +65,7 @@ addToRunTimeSelectionTable
 defineTemplateTypeNameAndDebugWithName
 (
     flameletHeRhoThermopureMixtureEnthalpyliquidProperties,
-    "flameletHeRhoThermo<pureMixture<liquid,sensibleEnthalpy>>",
+    "flameletHeRhoThermo<flameletPureMixture<liquid,flameletSensibleEnthalpy>>",
     0
 );
 

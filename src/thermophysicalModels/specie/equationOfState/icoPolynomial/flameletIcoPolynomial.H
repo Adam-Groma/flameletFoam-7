@@ -238,7 +238,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#define makeIcoPolynomial(PolySize)                                            \
+#define flameletMakeIcoPolynomial(PolySize)                                            \
                                                                                \
 defineTemplateTypeNameAndDebugWithName                                         \
 (                                                                              \

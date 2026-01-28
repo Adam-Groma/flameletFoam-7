@@ -24,21 +24,21 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "flameletReactionTypes.H"
-#include "makeReaction.H"
+#include "flameletMakeReaction.H"
 
-#include "ArrheniusReactionRate.H"
-#include "infiniteReactionRate.H"
-#include "LandauTellerReactionRate.H"
-#include "thirdBodyArrheniusReactionRate.H"
+#include "flameletArrheniusReactionRate.H"
+#include "flameletInfiniteReactionRate.H"
+#include "flameletLandauTellerReactionRate.H"
+#include "flameletThirdBodyArrheniusReactionRate.H"
 
-#include "ChemicallyActivatedReactionRate.H"
-#include "JanevReactionRate.H"
-#include "powerSeriesReactionRate.H"
+#include "flameletChemicallyActivatedReactionRate.H"
+#include "flameletJanevReactionRate.H"
+#include "flameletPowerSeriesReactionRate.H"
 
-#include "FallOffReactionRate.H"
-#include "LindemannFallOffFunction.H"
-#include "SRIFallOffFunction.H"
-#include "TroeFallOffFunction.H"
+#include "flameletFallOffReactionRate.H"
+#include "flameletLindemannFallOffFunction.H"
+#include "flameletSRIFallOffFunction.H"
+#include "flameletTroeFallOffFunction.H"
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -48,33 +48,33 @@ License
     defineTemplateTypeNameAndDebug(Reaction, 0);                               \
     defineTemplateRunTimeSelectionTable(Reaction, dictionary);                 \
                                                                                \
-    makeIRNReactions(Thermo, ArrheniusReactionRate)                            \
-    makeIRNReactions(Thermo, infiniteReactionRate)                             \
-    makeIRNReactions(Thermo, LandauTellerReactionRate)                         \
-    makeIRNReactions(Thermo, thirdBodyArrheniusReactionRate)                   \
+    flameletMakeIRNReactions(Thermo, flameletArrheniusReactionRate)                            \
+    flameletMakeIRNReactions(Thermo, flameletInfiniteReactionRate)                             \
+    flameletMakeIRNReactions(Thermo, flameletLandauTellerReactionRate)                         \
+    flameletMakeIRNReactions(Thermo, flameletThirdBodyArrheniusReactionRate)                   \
                                                                                \
-    makeIRReactions(Thermo, JanevReactionRate)                                 \
-    makeIRReactions(Thermo, powerSeriesReactionRate)                           \
+    flameletMakeIRReactions(Thermo, flameletJanevReactionRate)                                 \
+    flameletMakeIRReactions(Thermo, flameletPowerSeriesReactionRate)                           \
                                                                                \
-    makePressureDependentReactions                                             \
+    flameletMakePressureDependentReactions                                             \
     (                                                                          \
        Thermo,                                                                 \
-       ArrheniusReactionRate,                                                  \
-       LindemannFallOffFunction                                                \
+       flameletArrheniusReactionRate,                                                  \
+       flameletLindemannFallOffFunction                                                \
     )                                                                          \
                                                                                \
-    makePressureDependentReactions                                             \
+    flameletMakePressureDependentReactions                                             \
     (                                                                          \
        Thermo,                                                                 \
-       ArrheniusReactionRate,                                                  \
-       TroeFallOffFunction                                                     \
+       flameletArrheniusReactionRate,                                                  \
+       flameletTroeFallOffFunction                                                     \
     )                                                                          \
                                                                                \
-    makePressureDependentReactions                                             \
+    flameletMakePressureDependentReactions                                             \
     (                                                                          \
        Thermo,                                                                 \
-       ArrheniusReactionRate,                                                  \
-       SRIFallOffFunction                                                      \
+       flameletArrheniusReactionRate,                                                  \
+       flameletSRIFallOffFunction                                                      \
     )
 
 
@@ -83,39 +83,39 @@ License
 namespace Foam
 {
     // sensible enthalpy based reactions
-    flameletMakeReactions(constGasHThermoPhysics, constGasHReaction)
-    flameletMakeReactions(gasHThermoPhysics, gasHReaction)
+    flameletMakeReactions(flameletConstGasHThermoPhysics, flameletConstGasHReaction)
+    flameletMakeReactions(flameletGasHThermoPhysics, flameletGasHReaction)
     flameletMakeReactions
     (
-        constIncompressibleGasHThermoPhysics,
-        constIncompressibleGasHReaction
+        flameletConstIncompressibleGasHThermoPhysics,
+        flameletConstIncompressibleGasHReaction
     )
-    flameletMakeReactions(incompressibleGasHThermoPhysics, incompressibleGasHReaction)
-    flameletMakeReactions(icoPoly8HThermoPhysics, icoPoly8HReaction)
-    flameletMakeReactions(constFluidHThermoPhysics, constFluidHReaction)
+    flameletMakeReactions(flameletIncompressibleGasHThermoPhysics, flameletIncompressibleGasHReaction)
+    flameletMakeReactions(flameletIcoPoly8HThermoPhysics, flameletIcoPoly8HReaction)
+    flameletMakeReactions(flameletConstFluidHThermoPhysics, flameletConstFluidHReaction)
     flameletMakeReactions
     (
-        constAdiabaticFluidHThermoPhysics,
-        constAdiabaticFluidHReaction
+        flameletConstAdiabaticFluidHThermoPhysics,
+        flameletConstAdiabaticFluidHReaction
     )
-    flameletMakeReactions(constHThermoPhysics, constHReaction)
+    flameletMakeReactions(flameletConstHThermoPhysics, flameletConstHReaction)
 
-    flameletMakeReactions(constGasEThermoPhysics, constGasEReaction)
-    flameletMakeReactions(gasEThermoPhysics, gasEReaction)
+    flameletMakeReactions(flameletConstGasEThermoPhysics, flameletConstGasEReaction)
+    flameletMakeReactions(flameletGasEThermoPhysics, flameletGasEReaction)
     flameletMakeReactions
     (
-        constIncompressibleGasEThermoPhysics,
-        constIncompressibleGasEReaction
+        flameletConstIncompressibleGasEThermoPhysics,
+        flameletConstIncompressibleGasEReaction
     )
-    flameletMakeReactions(incompressibleGasEThermoPhysics, incompressibleGasEReaction)
-    flameletMakeReactions(icoPoly8EThermoPhysics, icoPoly8EReaction)
-    flameletMakeReactions(constFluidEThermoPhysics, constFluidEReaction)
+    flameletMakeReactions(flameletIncompressibleGasEThermoPhysics, flameletIncompressibleGasEReaction)
+    flameletMakeReactions(flameletIcoPoly8EThermoPhysics, flameletIcoPoly8EReaction)
+    flameletMakeReactions(flameletConstFluidEThermoPhysics, flameletConstFluidEReaction)
     flameletMakeReactions
     (
-        constAdiabaticFluidEThermoPhysics,
-        constAdiabaticFluidEReaction
+        flameletConstAdiabaticFluidEThermoPhysics,
+        flameletConstAdiabaticFluidEReaction
     )
-    flameletMakeReactions(constEThermoPhysics, constEReaction)
+    flameletMakeReactions(flameletConstEThermoPhysics, flameletConstEReaction)
 }
 
 // ************************************************************************* //

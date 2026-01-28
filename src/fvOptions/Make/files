@@ -1,69 +1,69 @@
-cellSetOption/cellSetOption.C
-cellSetOption/cellSetOptionIO.C
+cellSetOption/flameletCellSetOption.C
+cellSetOption/flameletCellSetOptionIO.C
 
-interRegionOption/interRegionOption.C
-interRegionOption/interRegionOptionIO.C
+interRegionOption/flameletInterRegionOption.C
+interRegionOption/flameletInterRegionOptionIO.C
 
 
 /* Sources */
 
 generalSources=sources/general
-$(generalSources)/codedSource/codedSource.C
-$(generalSources)/semiImplicitSource/semiImplicitSource.C
+$(generalSources)/codedSource/flameletCodedSource.C
+$(generalSources)/semiImplicitSource/flameletSemiImplicitSource.C
 
 derivedSources=sources/derived
-$(derivedSources)/actuationDiskSource/actuationDiskSource.C
-$(derivedSources)/effectivenessHeatExchangerSource/effectivenessHeatExchangerSource.C
-$(derivedSources)/explicitPorositySource/explicitPorositySource.C
-$(derivedSources)/meanVelocityForce/meanVelocityForce.C
-$(derivedSources)/meanVelocityForce/meanVelocityForceIO.C
-$(derivedSources)/meanVelocityForce/patchMeanVelocityForce/patchMeanVelocityForce.C
-$(derivedSources)/radialActuationDiskSource/radialActuationDiskSource.C
-$(derivedSources)/rotorDiskSource/rotorDiskSource.C
-$(derivedSources)/rotorDiskSource/bladeModel/bladeModel.C
-$(derivedSources)/rotorDiskSource/profileModel/profileModel.C
-$(derivedSources)/rotorDiskSource/profileModel/profileModelList.C
-$(derivedSources)/rotorDiskSource/profileModel/lookup/lookupProfile.C
-$(derivedSources)/rotorDiskSource/profileModel/series/seriesProfile.C
-$(derivedSources)/rotorDiskSource/trimModel/trimModel/trimModel.C
-$(derivedSources)/rotorDiskSource/trimModel/trimModel/trimModelNew.C
-$(derivedSources)/rotorDiskSource/trimModel/fixed/fixedTrim.C
-$(derivedSources)/rotorDiskSource/trimModel/targetCoeff/targetCoeffTrim.C
-$(derivedSources)/solidificationMeltingSource/solidificationMeltingSource.C
-$(derivedSources)/solidificationMeltingSource/solidificationMeltingSourceIO.C
-$(derivedSources)/tabulatedAccelerationSource/tabulatedAccelerationSource.C
-$(derivedSources)/tabulatedAccelerationSource/tabulated6DoFAcceleration/tabulated6DoFAcceleration.C
-$(derivedSources)/buoyancyForce/buoyancyForce.C
-$(derivedSources)/buoyancyForce/buoyancyForceIO.C
-$(derivedSources)/buoyancyEnergy/buoyancyEnergy.C
-$(derivedSources)/buoyancyEnergy/buoyancyEnergyIO.C
-$(derivedSources)/damping/damping/damping.C
-$(derivedSources)/damping/isotropicDamping/isotropicDamping.C
-$(derivedSources)/damping/verticalDamping/verticalDamping.C
-$(derivedSources)/phaseLimitStabilization/phaseLimitStabilization.C
-$(derivedSources)/accelerationSource/accelerationSource.C
-$(derivedSources)/volumeFractionSource/volumeFractionSource.C
-$(derivedSources)/solidEqulibriumEnergySource/solidEqulibriumEnergySource.C
+$(derivedSources)/actuationDiskSource/flameletActuationDiskSource.C
+$(derivedSources)/effectivenessHeatExchangerSource/flameletEffectivenessHeatExchangerSource.C
+$(derivedSources)/explicitPorositySource/flameletExplicitPorositySource.C
+$(derivedSources)/meanVelocityForce/flameletMeanVelocityForce.C
+$(derivedSources)/meanVelocityForce/flameletMeanVelocityForceIO.C
+$(derivedSources)/meanVelocityForce/patchMeanVelocityForce/flameletPatchMeanVelocityForce.C
+$(derivedSources)/radialActuationDiskSource/flameletRadialActuationDiskSource.C
+$(derivedSources)/rotorDiskSource/flameletRotorDiskSource.C
+$(derivedSources)/rotorDiskSource/bladeModel/flameletBladeModel.C
+$(derivedSources)/rotorDiskSource/profileModel/flameletProfileModel.C
+$(derivedSources)/rotorDiskSource/profileModel/flameletProfileModelList.C
+$(derivedSources)/rotorDiskSource/profileModel/lookup/flameletLookupProfile.C
+$(derivedSources)/rotorDiskSource/profileModel/series/flameletSeriesProfile.C
+$(derivedSources)/rotorDiskSource/trimModel/trimModel/flameletTrimModel.C
+$(derivedSources)/rotorDiskSource/trimModel/trimModel/flameletTrimModelNew.C
+$(derivedSources)/rotorDiskSource/trimModel/fixed/flameletFixedTrim.C
+$(derivedSources)/rotorDiskSource/trimModel/targetCoeff/flameletTargetCoeffTrim.C
+$(derivedSources)/solidificationMeltingSource/flameletSolidificationMeltingSource.C
+$(derivedSources)/solidificationMeltingSource/flameletSolidificationMeltingSourceIO.C
+$(derivedSources)/tabulatedAccelerationSource/flameletTabulatedAccelerationSource.C
+$(derivedSources)/tabulatedAccelerationSource/tabulated6DoFAcceleration/flameletTabulated6DoFAcceleration.C
+$(derivedSources)/buoyancyForce/flameletBuoyancyForce.C
+$(derivedSources)/buoyancyForce/flameletBuoyancyForceIO.C
+$(derivedSources)/buoyancyEnergy/flameletBuoyancyEnergy.C
+$(derivedSources)/buoyancyEnergy/flameletBuoyancyEnergyIO.C
+$(derivedSources)/damping/damping/flameletDamping.C
+$(derivedSources)/damping/isotropicDamping/flameletIsotropicDamping.C
+$(derivedSources)/damping/verticalDamping/flameletVerticalDamping.C
+$(derivedSources)/phaseLimitStabilization/flameletPhaseLimitStabilization.C
+$(derivedSources)/accelerationSource/flameletAccelerationSource.C
+$(derivedSources)/volumeFractionSource/flameletVolumeFractionSource.C
+$(derivedSources)/solidEqulibriumEnergySource/flameletSolidEqulibriumEnergySource.C
 
 interRegion = sources/interRegion
-$(interRegion)/interRegionHeatTransfer/interRegionHeatTransferModel/interRegionHeatTransferModel.C
-$(interRegion)/interRegionHeatTransfer/interRegionHeatTransferModel/interRegionHeatTransferModelIO.C
-$(interRegion)/interRegionHeatTransfer/constantHeatTransfer/constantHeatTransfer.C
-$(interRegion)/interRegionHeatTransfer/tabulatedHeatTransfer/tabulatedHeatTransfer.C
-$(interRegion)/interRegionHeatTransfer/variableHeatTransfer/variableHeatTransfer.C
-$(interRegion)/interRegionExplicitPorositySource/interRegionExplicitPorositySource.C
+$(interRegion)/interRegionHeatTransfer/interRegionHeatTransferModel/flameletInterRegionHeatTransferModel.C
+$(interRegion)/interRegionHeatTransfer/interRegionHeatTransferModel/flameletInterRegionHeatTransferModelIO.C
+$(interRegion)/interRegionHeatTransfer/constantHeatTransfer/flameletConstantHeatTransfer.C
+$(interRegion)/interRegionHeatTransfer/tabulatedHeatTransfer/flameletTabulatedHeatTransfer.C
+$(interRegion)/interRegionHeatTransfer/variableHeatTransfer/flameletVariableHeatTransfer.C
+$(interRegion)/interRegionExplicitPorositySource/flameletInterRegionExplicitPorositySource.C
 
 
 /* Constraints */
 
-constraints/fixedValueConstraint/fixedValueConstraints.C
-constraints/fixedTemperatureConstraint/fixedTemperatureConstraint.C
+constraints/fixedValueConstraint/flameletFixedValueConstraints.C
+constraints/fixedTemperatureConstraint/flameletFixedTemperatureConstraint.C
 
 
 /* Corrections */
 
-corrections/limitTemperature/limitTemperature.C
-corrections/limitVelocity/limitVelocity.C
+corrections/limitTemperature/flameletLimitTemperature.C
+corrections/limitVelocity/flameletLimitVelocity.C
 
 
-LIB = $(FOAM_USER_LIBBIN)/libFlameletfvOptions
+LIB = $(FOAM_USER_LIBBIN)/libflameletFvOptions

@@ -23,26 +23,26 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "makeReaction.H"
+#include "flameletMakeReaction.H"
 #include "flameletReactionTypes.H"
-#include "MichaelisMentenReactionRate.H"
+#include "flameletMichaelisMentenReactionRate.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-    makeReaction
+    flameletMakeReaction
     (
-        constFluidHThermoPhysics,
-        IrreversibleReaction,
-        MichaelisMentenReactionRate
+        flameletConstFluidHThermoPhysics,
+        FlameletIrreversibleReaction,
+        flameletMichaelisMentenReactionRate
     )
 
-    makeReaction
+    flameletMakeReaction
     (
-        constFluidEThermoPhysics,
-        IrreversibleReaction,
-        MichaelisMentenReactionRate
+        flameletConstFluidEThermoPhysics,
+        FlameletIrreversibleReaction,
+        flameletMichaelisMentenReactionRate
     )
 }
 

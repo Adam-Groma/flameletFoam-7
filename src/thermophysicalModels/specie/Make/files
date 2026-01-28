@@ -1,5 +1,8 @@
 atomicWeights/flameletAtomicWeights.C
+specie/flameletSpecie.C
+reaction/specieCoeffs/flameletSpecieCoeffs.C
 reaction/reactions/flameletMakeReactions.C
 reaction/reactions/flameletMakeLangmuirHinshelwoodReactions.C
+reaction/reactions/flameletMakeMichaelisMentenReactions.C
 
 LIB = $(FOAM_USER_LIBBIN)/libflameletSpecie

@@ -1,0 +1,136 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2012-2019 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+Class
+    Foam::fv::flameletLimitTemperature
+
+Description
+    Correction for temperature to apply limits between minimum and maximum
+    values.
+
+Usage
+    Example usage:
+    \verbatim
+    limitT
+    {
+        type            flameletLimitTemperature;
+        active          yes;
+
+        selectionMode   all;
+        min             200;
+        max             500;
+        phase           gas; // optional
+    }
+    \endverbatim
+
+SourceFiles
+    flameletLimitTemperature.C
+
+\*---------------------------------------------------------------------------*/
+
+#ifndef flameletLimitTemperature_H
+#define flameletLimitTemperature_H
+
+#include "flameletCellSetOption.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+namespace fv
+{
+
+/*---------------------------------------------------------------------------*\
+                 Class flameletLimitTemperature Declaration
+\*---------------------------------------------------------------------------*/
+
+class flameletLimitTemperature
+:
+    public flameletCellSetOption
+{
+protected:
+
+    // Protected data
+
+        //- Minimum temperature limit [K]
+        scalar Tmin_;
+
+        //- Maximum temperature limit [K]
+        scalar Tmax_;
+
+        //- Optional phase name [K]
+        word phase_;
+
+
+public:
+
+    //- Runtime type information
+    TypeName("flameletLimitTemperature");
+
+
+    // Constructors
+
+        //- Construct from components
+        flameletLimitTemperature
+        (
+            const word& name,
+            const word& modelType,
+            const dictionary& dict,
+            const fvMesh& mesh
+        );
+
+        //- Disallow default bitwise copy construction
+        flameletLimitTemperature(const flameletLimitTemperature&) = delete;
+
+
+    //- Destructor
+    virtual ~flameletLimitTemperature()
+    {}
+
+
+    // Member Functions
+
+        //- Read dictionary
+        virtual bool read(const dictionary& dict);
+
+        //- Correct the energy field
+        virtual void correct(volScalarField& he);
+
+
+    // Member Operators
+
+        //- Disallow default bitwise assignment
+        void operator=(const flameletLimitTemperature&) = delete;
+};
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace fv
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
+
+// ************************************************************************* //

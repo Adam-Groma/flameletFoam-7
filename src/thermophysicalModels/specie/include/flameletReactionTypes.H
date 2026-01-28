@@ -33,56 +33,56 @@ Description
 #define flameletReactionTypes_H
 
 #include "flameletThermoPhysicsTypes.H"
-#include "Reaction.H"
+#include "FlameletReaction.H"
 
-#include "icoPolynomial.H"
-#include "hPolynomialThermo.H"
-#include "polynomialTransport.H"
+#include "flameletIcoPolynomial.H"
+#include "flameletHPolynomialThermo.H"
+#include "flameletPolynomialTransport.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
     // sensible enthalpy based reactions
-    typedef Reaction<constGasHThermoPhysics> constGasHReaction;
+    typedef FlameletReaction<flameletConstGasHThermoPhysics> flameletConstGasHReaction;
 
-    typedef Reaction<gasHThermoPhysics> gasHReaction;
+    typedef FlameletReaction<flameletGasHThermoPhysics> flameletGasHReaction;
 
-    typedef Reaction<constIncompressibleGasHThermoPhysics>
-        constIncompressibleGasHReaction;
+    typedef FlameletReaction<flameletConstIncompressibleGasHThermoPhysics>
+        flameletConstIncompressibleGasHReaction;
 
-    typedef Reaction<incompressibleGasHThermoPhysics>
-        incompressibleGasHReaction;
+    typedef FlameletReaction<flameletIncompressibleGasHThermoPhysics>
+        flameletIncompressibleGasHReaction;
 
-    typedef Reaction<icoPoly8HThermoPhysics> icoPoly8HReaction;
+    typedef FlameletReaction<flameletIcoPoly8HThermoPhysics> flameletIcoPoly8HReaction;
 
-    typedef Reaction<constFluidHThermoPhysics> constFluidHReaction;
+    typedef FlameletReaction<flameletConstFluidHThermoPhysics> flameletConstFluidHReaction;
 
-    typedef Reaction<constAdiabaticFluidHThermoPhysics>
-        constAdiabaticFluidHReaction;
+    typedef FlameletReaction<flameletConstAdiabaticFluidHThermoPhysics>
+        flameletConstAdiabaticFluidHReaction;
 
-    typedef Reaction<constHThermoPhysics> constHReaction;
+    typedef FlameletReaction<flameletConstHThermoPhysics> flameletConstHReaction;
 
 
     // internal ennergy based reactions
-    typedef Reaction<constGasEThermoPhysics> constGasEReaction;
+    typedef FlameletReaction<flameletConstGasEThermoPhysics> flameletConstGasEReaction;
 
-    typedef Reaction<gasEThermoPhysics> gasEReaction;
+    typedef FlameletReaction<flameletGasEThermoPhysics> flameletGasEReaction;
 
-    typedef Reaction<constIncompressibleGasEThermoPhysics>
-        constIncompressibleGasEReaction;
+    typedef FlameletReaction<flameletConstIncompressibleGasEThermoPhysics>
+        flameletConstIncompressibleGasEReaction;
 
-    typedef Reaction<incompressibleGasEThermoPhysics>
-        incompressibleGasEReaction;
+    typedef FlameletReaction<flameletIncompressibleGasEThermoPhysics>
+        flameletIncompressibleGasEReaction;
 
-    typedef Reaction<icoPoly8EThermoPhysics> icoPoly8EReaction;
+    typedef FlameletReaction<flameletIcoPoly8EThermoPhysics> flameletIcoPoly8EReaction;
 
-    typedef Reaction<constFluidEThermoPhysics> constFluidEReaction;
+    typedef FlameletReaction<flameletConstFluidEThermoPhysics> flameletConstFluidEReaction;
 
-    typedef Reaction<constAdiabaticFluidEThermoPhysics>
-        constAdiabaticFluidEReaction;
+    typedef FlameletReaction<flameletConstAdiabaticFluidEThermoPhysics>
+        flameletConstAdiabaticFluidEReaction;
 
-    typedef Reaction<constEThermoPhysics> constEReaction;
+    typedef FlameletReaction<flameletConstEThermoPhysics> flameletConstEReaction;
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

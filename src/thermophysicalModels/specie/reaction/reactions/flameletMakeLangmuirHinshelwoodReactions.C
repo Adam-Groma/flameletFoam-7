@@ -23,9 +23,9 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "makeReaction.H"
+#include "flameletMakeReaction.H"
 #include "flameletReactionTypes.H"
-#include "LangmuirHinshelwoodReactionRate.H"
+#include "flameletLangmuirHinshelwoodReactionRate.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -37,11 +37,11 @@ const char* const Foam::Tuple2<Foam::word, Foam::scalar>::typeName
 
 namespace Foam
 {
-    makeIRReactions(gasHThermoPhysics, LangmuirHinshelwoodReactionRate)
-    makeIRReactions(icoPoly8HThermoPhysics, LangmuirHinshelwoodReactionRate)
+    flameletMakeIRReactions(flameletGasHThermoPhysics, flameletLangmuirHinshelwoodReactionRate)
+    flameletMakeIRReactions(flameletIcoPoly8HThermoPhysics, flameletLangmuirHinshelwoodReactionRate)
 
-    makeIRReactions(gasEThermoPhysics, LangmuirHinshelwoodReactionRate)
-    makeIRReactions(icoPoly8EThermoPhysics, LangmuirHinshelwoodReactionRate)
+    flameletMakeIRReactions(flameletGasEThermoPhysics, flameletLangmuirHinshelwoodReactionRate)
+    flameletMakeIRReactions(flameletIcoPoly8EThermoPhysics, flameletLangmuirHinshelwoodReactionRate)
 }
 
 // ************************************************************************* //

@@ -32,250 +32,250 @@ Description
 #ifndef flameletThermoPhysicsTypes_H
 #define flameletThermoPhysicsTypes_H
 
-#include "specie.H"
-#include "perfectGas.H"
-#include "incompressiblePerfectGas.H"
-#include "perfectFluid.H"
-#include "adiabaticPerfectFluid.H"
-#include "rhoConst.H"
-#include "hConstThermo.H"
-#include "eConstThermo.H"
-#include "janafThermo.H"
+#include "flameletSpecie.H"
+#include "flameletPerfectGas.H"
+#include "flameletIncompressiblePerfectGas.H"
+#include "flameletPerfectFluid.H"
+#include "flameletAdiabaticPerfectFluid.H"
+#include "flameletRhoConst.H"
+#include "flameletHConstThermo.H"
+#include "flameletEConstThermo.H"
+#include "flameletJanafThermo.H"
 
-#include "sensibleEnthalpy.H"
-#include "sensibleInternalEnergy.H"
-#include "thermo.H"
-#include "sutherlandTransport.H"
+#include "flameletSensibleEnthalpy.H"
+#include "flameletSensibleInternalEnergy.H"
+#include "flameletThermo.H"
+#include "flameletSutherlandTransport.H"
 #include "flameletConstTransport.H"
 
-#include "icoPolynomial.H"
-#include "hPolynomialThermo.H"
-#include "polynomialTransport.H"
+#include "flameletIcoPolynomial.H"
+#include "flameletHPolynomialThermo.H"
+#include "flameletPolynomialTransport.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-    // thermo physics types based on sensibleEnthalpy
+    // thermo physics types based on flameletSensibleEnthalpy
     typedef
     flameletConstTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            hConstThermo
+            flameletHConstThermo
             <
-                perfectGas<specie>
+                flameletPerfectGas<flameletSpecie>
             >,
-            sensibleEnthalpy
+            flameletSensibleEnthalpy
         >
-    > constGasHThermoPhysics;
+    > flameletConstGasHThermoPhysics;
 
     typedef
-    sutherlandTransport
+    flameletSutherlandTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            janafThermo
+            flameletJanafThermo
             <
-                perfectGas<specie>
+                flameletPerfectGas<flameletSpecie>
             >,
-            sensibleEnthalpy
+            flameletSensibleEnthalpy
         >
-    > gasHThermoPhysics;
+    > flameletGasHThermoPhysics;
 
     typedef
     flameletConstTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            hConstThermo
+            flameletHConstThermo
             <
-                incompressiblePerfectGas<specie>
+                flameletIncompressiblePerfectGas<flameletSpecie>
             >,
-            sensibleEnthalpy
+            flameletSensibleEnthalpy
         >
-    > constIncompressibleGasHThermoPhysics;
+    > flameletConstIncompressibleGasHThermoPhysics;
 
     typedef
-    sutherlandTransport
+    flameletSutherlandTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            janafThermo
+            flameletJanafThermo
             <
-                incompressiblePerfectGas<specie>
+                flameletIncompressiblePerfectGas<flameletSpecie>
             >,
-            sensibleEnthalpy
+            flameletSensibleEnthalpy
         >
-    > incompressibleGasHThermoPhysics;
+    > flameletIncompressibleGasHThermoPhysics;
 
     typedef
-    polynomialTransport
+    flameletPolynomialTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            hPolynomialThermo
+            flameletHPolynomialThermo
             <
-                icoPolynomial<specie, 8>,
+                flameletIcoPolynomial<flameletSpecie, 8>,
                 8
             >,
-            sensibleEnthalpy
+            flameletSensibleEnthalpy
         >,
         8
-    > icoPoly8HThermoPhysics;
+    > flameletIcoPoly8HThermoPhysics;
 
     typedef
     flameletConstTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            hConstThermo
+            flameletHConstThermo
             <
-                perfectFluid<specie>
+                flameletPerfectFluid<flameletSpecie>
             >,
-            sensibleEnthalpy
+            flameletSensibleEnthalpy
         >
     >
-    constFluidHThermoPhysics;
+    flameletConstFluidHThermoPhysics;
 
     typedef
     flameletConstTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            hConstThermo
+            flameletHConstThermo
             <
-                adiabaticPerfectFluid<specie>
+                flameletAdiabaticPerfectFluid<flameletSpecie>
             >,
-            sensibleEnthalpy
+            flameletSensibleEnthalpy
         >
     >
-    constAdiabaticFluidHThermoPhysics;
+    flameletConstAdiabaticFluidHThermoPhysics;
 
     typedef
     flameletConstTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            hConstThermo
+            flameletHConstThermo
             <
-                rhoConst<specie>
+                flameletRhoConst<flameletSpecie>
             >,
-            sensibleEnthalpy
+            flameletSensibleEnthalpy
         >
     >
-    constHThermoPhysics;
+    flameletConstHThermoPhysics;
 
 
-    // thermo physics types based on sensibleInternalEnergy
+    // thermo physics types based on flameletSensibleInternalEnergy
     typedef
     flameletConstTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            eConstThermo
+            flameletEConstThermo
             <
-                perfectGas<specie>
+                flameletPerfectGas<flameletSpecie>
             >,
-            sensibleInternalEnergy
+            flameletSensibleInternalEnergy
         >
-    > constGasEThermoPhysics;
+    > flameletConstGasEThermoPhysics;
 
     typedef
-    sutherlandTransport
+    flameletSutherlandTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            janafThermo
+            flameletJanafThermo
             <
-                perfectGas<specie>
+                flameletPerfectGas<flameletSpecie>
             >,
-            sensibleInternalEnergy
+            flameletSensibleInternalEnergy
         >
-    > gasEThermoPhysics;
+    > flameletGasEThermoPhysics;
 
     typedef
     flameletConstTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            eConstThermo
+            flameletEConstThermo
             <
-                incompressiblePerfectGas<specie>
+                flameletIncompressiblePerfectGas<flameletSpecie>
             >,
-            sensibleInternalEnergy
+            flameletSensibleInternalEnergy
         >
-    > constIncompressibleGasEThermoPhysics;
+    > flameletConstIncompressibleGasEThermoPhysics;
 
     typedef
-    sutherlandTransport
+    flameletSutherlandTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            janafThermo
+            flameletJanafThermo
             <
-                incompressiblePerfectGas<specie>
+                flameletIncompressiblePerfectGas<flameletSpecie>
             >,
-            sensibleInternalEnergy
+            flameletSensibleInternalEnergy
         >
-    > incompressibleGasEThermoPhysics;
+    > flameletIncompressibleGasEThermoPhysics;
 
     typedef
-    polynomialTransport
+    flameletPolynomialTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            hPolynomialThermo
+            flameletHPolynomialThermo
             <
-                icoPolynomial<specie, 8>,
+                flameletIcoPolynomial<flameletSpecie, 8>,
                 8
             >,
-            sensibleInternalEnergy
+            flameletSensibleInternalEnergy
         >,
         8
-    > icoPoly8EThermoPhysics;
+    > flameletIcoPoly8EThermoPhysics;
 
     typedef
     flameletConstTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            eConstThermo
+            flameletEConstThermo
             <
-                perfectFluid<specie>
+                flameletPerfectFluid<flameletSpecie>
             >,
-            sensibleInternalEnergy
+            flameletSensibleInternalEnergy
         >
     >
-    constFluidEThermoPhysics;
+    flameletConstFluidEThermoPhysics;
 
     typedef
     flameletConstTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            eConstThermo
+            flameletEConstThermo
             <
-                adiabaticPerfectFluid<specie>
+                flameletAdiabaticPerfectFluid<flameletSpecie>
             >,
-            sensibleInternalEnergy
+            flameletSensibleInternalEnergy
         >
     >
-    constAdiabaticFluidEThermoPhysics;
+    flameletConstAdiabaticFluidEThermoPhysics;
 
     typedef
     flameletConstTransport
     <
-        species::thermo
+        species::flameletThermo
         <
-            eConstThermo
+            flameletEConstThermo
             <
-                rhoConst<specie>
+                flameletRhoConst<flameletSpecie>
             >,
-            sensibleInternalEnergy
+            flameletSensibleInternalEnergy
         >
     >
-    constEThermoPhysics;
+    flameletConstEThermoPhysics;
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

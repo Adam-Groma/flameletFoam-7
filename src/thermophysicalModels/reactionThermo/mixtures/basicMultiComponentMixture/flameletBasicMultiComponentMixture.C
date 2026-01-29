@@ -42,7 +42,7 @@ Foam::flameletBasicMultiComponentMixture::flameletBasicMultiComponentMixture
     const word& phaseName
 )
 :
-    basicMixture(thermoDict, mesh, phaseName),
+    flameletBasicMixture(thermoDict, mesh, phaseName),
     species_(specieNames),
     active_(species_.size(), true),
     Y_(species_.size())

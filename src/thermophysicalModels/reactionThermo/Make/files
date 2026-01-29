@@ -3,6 +3,8 @@ chemistryReaders/chemkinReader/flameletChemkinLexer.L
 chemistryReaders/chemistryReader/flameletMakeChemistryReaders.C
 
 mixtures/basicMultiComponentMixture/flameletBasicMultiComponentMixture.C
+mixtures/basicSpecieMixture/flameletBasicSpecieMixture.C
+/*mixtures/basicCombustionMixture/flameletBasicCombustionMixture.C*/
 
 rhoReactionThermo/flameletRhoReactionThermo.C
 rhoReactionThermo/flameletRhoReactionThermos.C
@@ -10,5 +12,7 @@ rhoReactionThermo/flameletRhoReactionThermos.C
 /*derivedFvPatchFields/fixedUnburntEnthalpy/flameletFixedUnburntEnthalpyFvPatchScalarField.C*/
 /*derivedFvPatchFields/gradientUnburntEnthalpy/flameletGradientUnburntEnthalpyFvPatchScalarField.C*/
 /*derivedFvPatchFields/mixedUnburntEnthalpy/flameletMixedUnburntEnthalpyFvPatchScalarField.C*/
+
+functionObjects/moleFractions/flameletMoleFractionsFunctionObjects.C
 
 LIB = $(FOAM_USER_LIBBIN)/libflameletReactionThermophysicalModels

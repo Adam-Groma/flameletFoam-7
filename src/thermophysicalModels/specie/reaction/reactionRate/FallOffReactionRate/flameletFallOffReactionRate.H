@@ -67,7 +67,7 @@ class flameletFallOffReactionRate
         ReactionRate k0_;
         ReactionRate kInf_;
         FallOffFunction F_;
-        flameletThirdBodyEfficiencies flameletThirdBodyEfficiencies_;
+        flameletThirdBodyEfficiencies thirdBodyEfficiencies_;
         List<Tuple2<label, scalar>> beta_;
 
 

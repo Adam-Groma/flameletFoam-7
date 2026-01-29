@@ -26,7 +26,7 @@ Class
 
 Description
     This function object calculates mole-fraction fields from the mass-fraction
-    fields of the psi/flameletRhoReactionThermo and caches them for output and further
+    fields of the flameletRhoReactionThermo and caches them for output and further
     post-processing.
 
     The names of the mole-fraction fields are obtained from the corresponding
@@ -36,17 +36,9 @@ Description
     \verbatim
     flameletMoleFractions
     {
-        type psiReactionThermoMoleFractions;
-    }
-    \endverbatim
-    or
-    \verbatim
-    flameletMoleFractions
-    {
         type flameletRhoReactionThermoMoleFractions;
     }
     \endverbatim
-    depending on the thermodynamics package used in the solver.
 
 See also
     Foam::functionObjects::fvMeshFunctionObject

@@ -40,8 +40,8 @@ SourceFiles
 
 #include "volFields.H"
 #include "PtrList.H"
-#include "basicMixture.H"
-#include "speciesTable.H"
+#include "flameletBasicMixture.H"
+#include "flameletSpeciesTable.H"
 #include "typeInfo.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -55,7 +55,7 @@ namespace Foam
 
 class flameletBasicMultiComponentMixture
 :
-    public basicMixture
+    public flameletBasicMixture
 {
 
 protected:
@@ -63,7 +63,7 @@ protected:
     // Protected data
 
         //- Table of specie names
-        speciesTable species_;
+        flameletSpeciesTable species_;
 
         //- List of specie active flags
         List<bool> active_;
@@ -102,7 +102,7 @@ public:
     // Member Functions
 
         //- Return the table of species
-        inline const speciesTable& species() const;
+        inline const flameletSpeciesTable& species() const;
 
         //- Does the mixture include this specie?
         inline bool contains(const word& specieName) const;

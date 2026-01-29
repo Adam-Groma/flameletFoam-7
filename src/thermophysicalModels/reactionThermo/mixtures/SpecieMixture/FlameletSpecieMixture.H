@@ -22,18 +22,18 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::SpecieMixture
+    Foam::FlameletSpecieMixture
 
 Description
-    Foam::SpecieMixture
+    Foam::FlameletSpecieMixture
 
 SourceFiles
-    SpecieMixture.C
+    FlameletSpecieMixture.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef SpecieMixture_H
-#define SpecieMixture_H
+#ifndef FlameletSpecieMixture_H
+#define FlameletSpecieMixture_H
 
 #include "scalar.H"
 #include "volFields.H"
@@ -49,11 +49,11 @@ class fvMesh;
 
 
 /*---------------------------------------------------------------------------*\
-                     Class SpecieMixture Declaration
+                     Class FlameletSpecieMixture Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class MixtureType>
-class SpecieMixture
+class FlameletSpecieMixture
 :
     public MixtureType
 {
@@ -63,11 +63,11 @@ public:
     // Constructors
 
         //- Construct from dictionary, mesh and phase name
-        SpecieMixture(const dictionary&, const fvMesh&, const word& phaseName);
+        FlameletSpecieMixture(const dictionary&, const fvMesh&, const word& phaseName);
 
 
     //- Destructor
-    virtual ~SpecieMixture()
+    virtual ~FlameletSpecieMixture()
     {}
 
 
@@ -232,7 +232,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 #ifdef NoRepository
-    #include "SpecieMixture.C"
+    #include "FlameletSpecieMixture.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -32,7 +32,7 @@ Foam::autoPtr<Foam::flameletChemistryReader<ThermoType>>
 Foam::flameletChemistryReader<ThermoType>::New
 (
     const dictionary& thermoDict,
-    speciesTable& species
+    flameletSpeciesTable& species
 )
 {
     // Let the chemistry reader type default to CHEMKIN

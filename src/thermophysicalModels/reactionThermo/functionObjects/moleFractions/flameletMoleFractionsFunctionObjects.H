@@ -22,12 +22,6 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Typedef
-    Foam::psiReactionThermoMoleFractionsFunctionObject
-
-Description
-    Instantiate the flameletMoleFractions functionObject for psiReactionThermo
-
-Typedef
     Foam::flameletRhoReactionThermoMoleFractionsFunctionObject
 
 Description
@@ -42,16 +36,12 @@ SourceFiles
 #define flameletMoleFractionsFunctionObjects_H
 
 #include "flameletMoleFractions.H"
-#include "psiReactionThermo.H"
 #include "flameletRhoReactionThermo.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-    typedef flameletMoleFractions<psiReactionThermo>
-        psiReactionThermoMoleFractionsFunctionObject;
-
     typedef flameletMoleFractions<flameletRhoReactionThermo>
         flameletRhoReactionThermoMoleFractionsFunctionObject;
 }

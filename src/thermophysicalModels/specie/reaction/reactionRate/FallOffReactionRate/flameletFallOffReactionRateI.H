@@ -38,7 +38,7 @@ flameletFallOffReactionRate
     k0_(k0),
     kInf_(kInf),
     F_(F),
-    flameletThirdBodyEfficiencies_(tbes)
+    thirdBodyEfficiencies_(tbes)
 {
     forAll(tbes, i)
     {
@@ -58,16 +58,16 @@ flameletFallOffReactionRate
     k0_(species, dict.subDict("k0")),
     kInf_(species, dict.subDict("kInf")),
     F_(dict.subDict("F")),
-    flameletThirdBodyEfficiencies_(species, dict.subDict("flameletThirdBodyEfficiencies"))
+    thirdBodyEfficiencies_(species, dict.subDict("flameletThirdBodyEfficiencies"))
 {
-    forAll(flameletThirdBodyEfficiencies_, i)
+    forAll(thirdBodyEfficiencies_, i)
     {
         beta_.append
         (
             Tuple2<label, scalar>
             (
                 i,
-                flameletThirdBodyEfficiencies_[i]
+                thirdBodyEfficiencies_[i]
             )
         );
     }
@@ -87,7 +87,7 @@ Foam::flameletFallOffReactionRate<ReactionRate, FallOffFunction>::operator()
 {
     const scalar k0 = k0_(p, T, c);
     const scalar kInf = kInf_(p, T, c);
-    const scalar Pr = k0*flameletThirdBodyEfficiencies_.M(c)/kInf;
+    const scalar Pr = k0*thirdBodyEfficiencies_.M(c)/kInf;
 
     return kInf*(Pr/(1 + Pr))*F_(T, Pr);
 }
@@ -104,7 +104,7 @@ Foam::flameletFallOffReactionRate<ReactionRate, FallOffFunction>::ddT
 {
     const scalar k0 = k0_(p, T, c);
     const scalar kInf = kInf_(p, T, c);
-    const scalar Pr = k0*flameletThirdBodyEfficiencies_.M(c)/kInf;
+    const scalar Pr = k0*thirdBodyEfficiencies_.M(c)/kInf;
 
     return (Pr/(1 + Pr))*F_(T, Pr)*kInf_.ddT(p, T, c);
 }
@@ -119,7 +119,7 @@ inline void Foam::flameletFallOffReactionRate<ReactionRate, FallOffFunction>::dc
     scalarField& dcidc
 ) const
 {
-    const scalar M = flameletThirdBodyEfficiencies_.M(c);
+    const scalar M = thirdBodyEfficiencies_.M(c);
 
     if (M > small)
     {
@@ -154,14 +154,14 @@ Foam::flameletFallOffReactionRate<ReactionRate, FallOffFunction>::dcidT
     const scalarField& c
 ) const
 {
-    const scalar M = flameletThirdBodyEfficiencies_.M(c);
+    const scalar M = thirdBodyEfficiencies_.M(c);
 
     if (M > small)
     {
         const scalar k0 = k0_(p, T, c);
         const scalar kInf = kInf_(p, T, c);
 
-        const scalar Pr = k0*flameletThirdBodyEfficiencies_.M(c)/kInf;
+        const scalar Pr = k0*thirdBodyEfficiencies_.M(c)/kInf;
         const scalar F = F_(T, Pr);
         const scalar dPrdT =
             Pr*(k0_.ddT(p, T, c)/k0 - kInf_.ddT(p, T, c)/kInf - 1/T);
@@ -206,7 +206,7 @@ inline void Foam::flameletFallOffReactionRate<ReactionRate, FallOffFunction>::wr
     os  << indent << "flameletThirdBodyEfficiencies" << nl;
     os  << indent << token::BEGIN_BLOCK << nl;
     os  << incrIndent;
-    flameletThirdBodyEfficiencies_.write(os);
+    thirdBodyEfficiencies_.write(os);
     os  << decrIndent;
     os  << indent << token::END_BLOCK << nl;
 }

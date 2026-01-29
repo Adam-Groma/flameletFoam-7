@@ -41,7 +41,7 @@ inline Foam::flameletChemicallyActivatedReactionRate
     k0_(k0),
     kInf_(kInf),
     F_(F),
-    flameletThirdBodyEfficiencies_(tbes)
+    thirdBodyEfficiencies_(tbes)
 {
     forAll(tbes, i)
     {
@@ -64,16 +64,16 @@ inline Foam::flameletChemicallyActivatedReactionRate
     k0_(species, dict),
     kInf_(species, dict),
     F_(dict),
-    flameletThirdBodyEfficiencies_(species, dict)
+    thirdBodyEfficiencies_(species, dict)
 {
-    forAll(flameletThirdBodyEfficiencies_, i)
+    forAll(thirdBodyEfficiencies_, i)
     {
         beta_.append
         (
             Tuple2<label, scalar>
             (
                 i,
-                flameletThirdBodyEfficiencies_[i]
+                thirdBodyEfficiencies_[i]
             )
         );
     }
@@ -96,7 +96,7 @@ inline Foam::scalar Foam::flameletChemicallyActivatedReactionRate
 {
     const scalar k0 = k0_(p, T, c);
     const scalar kInf = kInf_(p, T, c);
-    const scalar Pr = k0*flameletThirdBodyEfficiencies_.M(c)/kInf;
+    const scalar Pr = k0*thirdBodyEfficiencies_.M(c)/kInf;
 
     return k0*(1/(1 + Pr))*F_(T, Pr);
 }
@@ -116,7 +116,7 @@ inline Foam::scalar Foam::flameletChemicallyActivatedReactionRate
 {
     const scalar k0 = k0_(p, T, c);
     const scalar kInf = kInf_(p, T, c);
-    const scalar Pr = k0*flameletThirdBodyEfficiencies_.M(c)/kInf;
+    const scalar Pr = k0*thirdBodyEfficiencies_.M(c)/kInf;
 
     return (1/(1 + Pr))*F_(T, Pr)*k0_.ddT(p, T, c);
 }
@@ -135,7 +135,7 @@ inline void Foam::flameletChemicallyActivatedReactionRate
     scalarField& dcidc
 ) const
 {
-    const scalar M = flameletThirdBodyEfficiencies_.M(c);
+    const scalar M = thirdBodyEfficiencies_.M(c);
 
     if (M > small)
     {
@@ -174,14 +174,14 @@ inline Foam::scalar Foam::flameletChemicallyActivatedReactionRate
     const scalarField& c
 ) const
 {
-    const scalar M = flameletThirdBodyEfficiencies_.M(c);
+    const scalar M = thirdBodyEfficiencies_.M(c);
 
     if (M > small)
     {
         const scalar k0 = k0_(p, T, c);
         const scalar kInf = kInf_(p, T, c);
 
-        const scalar Pr = k0*flameletThirdBodyEfficiencies_.M(c)/kInf;
+        const scalar Pr = k0*thirdBodyEfficiencies_.M(c)/kInf;
         const scalar F = F_(T, Pr);
         const scalar dPrdT =
             Pr*(k0_.ddT(p, T, c)/k0 - kInf_.ddT(p, T, c)/kInf - 1/T);
@@ -206,7 +206,7 @@ inline void Foam::flameletChemicallyActivatedReactionRate
     k0_.write(os);
     kInf_.write(os);
     F_.write(os);
-    flameletThirdBodyEfficiencies_.write(os);
+    thirdBodyEfficiencies_.write(os);
 }
 
 

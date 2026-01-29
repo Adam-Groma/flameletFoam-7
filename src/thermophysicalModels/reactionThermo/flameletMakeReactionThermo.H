@@ -28,7 +28,7 @@ License
 
 #include "addToRunTimeSelectionTable.H"
 #include "flameletMakeThermo.H"
-#include "SpecieMixture.H"
+#include "FlameletSpecieMixture.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -37,7 +37,7 @@ License
     typedef CThermo                                                            \
     <                                                                          \
         BaseReactionThermo,                                                    \
-        SpecieMixture                                                          \
+        FlameletSpecieMixture                                                          \
         <                                                                      \
             Mixture                                                            \
             <                                                                  \
@@ -64,10 +64,10 @@ License
         ThermoPhys                                                             \
     );                                                                         \
                                                                                \
-    addThermoPhysicsThermo(flameletBasicThermo, CThermo##Mixture##ThermoPhys);         \
-    addThermoPhysicsThermo(flameletFluidThermo, CThermo##Mixture##ThermoPhys);         \
-    addThermoPhysicsThermo(BaseThermo, CThermo##Mixture##ThermoPhys);          \
-    addThermoPhysicsThermo(BaseReactionThermo, CThermo##Mixture##ThermoPhys)
+    flameletAddThermoPhysicsThermo(flameletBasicThermo, CThermo##Mixture##ThermoPhys);         \
+    flameletAddThermoPhysicsThermo(flameletFluidThermo, CThermo##Mixture##ThermoPhys);         \
+    flameletAddThermoPhysicsThermo(BaseThermo, CThermo##Mixture##ThermoPhys);          \
+    flameletAddThermoPhysicsThermo(BaseReactionThermo, CThermo##Mixture##ThermoPhys)
 
 
 #define flameletMakeThermoPhysicsReactionThermo(BaseReactionThermo,CThermo,Mixture,ThermoPhys) \
@@ -80,7 +80,7 @@ License
         ThermoPhys                                                             \
     );                                                                         \
                                                                                \
-    addThermoPhysicsThermo(BaseReactionThermo, CThermo##Mixture##ThermoPhys)
+    flameletAddThermoPhysicsThermo(BaseReactionThermo, CThermo##Mixture##ThermoPhys)
 
 
 #define flameletMakeReactionThermos(BaseThermo,BaseReactionThermo,CThermo,Mixture,Transport,Type,Thermo,EqnOfState,Specie) \

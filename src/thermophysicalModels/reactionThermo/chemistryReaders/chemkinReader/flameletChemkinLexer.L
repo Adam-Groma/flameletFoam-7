@@ -290,18 +290,18 @@ label currentElementIndex = 0;
 word currentSpecieName;
 label currentSpecieIndex = 0;
 label nSpecieElements = 0;
-List<specieElement> currentSpecieComposition(5);
+List<flameletSpecieElement> currentSpecieComposition(5);
 
 scalar currentLowT = 0;
 scalar currentHighT = 0;
 scalar currentCommonT = 0;
-gasHThermoPhysics::coeffArray highCpCoeffs(scalarList(7));
-gasHThermoPhysics::coeffArray lowCpCoeffs(scalarList(7));
+flameletGasHThermoPhysics::coeffArray highCpCoeffs(scalarList(7));
+flameletGasHThermoPhysics::coeffArray lowCpCoeffs(scalarList(7));
 
-specieCoeffs currentSpecieCoeff;
+flameletSpecieCoeffs currentSpecieCoeff;
 
-DynamicList<specieCoeffs> lhs;
-DynamicList<specieCoeffs> rhs;
+DynamicList<flameletSpecieCoeffs> lhs;
+DynamicList<flameletSpecieCoeffs> rhs;
 
 scalarList ArrheniusCoeffs(3);
 DynamicList<scalar> reactionCoeffs;
@@ -311,7 +311,7 @@ label currentThirdBodyIndex = -1;
 word reactionCoeffsName = word::null;
 HashTable<scalarList> reactionCoeffsTable;
 
-DynamicList<specieCoeffs> *lrhsPtr = &lhs;
+DynamicList<flameletSpecieCoeffs> *lrhsPtr = &lhs;
 
 reactionType rType = unknownReactionType;
 reactionRateType rrType = Arrhenius;
@@ -613,7 +613,7 @@ bool finishReaction = false;
 
 <readThermoLineLabel4>{thermoLineLabel4} {
 
-        HashPtrTable<gasHThermoPhysics>::iterator specieThermoIter
+        HashPtrTable<flameletGasHThermoPhysics>::iterator specieThermoIter
         (
             speciesThermo_.find(currentSpecieName)
         );
@@ -626,11 +626,11 @@ bool finishReaction = false;
         speciesThermo_.insert
         (
             currentSpecieName,
-            new gasHThermoPhysics
+            new flameletGasHThermoPhysics
             (
-                janafThermo<perfectGas<specie>>
+                flameletJanafThermo<flameletPerfectGas<flameletSpecie>>
                 (
-                    specie
+                    flameletSpecie
                     (
                         currentSpecieName,
                         1.0,
@@ -651,15 +651,15 @@ bool finishReaction = false;
     }
 
 <readThermoSpecieName>{end} {
-        Reaction<gasHThermoPhysics>::TlowDefault = max
+        FlameletReaction<flameletGasHThermoPhysics>::TlowDefault = max
         (
-            Reaction<gasHThermoPhysics>::TlowDefault,
+            FlameletReaction<flameletGasHThermoPhysics>::TlowDefault,
             currentLowT
         );
 
-        Reaction<gasHThermoPhysics>::ThighDefault = min
+        FlameletReaction<flameletGasHThermoPhysics>::ThighDefault = min
         (
-            Reaction<gasHThermoPhysics>::ThighDefault,
+            FlameletReaction<flameletGasHThermoPhysics>::ThighDefault,
             currentHighT
         );
 
@@ -1098,7 +1098,7 @@ bool finishReaction = false;
                     break;
                 }
 
-                case powerSeriesReactionRateType:
+                case flameletPowerSeriesReactionRateType:
                 {
                     if (rrType == Arrhenius)
                     {
@@ -1449,7 +1449,7 @@ bool finishReaction = false;
 
 <readReactionOrder>{reactionCoeff}{endReactionCoeffs} {
 
-        DynamicList<specieCoeffs>& lrhs = *lrhsPtr;
+        DynamicList<flameletSpecieCoeffs>& lrhs = *lrhsPtr;
 
         bool found = false;
 

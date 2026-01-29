@@ -30,10 +30,10 @@ License
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
 template<class ThermoType>
-Foam::speciesTable& Foam::flameletFoamChemistryReader<ThermoType>::setSpecies
+Foam::flameletSpeciesTable& Foam::flameletFoamChemistryReader<ThermoType>::setSpecies
 (
     const dictionary& dict,
-    speciesTable& species
+    flameletSpeciesTable& species
 )
 {
     wordList s(dict.lookup("species"));
@@ -83,7 +83,7 @@ void Foam::flameletFoamChemistryReader<ThermoType>::readSpeciesComposition()
             );
 
             wordList currentElementsName(currentElements.toc());
-            List<specieElement> currentComposition(currentElementsName.size());
+            List<flameletSpecieElement> currentComposition(currentElementsName.size());
 
             forAll(currentElementsName, eni)
             {
@@ -127,7 +127,7 @@ template<class ThermoType>
 Foam::flameletFoamChemistryReader<ThermoType>::flameletFoamChemistryReader
 (
     const fileName& reactionsFileName,
-    speciesTable& species,
+    flameletSpeciesTable& species,
     const fileName& thermoFileName
 )
 :
@@ -158,7 +158,7 @@ template<class ThermoType>
 Foam::flameletFoamChemistryReader<ThermoType>::flameletFoamChemistryReader
 (
     const dictionary& thermoDict,
-    speciesTable& species
+    flameletSpeciesTable& species
 )
 :
     flameletChemistryReader<ThermoType>(),

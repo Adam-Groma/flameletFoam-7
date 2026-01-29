@@ -20,8 +20,8 @@ eConstThermoI
 eRefConstThermo
 eRefConstThermoI
 \bEtoHthermo\b
-fallOffReactionRate
-fallOffReactionRateI
+\bFallOffReactionRate\b
+\bFallOffReactionRateI\b
 hConstThermo
 hConstThermoI
 hPolynomialThermo
@@ -37,7 +37,7 @@ incompressiblePerfectGas
 incompressiblePerfectGasI
 infiniteReactionRate
 infiniteReactionRateI
-irreversibleReaction
+\birreversibleReaction\b
 janafThermo
 janafThermoI
 \bJanevReactionRate\b
@@ -58,7 +58,7 @@ makeReaction
 makeReactions
 \bMichaelisMentenReactionRate\b
 \bMichaelisMentenReactionRateI\b
-nonEquilibriumReversibleReaction
+\bNonEquilibriumReversibleReaction\b
 \bPengRobinsonGas\b
 \bPengRobinsonGasI\b
 perfectFluid
@@ -81,12 +81,12 @@ rhoConstI
 \bSRIFallOffFunctionI\b
 sensibleEnthalpy
 sensibleInternalEnergy
-\bspecie\b
+-\bspecie\b
 specieCoeffs
 specieElement
 specieElementI
-specieI
-speciesTable
+\bspecieI\b
+\bspeciesTable\b
 sutherlandTransport
 sutherlandTransportI
 -\bthermo\b
@@ -94,7 +94,7 @@ thermoI
 thermoPhysicsTypes
 thirdBodyArrheniusReactionRate
 thirdBodyArrheniusReactionRateI
-thirdBodyEfficiencies
+-thirdBodyEfficiencies
 thirdBodyEfficienciesI
 \bTroeFallOffFunction\b
 \bTroeFallOffFunctionI\b
@@ -104,7 +104,7 @@ thirdBodyEfficienciesI
 /////////////////////////////
 |thermophysicalModels/basic
 -+-+---+++++---+---++++--+---
-basicMixture
+\bbasicMixture\b
 basicThermo
 basicThermoTemplates
 energyJumpAMIFvPatchScalarField
@@ -142,6 +142,7 @@ multiComponentMixture
 reactingMixture
 rhoReactionThermo
 rhoReactionThermos
+\bSpecieMixture\b
 /////////////////////////////
 /////////////////////////////
 |thermophysicalModels/chemistryModel

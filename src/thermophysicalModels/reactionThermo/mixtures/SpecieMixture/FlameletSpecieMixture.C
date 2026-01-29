@@ -23,14 +23,14 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "SpecieMixture.H"
+#include "FlameletSpecieMixture.H"
 #include "fvMesh.H"
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template<class MixtureType>
-Foam::SpecieMixture<MixtureType>::SpecieMixture
+Foam::FlameletSpecieMixture<MixtureType>::FlameletSpecieMixture
 (
     const dictionary& thermoDict,
     const fvMesh& mesh,
@@ -49,7 +49,7 @@ Foam::SpecieMixture<MixtureType>::SpecieMixture
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::Wi
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::Wi
 (
     const label speciei
 ) const
@@ -59,7 +59,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::Wi
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::Cp
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::Cp
 (
     const label speciei,
     const scalar p,
@@ -71,7 +71,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::Cp
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::Cv
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::Cv
 (
     const label speciei,
     const scalar p,
@@ -83,7 +83,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::Cv
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::Ha
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::Ha
 (
     const label speciei,
     const scalar p,
@@ -95,7 +95,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::Ha
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::Hs
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::Hs
 (
     const label speciei,
     const scalar p,
@@ -107,7 +107,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::Hs
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::Hc
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::Hc
 (
     const label speciei
 ) const
@@ -117,7 +117,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::Hc
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::S
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::S
 (
     const label speciei,
     const scalar p,
@@ -129,7 +129,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::S
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::Es
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::Es
 (
     const label speciei,
     const scalar p,
@@ -141,7 +141,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::Es
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::G
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::G
 (
     const label speciei,
     const scalar p,
@@ -153,7 +153,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::G
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::A
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::A
 (
     const label speciei,
     const scalar p,
@@ -165,7 +165,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::A
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::mu
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::mu
 (
     const label speciei,
     const scalar p,
@@ -177,7 +177,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::mu
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::kappa
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::kappa
 (
     const label speciei,
     const scalar p,
@@ -189,7 +189,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::kappa
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::alphah
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::alphah
 (
     const label speciei,
     const scalar p,
@@ -201,7 +201,7 @@ Foam::scalar Foam::SpecieMixture<MixtureType>::alphah
 
 
 template<class MixtureType>
-Foam::scalar Foam::SpecieMixture<MixtureType>::rho
+Foam::scalar Foam::FlameletSpecieMixture<MixtureType>::rho
 (
     const label speciei,
     const scalar p,

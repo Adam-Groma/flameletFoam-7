@@ -60,7 +60,7 @@ class flameletThirdBodyArrheniusReactionRate
 {
     // Private Data
 
-        flameletThirdBodyEfficiencies flameletThirdBodyEfficiencies_;
+        flameletThirdBodyEfficiencies thirdBodyEfficiencies_;
         List<Tuple2<label, scalar>> beta_;
 
 

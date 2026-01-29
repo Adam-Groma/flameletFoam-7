@@ -36,9 +36,9 @@ SourceFiles
 #define flameletChemistryReader_H
 
 #include "typeInfo.H"
-#include "specieElement.H"
-#include "Reaction.H"
-#include "ReactionList.H"
+#include "flameletSpecieElement.H"
+#include "FlameletReaction.H"
+#include "FlameletReactionList.H"
 #include "runTimeSelectionTables.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -46,7 +46,7 @@ SourceFiles
 namespace Foam
 {
 
-typedef HashTable<List<specieElement>> speciesCompositionTable;
+typedef HashTable<List<flameletSpecieElement>> speciesCompositionTable;
 
 
 /*---------------------------------------------------------------------------*\
@@ -84,7 +84,7 @@ public:
             dictionary,
             (
                 const dictionary& thermoDict,
-                speciesTable& species
+                flameletSpeciesTable& species
             ),
             (thermoDict, species)
         );
@@ -96,7 +96,7 @@ public:
         static autoPtr<flameletChemistryReader> New
         (
             const dictionary& thermoDict,
-            speciesTable& species
+            flameletSpeciesTable& species
         );
 
 
@@ -108,7 +108,7 @@ public:
     // Member Functions
 
         //- Return access to the list of species
-        virtual const speciesTable& species() const = 0;
+        virtual const flameletSpeciesTable& species() const = 0;
 
         //- Table of species composition
         virtual const speciesCompositionTable& specieComposition() const = 0;
@@ -117,7 +117,7 @@ public:
         virtual const HashPtrTable<ThermoType>& speciesThermo() const = 0;
 
         //- Return access to the list of reactions
-        virtual const ReactionList<ThermoType>& reactions() const = 0;
+        virtual const FlameletReactionList<ThermoType>& reactions() const = 0;
 
 
     // Member Operators

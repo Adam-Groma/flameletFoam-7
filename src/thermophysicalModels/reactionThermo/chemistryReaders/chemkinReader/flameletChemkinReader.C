@@ -26,20 +26,20 @@ License
 #include "flameletChemkinReader.H"
 #include <fstream>
 #include "flameletAtomicWeights.H"
-#include "ReactionProxy.H"
-#include "IrreversibleReaction.H"
-#include "ReversibleReaction.H"
-#include "NonEquilibriumReversibleReaction.H"
-#include "ArrheniusReactionRate.H"
-#include "thirdBodyArrheniusReactionRate.H"
-#include "FallOffReactionRate.H"
-#include "ChemicallyActivatedReactionRate.H"
-#include "LindemannFallOffFunction.H"
-#include "TroeFallOffFunction.H"
-#include "SRIFallOffFunction.H"
-#include "LandauTellerReactionRate.H"
-#include "JanevReactionRate.H"
-#include "powerSeriesReactionRate.H"
+#include "FlameletReactionProxy.H"
+#include "FlameletIrreversibleReaction.H"
+#include "FlameletReversibleReaction.H"
+#include "FlameletNonEquilibriumReversibleReaction.H"
+#include "flameletArrheniusReactionRate.H"
+#include "flameletThirdBodyArrheniusReactionRate.H"
+#include "flameletFallOffReactionRate.H"
+#include "flameletChemicallyActivatedReactionRate.H"
+#include "flameletLindemannFallOffFunction.H"
+#include "flameletTroeFallOffFunction.H"
+#include "flameletSRIFallOffFunction.H"
+#include "flameletLandauTellerReactionRate.H"
+#include "flameletJanevReactionRate.H"
+#include "flameletPowerSeriesReactionRate.H"
 #include "addToRunTimeSelectionTable.H"
 
 
@@ -47,7 +47,7 @@ License
 
 namespace Foam
 {
-    addChemistryReaderType(flameletChemkinReader, gasHThermoPhysics);
+    addChemistryReaderType(flameletChemkinReader, flameletGasHThermoPhysics);
 }
 
 
@@ -95,7 +95,7 @@ void Foam::flameletChemkinReader::initReactionKeywordTable()
     reactionKeywordTable_.insert("LT", LandauTellerReactionType);
     reactionKeywordTable_.insert("RLT", reverseLandauTellerReactionType);
     reactionKeywordTable_.insert("JAN", JanevReactionType);
-    reactionKeywordTable_.insert("FIT1", powerSeriesReactionRateType);
+    reactionKeywordTable_.insert("FIT1", flameletPowerSeriesReactionRateType);
     reactionKeywordTable_.insert("HV", radiationActivatedReactionType);
     reactionKeywordTable_.insert("TDEP", speciesTempReactionType);
     reactionKeywordTable_.insert("EXCI", energyLossReactionType);
@@ -113,7 +113,7 @@ void Foam::flameletChemkinReader::initReactionKeywordTable()
 
 Foam::scalar Foam::flameletChemkinReader::molecularWeight
 (
-    const List<specieElement>& specieComposition
+    const List<flameletSpecieElement>& specieComposition
 ) const
 {
     scalar molWt = 0.0;
@@ -169,8 +169,8 @@ template<class ReactionRateType>
 void Foam::flameletChemkinReader::addReactionType
 (
     const reactionType rType,
-    DynamicList<specieCoeffs>& lhs,
-    DynamicList<specieCoeffs>& rhs,
+    DynamicList<flameletSpecieCoeffs>& lhs,
+    DynamicList<flameletSpecieCoeffs>& rhs,
     const ReactionRateType& rr
 )
 {
@@ -180,10 +180,10 @@ void Foam::flameletChemkinReader::addReactionType
         {
             reactions_.append
             (
-                new IrreversibleReaction
-                <Reaction, gasHThermoPhysics, ReactionRateType>
+                new FlameletIrreversibleReaction
+                <FlameletReaction, flameletGasHThermoPhysics, ReactionRateType>
                 (
-                    ReactionProxy<gasHThermoPhysics>
+                    FlameletReactionProxy<flameletGasHThermoPhysics>
                     (
                         speciesTable_,
                         lhs.shrink(),
@@ -200,10 +200,10 @@ void Foam::flameletChemkinReader::addReactionType
         {
             reactions_.append
             (
-                new ReversibleReaction
-                <Reaction, gasHThermoPhysics, ReactionRateType>
+                new FlameletReversibleReaction
+                <FlameletReaction, flameletGasHThermoPhysics, ReactionRateType>
                 (
-                    ReactionProxy<gasHThermoPhysics>
+                    FlameletReactionProxy<flameletGasHThermoPhysics>
                     (
                         speciesTable_,
                         lhs.shrink(),
@@ -241,8 +241,8 @@ void Foam::flameletChemkinReader::addPressureDependentReaction
 (
     const reactionType rType,
     const fallOffFunctionType fofType,
-    DynamicList<specieCoeffs>& lhs,
-    DynamicList<specieCoeffs>& rhs,
+    DynamicList<flameletSpecieCoeffs>& lhs,
+    DynamicList<flameletSpecieCoeffs>& rhs,
     const scalarList& efficiencies,
     const scalarList& k0Coeffs,
     const scalarList& kInfCoeffs,
@@ -264,22 +264,22 @@ void Foam::flameletChemkinReader::addPressureDependentReaction
                 rType,
                 lhs, rhs,
                 PressureDependencyType
-                    <ArrheniusReactionRate, LindemannFallOffFunction>
+                    <flameletArrheniusReactionRate, flameletLindemannFallOffFunction>
                 (
-                    ArrheniusReactionRate
+                    flameletArrheniusReactionRate
                     (
                         Afactor0*k0Coeffs[0],
                         k0Coeffs[1],
                         k0Coeffs[2]/RR
                     ),
-                    ArrheniusReactionRate
+                    flameletArrheniusReactionRate
                     (
                         AfactorInf*kInfCoeffs[0],
                         kInfCoeffs[1],
                         kInfCoeffs[2]/RR
                     ),
-                    LindemannFallOffFunction(),
-                    thirdBodyEfficiencies(speciesTable_, efficiencies)
+                    flameletLindemannFallOffFunction(),
+                    flameletThirdBodyEfficiencies(speciesTable_, efficiencies)
                 )
             );
             break;
@@ -313,28 +313,28 @@ void Foam::flameletChemkinReader::addPressureDependentReaction
                 rType,
                 lhs, rhs,
                 PressureDependencyType
-                    <ArrheniusReactionRate, TroeFallOffFunction>
+                    <flameletArrheniusReactionRate, flameletTroeFallOffFunction>
                 (
-                    ArrheniusReactionRate
+                    flameletArrheniusReactionRate
                     (
                         Afactor0*k0Coeffs[0],
                         k0Coeffs[1],
                         k0Coeffs[2]/RR
                     ),
-                    ArrheniusReactionRate
+                    flameletArrheniusReactionRate
                     (
                         AfactorInf*kInfCoeffs[0],
                         kInfCoeffs[1],
                         kInfCoeffs[2]/RR
                     ),
-                    TroeFallOffFunction
+                    flameletTroeFallOffFunction
                     (
                         TroeCoeffs[0],
                         TroeCoeffs[1],
                         TroeCoeffs[2],
                         TroeCoeffs[3]
                     ),
-                    thirdBodyEfficiencies(speciesTable_, efficiencies)
+                    flameletThirdBodyEfficiencies(speciesTable_, efficiencies)
                 )
             );
             break;
@@ -369,21 +369,21 @@ void Foam::flameletChemkinReader::addPressureDependentReaction
                 rType,
                 lhs, rhs,
                 PressureDependencyType
-                    <ArrheniusReactionRate, SRIFallOffFunction>
+                    <flameletArrheniusReactionRate, flameletSRIFallOffFunction>
                 (
-                    ArrheniusReactionRate
+                    flameletArrheniusReactionRate
                     (
                         Afactor0*k0Coeffs[0],
                         k0Coeffs[1],
                         k0Coeffs[2]/RR
                     ),
-                    ArrheniusReactionRate
+                    flameletArrheniusReactionRate
                     (
                         AfactorInf*kInfCoeffs[0],
                         kInfCoeffs[1],
                         kInfCoeffs[2]/RR
                     ),
-                    SRIFallOffFunction
+                    flameletSRIFallOffFunction
                     (
                         SRICoeffs[0],
                         SRICoeffs[1],
@@ -391,7 +391,7 @@ void Foam::flameletChemkinReader::addPressureDependentReaction
                         SRICoeffs[3],
                         SRICoeffs[4]
                     ),
-                    thirdBodyEfficiencies(speciesTable_, efficiencies)
+                    flameletThirdBodyEfficiencies(speciesTable_, efficiencies)
                 )
             );
             break;
@@ -411,8 +411,8 @@ void Foam::flameletChemkinReader::addPressureDependentReaction
 
 void Foam::flameletChemkinReader::addReaction
 (
-    DynamicList<specieCoeffs>& lhs,
-    DynamicList<specieCoeffs>& rhs,
+    DynamicList<flameletSpecieCoeffs>& lhs,
+    DynamicList<flameletSpecieCoeffs>& rhs,
     const scalarList& efficiencies,
     const reactionType rType,
     const reactionRateType rrType,
@@ -428,7 +428,7 @@ void Foam::flameletChemkinReader::addReaction
 
     forAll(lhs, i)
     {
-        const List<specieElement>& specieComposition =
+        const List<flameletSpecieElement>& specieComposition =
             speciesComposition_[speciesTable_[lhs[i].index]];
 
         forAll(specieComposition, j)
@@ -441,7 +441,7 @@ void Foam::flameletChemkinReader::addReaction
 
     forAll(rhs, i)
     {
-        const List<specieElement>& specieComposition =
+        const List<flameletSpecieElement>& specieComposition =
             speciesComposition_[speciesTable_[rhs[i].index]];
 
         forAll(specieComposition, j)
@@ -488,23 +488,23 @@ void Foam::flameletChemkinReader::addReaction
 
                 reactions_.append
                 (
-                    new NonEquilibriumReversibleReaction
-                        <Reaction, gasHThermoPhysics, ArrheniusReactionRate>
+                    new FlameletNonEquilibriumReversibleReaction
+                        <FlameletReaction, flameletGasHThermoPhysics, flameletArrheniusReactionRate>
                     (
-                        ReactionProxy<gasHThermoPhysics>
+                        FlameletReactionProxy<flameletGasHThermoPhysics>
                         (
                             speciesTable_,
                             lhs.shrink(),
                             rhs.shrink(),
                             speciesThermo_
                         ),
-                        ArrheniusReactionRate
+                        flameletArrheniusReactionRate
                         (
                             Afactor*ArrheniusCoeffs[0],
                             ArrheniusCoeffs[1],
                             ArrheniusCoeffs[2]/RR
                         ),
-                        ArrheniusReactionRate
+                        flameletArrheniusReactionRate
                         (
                             AfactorRev*reverseArrheniusCoeffs[0],
                             reverseArrheniusCoeffs[1],
@@ -519,7 +519,7 @@ void Foam::flameletChemkinReader::addReaction
                 (
                     rType,
                     lhs, rhs,
-                    ArrheniusReactionRate
+                    flameletArrheniusReactionRate
                     (
                         Afactor*ArrheniusCoeffs[0],
                         ArrheniusCoeffs[1],
@@ -540,33 +540,33 @@ void Foam::flameletChemkinReader::addReaction
 
                 reactions_.append
                 (
-                    new NonEquilibriumReversibleReaction
+                    new FlameletNonEquilibriumReversibleReaction
                     <
-                        Reaction,
-                        gasHThermoPhysics,
-                        thirdBodyArrheniusReactionRate
+                        FlameletReaction,
+                        flameletGasHThermoPhysics,
+                        flameletThirdBodyArrheniusReactionRate
                     >
                     (
-                        ReactionProxy<gasHThermoPhysics>
+                        FlameletReactionProxy<flameletGasHThermoPhysics>
                         (
                             speciesTable_,
                             lhs.shrink(),
                             rhs.shrink(),
                             speciesThermo_
                         ),
-                        thirdBodyArrheniusReactionRate
+                        flameletThirdBodyArrheniusReactionRate
                         (
                             Afactor*concFactor*ArrheniusCoeffs[0],
                             ArrheniusCoeffs[1],
                             ArrheniusCoeffs[2]/RR,
-                            thirdBodyEfficiencies(speciesTable_, efficiencies)
+                            flameletThirdBodyEfficiencies(speciesTable_, efficiencies)
                         ),
-                        thirdBodyArrheniusReactionRate
+                        flameletThirdBodyArrheniusReactionRate
                         (
                             AfactorRev*concFactor*reverseArrheniusCoeffs[0],
                             reverseArrheniusCoeffs[1],
                             reverseArrheniusCoeffs[2]/RR,
-                            thirdBodyEfficiencies(speciesTable_, efficiencies)
+                            flameletThirdBodyEfficiencies(speciesTable_, efficiencies)
                         )
                     )
                 );
@@ -577,12 +577,12 @@ void Foam::flameletChemkinReader::addReaction
                 (
                     rType,
                     lhs, rhs,
-                    thirdBodyArrheniusReactionRate
+                    flameletThirdBodyArrheniusReactionRate
                     (
                         Afactor*concFactor*ArrheniusCoeffs[0],
                         ArrheniusCoeffs[1],
                         ArrheniusCoeffs[2]/RR,
-                        thirdBodyEfficiencies(speciesTable_, efficiencies)
+                        flameletThirdBodyEfficiencies(speciesTable_, efficiencies)
                     )
                 );
             }
@@ -590,7 +590,7 @@ void Foam::flameletChemkinReader::addReaction
         }
         case unimolecularFallOff:
         {
-            addPressureDependentReaction<FallOffReactionRate>
+            addPressureDependentReaction<flameletFallOffReactionRate>
             (
                 rType,
                 fofType,
@@ -608,7 +608,7 @@ void Foam::flameletChemkinReader::addReaction
         }
         case chemicallyActivatedBimolecular:
         {
-            addPressureDependentReaction<ChemicallyActivatedReactionRate>
+            addPressureDependentReaction<flameletChemicallyActivatedReactionRate>
             (
                 rType,
                 fofType,
@@ -646,21 +646,21 @@ void Foam::flameletChemkinReader::addReaction
 
                 reactions_.append
                 (
-                    new NonEquilibriumReversibleReaction
+                    new FlameletNonEquilibriumReversibleReaction
                     <
-                        Reaction,
-                        gasHThermoPhysics,
-                        LandauTellerReactionRate
+                        FlameletReaction,
+                        flameletGasHThermoPhysics,
+                        flameletLandauTellerReactionRate
                     >
                     (
-                        ReactionProxy<gasHThermoPhysics>
+                        FlameletReactionProxy<flameletGasHThermoPhysics>
                         (
                             speciesTable_,
                             lhs.shrink(),
                             rhs.shrink(),
                             speciesThermo_
                         ),
-                        LandauTellerReactionRate
+                        flameletLandauTellerReactionRate
                         (
                             Afactor*ArrheniusCoeffs[0],
                             ArrheniusCoeffs[1],
@@ -668,7 +668,7 @@ void Foam::flameletChemkinReader::addReaction
                             LandauTellerCoeffs[0],
                             LandauTellerCoeffs[1]
                         ),
-                        LandauTellerReactionRate
+                        flameletLandauTellerReactionRate
                         (
                             AfactorRev*reverseArrheniusCoeffs[0],
                             reverseArrheniusCoeffs[1],
@@ -685,7 +685,7 @@ void Foam::flameletChemkinReader::addReaction
                 (
                     rType,
                     lhs, rhs,
-                    LandauTellerReactionRate
+                    flameletLandauTellerReactionRate
                     (
                         Afactor*ArrheniusCoeffs[0],
                         ArrheniusCoeffs[1],
@@ -708,7 +708,7 @@ void Foam::flameletChemkinReader::addReaction
             (
                 rType,
                 lhs, rhs,
-                JanevReactionRate
+                flameletJanevReactionRate
                 (
                     Afactor*ArrheniusCoeffs[0],
                     ArrheniusCoeffs[1],
@@ -729,7 +729,7 @@ void Foam::flameletChemkinReader::addReaction
             (
                 rType,
                 lhs, rhs,
-                powerSeriesReactionRate
+                flameletPowerSeriesReactionRate
                 (
                     Afactor*ArrheniusCoeffs[0],
                     ArrheniusCoeffs[1],
@@ -785,8 +785,8 @@ void Foam::flameletChemkinReader::read
     const fileName& transportFileName
 )
 {
-    Reaction<gasHThermoPhysics>::TlowDefault = 0;
-    Reaction<gasHThermoPhysics>::ThighDefault = great;
+    FlameletReaction<flameletGasHThermoPhysics>::TlowDefault = 0;
+    FlameletReaction<flameletGasHThermoPhysics>::ThighDefault = great;
 
     transportDict_.read(IFstream(transportFileName)());
 
@@ -837,7 +837,7 @@ void Foam::flameletChemkinReader::read
 
 Foam::flameletChemkinReader::flameletChemkinReader
 (
-    speciesTable& species,
+    flameletSpeciesTable& species,
     const fileName& CHEMKINFileName,
     const fileName& transportFileName,
     const fileName& thermoFileName,
@@ -858,7 +858,7 @@ Foam::flameletChemkinReader::flameletChemkinReader
 Foam::flameletChemkinReader::flameletChemkinReader
 (
     const dictionary& thermoDict,
-    speciesTable& species
+    flameletSpeciesTable& species
 )
 :
     lineNo_(1),

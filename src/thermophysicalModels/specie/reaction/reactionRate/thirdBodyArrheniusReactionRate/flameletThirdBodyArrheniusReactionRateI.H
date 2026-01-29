@@ -34,7 +34,7 @@ inline Foam::flameletThirdBodyArrheniusReactionRate::flameletThirdBodyArrheniusR
 )
 :
     flameletArrheniusReactionRate(A, beta, Ta),
-    flameletThirdBodyEfficiencies_(tbes)
+    thirdBodyEfficiencies_(tbes)
 {
     forAll(tbes, i)
     {
@@ -54,16 +54,16 @@ inline Foam::flameletThirdBodyArrheniusReactionRate::flameletThirdBodyArrheniusR
         species,
         dict
     ),
-    flameletThirdBodyEfficiencies_(species, dict)
+    thirdBodyEfficiencies_(species, dict)
 {
-    forAll(flameletThirdBodyEfficiencies_, i)
+    forAll(thirdBodyEfficiencies_, i)
     {
         beta_.append
         (
             Tuple2<label, scalar>
             (
                 i,
-                flameletThirdBodyEfficiencies_[i]
+                thirdBodyEfficiencies_[i]
             )
         );
     }
@@ -80,7 +80,7 @@ inline Foam::scalar Foam::flameletThirdBodyArrheniusReactionRate::operator()
 ) const
 {
     return
-        flameletThirdBodyEfficiencies_.M(c)
+        thirdBodyEfficiencies_.M(c)
        *flameletArrheniusReactionRate::operator()(p, T, c);
 }
 
@@ -93,7 +93,7 @@ inline Foam::scalar Foam::flameletThirdBodyArrheniusReactionRate::ddT
 ) const
 {
     return
-        flameletThirdBodyEfficiencies_.M(c)
+        thirdBodyEfficiencies_.M(c)
        *flameletArrheniusReactionRate::ddT(p, T, c);
 }
 
@@ -106,7 +106,7 @@ inline void Foam::flameletThirdBodyArrheniusReactionRate::dcidc
     scalarField& dcidc
 ) const
 {
-    scalar M = flameletThirdBodyEfficiencies_.M(c);
+    scalar M = thirdBodyEfficiencies_.M(c);
     forAll(beta_, i)
     {
         dcidc[i] = beta_[i].second()/max(M, small);
@@ -128,7 +128,7 @@ inline Foam::scalar Foam::flameletThirdBodyArrheniusReactionRate::dcidT
 inline void Foam::flameletThirdBodyArrheniusReactionRate::write(Ostream& os) const
 {
     flameletArrheniusReactionRate::write(os);
-    flameletThirdBodyEfficiencies_.write(os);
+    thirdBodyEfficiencies_.write(os);
 }
 
 

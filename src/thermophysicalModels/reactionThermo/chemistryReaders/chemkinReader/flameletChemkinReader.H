@@ -41,10 +41,10 @@ SourceFiles
 #include "typeInfo.H"
 #include "Switch.H"
 #include "HashPtrTable.H"
-#include "ReactionList.H"
+#include "FlameletReactionList.H"
 #include "DynamicList.H"
 #include "labelList.H"
-#include "speciesTable.H"
+#include "flameletSpeciesTable.H"
 #include "flameletAtomicWeights.H"
 #include "flameletReactionTypes.H"
 
@@ -61,7 +61,7 @@ namespace Foam
 
 class flameletChemkinReader
 :
-    public flameletChemistryReader<gasHThermoPhysics>,
+    public flameletChemistryReader<flameletGasHThermoPhysics>,
     public yyFlexLexer
 {
 
@@ -98,7 +98,7 @@ private:
             LandauTellerReactionType,
             reverseLandauTellerReactionType,
             JanevReactionType,
-            powerSeriesReactionRateType,
+            flameletPowerSeriesReactionRateType,
             radiationActivatedReactionType,
             speciesTempReactionType,
             energyLossReactionType,
@@ -166,19 +166,19 @@ private:
         HashTable<label> specieIndices_;
 
         //- Table of species
-        speciesTable& speciesTable_;
+        flameletSpeciesTable& speciesTable_;
 
         //- Specie phase
         HashTable<phase> speciePhase_;
 
         //- Table of the thermodynamic data given in the CHEMKIN file
-        HashPtrTable<gasHThermoPhysics> speciesThermo_;
+        HashPtrTable<flameletGasHThermoPhysics> speciesThermo_;
 
         //- Table of species composition
         speciesCompositionTable speciesComposition_;
 
         //- List of the reactions
-        ReactionList<gasHThermoPhysics> reactions_;
+        FlameletReactionList<flameletGasHThermoPhysics> reactions_;
 
         //- Transport properties dictionary
         dictionary transportDict_;
@@ -223,7 +223,7 @@ private:
 
         scalar molecularWeight
         (
-            const List<specieElement>& specieComposition
+            const List<flameletSpecieElement>& specieComposition
         ) const;
 
         void finishElements(labelList& currentAtoms);
@@ -239,8 +239,8 @@ private:
         void addReactionType
         (
             const reactionType rType,
-            DynamicList<specieCoeffs>& lhs,
-            DynamicList<specieCoeffs>& rhs,
+            DynamicList<flameletSpecieCoeffs>& lhs,
+            DynamicList<flameletSpecieCoeffs>& rhs,
             const ReactionRateType& rr
         );
 
@@ -249,8 +249,8 @@ private:
         (
             const reactionType rType,
             const fallOffFunctionType fofType,
-            DynamicList<specieCoeffs>& lhs,
-            DynamicList<specieCoeffs>& rhs,
+            DynamicList<flameletSpecieCoeffs>& lhs,
+            DynamicList<flameletSpecieCoeffs>& rhs,
             const scalarList& thirdBodyEfficiencies,
             const scalarList& k0Coeffs,
             const scalarList& kInfCoeffs,
@@ -262,8 +262,8 @@ private:
 
         void addReaction
         (
-            DynamicList<specieCoeffs>& lhs,
-            DynamicList<specieCoeffs>& rhs,
+            DynamicList<flameletSpecieCoeffs>& lhs,
+            DynamicList<flameletSpecieCoeffs>& rhs,
             const scalarList& thirdBodyEfficiencies,
             const reactionType rType,
             const reactionRateType rrType,
@@ -299,7 +299,7 @@ public:
         //- Construct from CHEMKIN III file name
         flameletChemkinReader
         (
-            speciesTable& species,
+            flameletSpeciesTable& species,
             const fileName& CHEMKINFileName,
             const fileName& transportFileName,
             const fileName& thermoFileName = fileName::null,
@@ -307,7 +307,7 @@ public:
         );
 
         //- Construct by getting the CHEMKIN III file name from dictionary
-        flameletChemkinReader(const dictionary& thermoDict, speciesTable& species);
+        flameletChemkinReader(const dictionary& thermoDict, flameletSpeciesTable& species);
 
 
     //- Destructor
@@ -336,7 +336,7 @@ public:
         }
 
         //- Table of species
-        const speciesTable& species() const
+        const flameletSpeciesTable& species() const
         {
             return speciesTable_;
         }
@@ -354,13 +354,13 @@ public:
         }
 
         //- Table of the thermodynamic data given in the CHEMKIN file
-        const HashPtrTable<gasHThermoPhysics>& speciesThermo() const
+        const HashPtrTable<flameletGasHThermoPhysics>& speciesThermo() const
         {
             return speciesThermo_;
         }
 
         //- List of the reactions
-        const ReactionList<gasHThermoPhysics>& reactions() const
+        const FlameletReactionList<flameletGasHThermoPhysics>& reactions() const
         {
             return reactions_;
         }

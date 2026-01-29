@@ -28,20 +28,20 @@ License
 #include "flameletRhoReactionThermo.H"
 #include "flameletHeRhoThermo.H"
 
-#include "specie.H"
-#include "perfectGas.H"
-#include "incompressiblePerfectGas.H"
-#include "hConstThermo.H"
-#include "janafThermo.H"
-#include "sensibleEnthalpy.H"
-#include "thermo.H"
-#include "rhoConst.H"
-#include "perfectFluid.H"
-#include "adiabaticPerfectFluid.H"
+#include "flameletSpecie.H"
+#include "flameletPerfectGas.H"
+#include "flameletIncompressiblePerfectGas.H"
+#include "flameletHConstThermo.H"
+#include "flameletJanafThermo.H"
+#include "flameletSensibleEnthalpy.H"
+#include "flameletThermo.H"
+#include "flameletRhoConst.H"
+#include "flameletPerfectFluid.H"
+#include "flameletAdiabaticPerfectFluid.H"
 
 #include "flameletConstTransport.H"
-#include "sutherlandTransport.H"
-#include "WLFTransport.H"
+#include "flameletSutherlandTransport.H"
+#include "flameletWLFTransport.H"
 
 #include "flameletMultiComponentMixture.H"
 #include "flameletReactingMixture.H"
@@ -63,7 +63,7 @@ flameletMakeThermoPhysicsReactionThermos
     flameletRhoReactionThermo,
     flameletHeRhoThermo,
     flameletReactingMixture,
-    constGasHThermoPhysics
+    flameletConstGasHThermoPhysics
 );
 
 flameletMakeThermoPhysicsReactionThermos
@@ -72,7 +72,7 @@ flameletMakeThermoPhysicsReactionThermos
     flameletRhoReactionThermo,
     flameletHeRhoThermo,
     flameletReactingMixture,
-    gasHThermoPhysics
+    flameletGasHThermoPhysics
 );
 
 flameletMakeThermoPhysicsReactionThermos
@@ -81,7 +81,7 @@ flameletMakeThermoPhysicsReactionThermos
     flameletRhoReactionThermo,
     flameletHeRhoThermo,
     flameletReactingMixture,
-    constIncompressibleGasHThermoPhysics
+    flameletConstIncompressibleGasHThermoPhysics
 );
 
 flameletMakeThermoPhysicsReactionThermos
@@ -90,7 +90,7 @@ flameletMakeThermoPhysicsReactionThermos
     flameletRhoReactionThermo,
     flameletHeRhoThermo,
     flameletReactingMixture,
-    incompressibleGasHThermoPhysics
+    flameletIncompressibleGasHThermoPhysics
 );
 
 flameletMakeThermoPhysicsReactionThermos
@@ -99,7 +99,7 @@ flameletMakeThermoPhysicsReactionThermos
     flameletRhoReactionThermo,
     flameletHeRhoThermo,
     flameletReactingMixture,
-    icoPoly8HThermoPhysics
+    flameletIcoPoly8HThermoPhysics
 );
 
 flameletMakeThermoPhysicsReactionThermos
@@ -108,7 +108,7 @@ flameletMakeThermoPhysicsReactionThermos
     flameletRhoReactionThermo,
     flameletHeRhoThermo,
     flameletReactingMixture,
-    constFluidHThermoPhysics
+    flameletConstFluidHThermoPhysics
 );
 
 flameletMakeThermoPhysicsReactionThermos
@@ -117,7 +117,7 @@ flameletMakeThermoPhysicsReactionThermos
     flameletRhoReactionThermo,
     flameletHeRhoThermo,
     flameletReactingMixture,
-    constAdiabaticFluidHThermoPhysics
+    flameletConstAdiabaticFluidHThermoPhysics
 );
 
 flameletMakeThermoPhysicsReactionThermos
@@ -126,7 +126,7 @@ flameletMakeThermoPhysicsReactionThermos
     flameletRhoReactionThermo,
     flameletHeRhoThermo,
     flameletReactingMixture,
-    constHThermoPhysics
+    flameletConstHThermoPhysics
 );
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

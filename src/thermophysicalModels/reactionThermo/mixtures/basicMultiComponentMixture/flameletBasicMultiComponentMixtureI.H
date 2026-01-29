@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-inline const Foam::speciesTable&
+inline const Foam::flameletSpeciesTable&
 Foam::flameletBasicMultiComponentMixture::species() const
 {
     return species_;

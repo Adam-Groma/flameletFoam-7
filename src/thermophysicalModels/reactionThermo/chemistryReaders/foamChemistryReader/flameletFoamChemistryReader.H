@@ -40,7 +40,7 @@ SourceFiles
 #include "typeInfo.H"
 #include "HashPtrTable.H"
 #include "labelList.H"
-#include "speciesTable.H"
+#include "flameletSpeciesTable.H"
 #include "flameletAtomicWeights.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -70,7 +70,7 @@ class flameletFoamChemistryReader
         HashTable<label> elementIndices_;
 
         //- Table of species
-        speciesTable& speciesTable_;
+        flameletSpeciesTable& speciesTable_;
 
         //- Table of species composition
         speciesCompositionTable speciesComposition_;
@@ -79,13 +79,13 @@ class flameletFoamChemistryReader
         HashPtrTable<ThermoType> speciesThermo_;
 
         //- List of the reactions
-        ReactionList<ThermoType> reactions_;
+        FlameletReactionList<ThermoType> reactions_;
 
 
     // Private Member Functions
 
         //- Set the species list
-        speciesTable& setSpecies(const dictionary& dict, speciesTable& species);
+        flameletSpeciesTable& setSpecies(const dictionary& dict, flameletSpeciesTable& species);
 
         //- Read the species composition
         void readSpeciesComposition();
@@ -103,7 +103,7 @@ public:
         flameletFoamChemistryReader
         (
             const fileName& reactionsFileName,
-            speciesTable& species,
+            flameletSpeciesTable& species,
             const fileName& thermoFileName
         );
 
@@ -112,7 +112,7 @@ public:
         flameletFoamChemistryReader
         (
             const dictionary& thermoDict,
-            speciesTable& species
+            flameletSpeciesTable& species
         );
 
         //- Disallow default bitwise copy construction
@@ -139,7 +139,7 @@ public:
         }
 
         //- Table of species
-        const speciesTable& species() const
+        const flameletSpeciesTable& species() const
         {
             return speciesTable_;
         }
@@ -157,7 +157,7 @@ public:
         }
 
         //- List of the reactions
-        const ReactionList<ThermoType>& reactions() const
+        const FlameletReactionList<ThermoType>& reactions() const
         {
             return reactions_;
         }

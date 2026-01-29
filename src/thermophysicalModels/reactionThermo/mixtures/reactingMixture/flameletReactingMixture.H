@@ -35,7 +35,7 @@ SourceFiles
 #ifndef flameletReactingMixture_H
 #define flameletReactingMixture_H
 
-#include "speciesTable.H"
+#include "flameletSpeciesTable.H"
 #include "flameletChemistryReader.H"
 #include "flameletMultiComponentMixture.H"
 
@@ -51,10 +51,10 @@ namespace Foam
 template<class ThermoType>
 class flameletReactingMixture
 :
-    public speciesTable,
+    public flameletSpeciesTable,
     public autoPtr<flameletChemistryReader<ThermoType>>,
     public flameletMultiComponentMixture<ThermoType>,
-    public PtrList<Reaction<ThermoType>>
+    public PtrList<FlameletReaction<ThermoType>>
 {
     // Private member data
 
@@ -95,17 +95,17 @@ public:
 
         label size() const
         {
-            return PtrList<Reaction<ThermoType>>::size();
+            return PtrList<FlameletReaction<ThermoType>>::size();
         }
 
-        Reaction<ThermoType>& operator[](const label i)
+        FlameletReaction<ThermoType>& operator[](const label i)
         {
-            return PtrList<Reaction<ThermoType>>::operator[](i);
+            return PtrList<FlameletReaction<ThermoType>>::operator[](i);
         }
 
-        const Reaction<ThermoType>& operator[](const label i) const
+        const FlameletReaction<ThermoType>& operator[](const label i) const
         {
-            return PtrList<Reaction<ThermoType>>::operator[](i);
+            return PtrList<FlameletReaction<ThermoType>>::operator[](i);
         }
 
         //- Table of species composition

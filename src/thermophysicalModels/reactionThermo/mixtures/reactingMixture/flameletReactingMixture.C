@@ -36,7 +36,7 @@ Foam::flameletReactingMixture<ThermoType>::flameletReactingMixture
     const word& phaseName
 )
 :
-    speciesTable(),
+    flameletSpeciesTable(),
     autoPtr<flameletChemistryReader<ThermoType>>
     (
         flameletChemistryReader<ThermoType>::New(thermoDict, *this)
@@ -49,7 +49,7 @@ Foam::flameletReactingMixture<ThermoType>::flameletReactingMixture
         mesh,
         phaseName
     ),
-    PtrList<Reaction<ThermoType>>
+    PtrList<FlameletReaction<ThermoType>>
     (
         autoPtr<flameletChemistryReader<ThermoType>>::operator()().reactions()
     ),

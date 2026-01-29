@@ -32,20 +32,6 @@ namespace Foam
 {
     defineTemplateTypeNameAndDebugWithName
     (
-        psiReactionThermoMoleFractionsFunctionObject,
-        "psiReactionThermoMoleFractions",
-        0
-    );
-
-    addToRunTimeSelectionTable
-    (
-        functionObject,
-        psiReactionThermoMoleFractionsFunctionObject,
-        dictionary
-    );
-
-    defineTemplateTypeNameAndDebugWithName
-    (
         flameletRhoReactionThermoMoleFractionsFunctionObject,
         "flameletRhoReactionThermoMoleFractions",
         0

@@ -22,20 +22,20 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::EulerImplicit
+    Foam::flameletEulerImplicit
 
 Description
     An Euler implicit solver for chemistry
 
 SourceFiles
-    EulerImplicit.C
+    flameletEulerImplicit.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef EulerImplicit_H
-#define EulerImplicit_H
+#ifndef flameletEulerImplicit_H
+#define flameletEulerImplicit_H
 
-#include "chemistrySolver.H"
+#include "flameletChemistrySolver.H"
 #include "Switch.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -47,13 +47,13 @@ template <class Type>
 class simpleMatrix;
 
 /*---------------------------------------------------------------------------*\
-                       Class EulerImplicit Declaration
+                       Class flameletEulerImplicit Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class ChemistryModel>
-class EulerImplicit
+class flameletEulerImplicit
 :
-    public chemistrySolver<ChemistryModel>
+    public flameletChemistrySolver<ChemistryModel>
 {
     // Private Data
 
@@ -76,17 +76,17 @@ class EulerImplicit
 public:
 
     //- Runtime type information
-    TypeName("EulerImplicit");
+    TypeName("flameletEulerImplicit");
 
 
     // Constructors
 
         //- Construct from thermo
-        EulerImplicit(typename ChemistryModel::reactionThermo& thermo);
+        flameletEulerImplicit(typename ChemistryModel::reactionThermo& thermo);
 
 
     //- Destructor
-    virtual ~EulerImplicit();
+    virtual ~flameletEulerImplicit();
 
 
     // Member Functions
@@ -123,7 +123,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "EulerImplicit.C"
+    #include "flameletEulerImplicit.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

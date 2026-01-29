@@ -48,56 +48,56 @@ namespace Foam
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        constGasHThermoPhysics
+        flameletConstGasHThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        gasHThermoPhysics
+        flameletGasHThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        constIncompressibleGasHThermoPhysics
+        flameletConstIncompressibleGasHThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        incompressibleGasHThermoPhysics
+        flameletIncompressibleGasHThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        icoPoly8HThermoPhysics
+        flameletIcoPoly8HThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        constFluidHThermoPhysics
+        flameletConstFluidHThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        constAdiabaticFluidHThermoPhysics
+        flameletConstAdiabaticFluidHThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        constHThermoPhysics
+        flameletConstHThermoPhysics
     );
 
 
@@ -107,56 +107,56 @@ namespace Foam
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        constGasEThermoPhysics
+        flameletConstGasEThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        gasEThermoPhysics
+        flameletGasEThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        constIncompressibleGasEThermoPhysics
+        flameletConstIncompressibleGasEThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        incompressibleGasEThermoPhysics
+        flameletIncompressibleGasEThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        icoPoly8EThermoPhysics
+        flameletIcoPoly8EThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        constFluidEThermoPhysics
+        flameletConstFluidEThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        constAdiabaticFluidEThermoPhysics
+        flameletConstAdiabaticFluidEThermoPhysics
     );
 
     flameletMakeChemistryModelType
     (
         FlameletStandardChemistryModel,
         flameletRhoReactionThermo,
-        constEThermoPhysics
+        flameletConstEThermoPhysics
     );
 }
 

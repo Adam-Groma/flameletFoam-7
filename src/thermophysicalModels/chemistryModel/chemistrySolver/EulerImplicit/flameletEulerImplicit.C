@@ -23,20 +23,20 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "EulerImplicit.H"
+#include "flameletEulerImplicit.H"
 #include "addToRunTimeSelectionTable.H"
 #include "simpleMatrix.H"
-#include "Reaction.H"
+#include "FlameletReaction.H"
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template<class ChemistryModel>
-Foam::EulerImplicit<ChemistryModel>::EulerImplicit
+Foam::flameletEulerImplicit<ChemistryModel>::flameletEulerImplicit
 (
     typename ChemistryModel::reactionThermo& thermo
 )
 :
-    chemistrySolver<ChemistryModel>(thermo),
+    flameletChemistrySolver<ChemistryModel>(thermo),
     coeffsDict_(this->subDict("EulerImplicitCoeffs")),
     cTauChem_(readScalar(coeffsDict_.lookup("cTauChem"))),
     eqRateLimiter_(coeffsDict_.lookup("equilibriumRateLimiter")),
@@ -47,14 +47,14 @@ Foam::EulerImplicit<ChemistryModel>::EulerImplicit
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
 template<class ChemistryModel>
-Foam::EulerImplicit<ChemistryModel>::~EulerImplicit()
+Foam::flameletEulerImplicit<ChemistryModel>::~flameletEulerImplicit()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 template<class ChemistryModel>
-void Foam::EulerImplicit<ChemistryModel>::updateRRInReactionI
+void Foam::flameletEulerImplicit<ChemistryModel>::updateRRInReactionI
 (
     const label index,
     const scalar pr,
@@ -67,7 +67,7 @@ void Foam::EulerImplicit<ChemistryModel>::updateRRInReactionI
     simpleMatrix<scalar>& RR
 ) const
 {
-    const Reaction<typename ChemistryModel::thermoType>& R =
+    const FlameletReaction<typename ChemistryModel::thermoType>& R =
         this->reactions_[index];
 
     forAll(R.lhs(), s)
@@ -89,7 +89,7 @@ void Foam::EulerImplicit<ChemistryModel>::updateRRInReactionI
 
 
 template<class ChemistryModel>
-void Foam::EulerImplicit<ChemistryModel>::solve
+void Foam::flameletEulerImplicit<ChemistryModel>::solve
 (
     scalarField& c,
     scalar& T,

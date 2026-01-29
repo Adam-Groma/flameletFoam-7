@@ -22,18 +22,18 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::chemistrySolver
+    Foam::flameletChemistrySolver
 
 Description
     An abstract base class for solving chemistry
 
 SourceFiles
-    chemistrySolver.C
+    flameletChemistrySolver.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef chemistrySolver_H
-#define chemistrySolver_H
+#ifndef flameletChemistrySolver_H
+#define flameletChemistrySolver_H
 
 #include "IOdictionary.H"
 #include "scalarField.H"
@@ -44,11 +44,11 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                      Class chemistrySolver Declaration
+                      Class flameletChemistrySolver Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class ChemistryModel>
-class chemistrySolver
+class flameletChemistrySolver
 :
     public ChemistryModel
 {
@@ -58,11 +58,11 @@ public:
     // Constructors
 
         //- Construct from thermo
-        chemistrySolver(typename ChemistryModel::reactionThermo& thermo);
+        flameletChemistrySolver(typename ChemistryModel::reactionThermo& thermo);
 
 
     //- Destructor
-    virtual ~chemistrySolver();
+    virtual ~flameletChemistrySolver();
 
 
     // Member Functions
@@ -86,7 +86,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "chemistrySolver.C"
+    #include "flameletChemistrySolver.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

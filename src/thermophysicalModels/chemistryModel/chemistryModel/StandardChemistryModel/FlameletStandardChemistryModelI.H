@@ -46,7 +46,7 @@ Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::RR()
 
 
 template<class ReactionThermo, class ThermoType>
-inline const Foam::PtrList<Foam::Reaction<ThermoType>>&
+inline const Foam::PtrList<Foam::FlameletReaction<ThermoType>>&
 Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::reactions() const
 {
     return reactions_;

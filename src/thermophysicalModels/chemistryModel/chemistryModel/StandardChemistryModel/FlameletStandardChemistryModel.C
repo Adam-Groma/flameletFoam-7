@@ -114,7 +114,7 @@ void Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::omega
 
     forAll(reactions_, i)
     {
-        const Reaction<ThermoType>& R = reactions_[i];
+        const FlameletReaction<ThermoType>& R = reactions_[i];
 
         R.omega(p, T, c, dcdt);
     }
@@ -136,7 +136,7 @@ Foam::scalar Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::o
     label& rRef
 ) const
 {
-    const Reaction<ThermoType>& R = reactions_[index];
+    const FlameletReaction<ThermoType>& R = reactions_[index];
     scalar w = R.omega(p, T, c, pf, cf, lRef, pr, cr, rRef);
     return(w);
 }
@@ -225,7 +225,7 @@ void Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::jacobian
     List<label> dummy;
     forAll(reactions_, ri)
     {
-        const Reaction<ThermoType>& R = reactions_[ri];
+        const FlameletReaction<ThermoType>& R = reactions_[ri];
         scalar kfwd, kbwd;
         R.dwdc(p, T, c_, J, dcdt, omegaI, kfwd, kbwd, false, dummy);
         R.dwdT(p, T, c_, omegaI, kfwd, kbwd, J, false, dummy, nSpecie_);
@@ -316,7 +316,7 @@ Foam::FlameletStandardChemistryModel<ReactionThermo, ThermoType>::tc() const
 
             forAll(reactions_, i)
             {
-                const Reaction<ThermoType>& R = reactions_[i];
+                const FlameletReaction<ThermoType>& R = reactions_[i];
 
                 R.omega(pi, Ti, c_, pf, cf, lRef, pr, cr, rRef);
 

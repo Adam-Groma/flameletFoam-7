@@ -26,13 +26,13 @@ License
 #ifndef flameletMakeChemistrySolverTypes_H
 #define flameletMakeChemistrySolverTypes_H
 
-#include "chemistrySolver.H"
+#include "flameletChemistrySolver.H"
 
 #include "FlameletStandardChemistryModel.H"
 
-#include "noChemistrySolver.H"
-#include "EulerImplicit.H"
-#include "ode.H"
+#include "flameletNoChemistrySolver.H"
+#include "flameletEulerImplicit.H"
+#include "flameletOde.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -58,21 +58,21 @@ License
                                                                                \
     flameletMakeChemistrySolverType                                                    \
     (                                                                          \
-        noChemistrySolver,                                                     \
+        flameletNoChemistrySolver,                                                     \
         Comp,                                                                  \
         Thermo                                                                 \
     );                                                                         \
                                                                                \
     flameletMakeChemistrySolverType                                                    \
     (                                                                          \
-        EulerImplicit,                                                         \
+        flameletEulerImplicit,                                                         \
         Comp,                                                                  \
         Thermo                                                                 \
     );                                                                         \
                                                                                \
     flameletMakeChemistrySolverType                                                    \
     (                                                                          \
-        ode,                                                                   \
+        flameletOde,                                                                   \
         Comp,                                                                  \
         Thermo                                                                 \
     );                                                                         \

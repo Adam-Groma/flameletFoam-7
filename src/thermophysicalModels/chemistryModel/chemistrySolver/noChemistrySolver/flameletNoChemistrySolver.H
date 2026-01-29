@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -22,21 +22,21 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::ode
+    Foam::flameletNoChemistrySolver
 
 Description
-    An ODE solver for chemistry
+    Dummy chemistry solver for 'none' option
 
 SourceFiles
-    ode.C
+    flameletNoChemistrySolver.H
+    flameletNoChemistrySolver.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef ode_H
-#define ode_H
+#ifndef flameletNoChemistrySolver_H
+#define flameletNoChemistrySolver_H
 
-#include "chemistrySolver.H"
-#include "ODESolver.H"
+#include "flameletChemistrySolver.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -44,38 +44,29 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                            Class ode Declaration
+                     Class flameletNoChemistrySolver Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class ChemistryModel>
-class ode
+class flameletNoChemistrySolver
 :
-    public chemistrySolver<ChemistryModel>
+    public flameletChemistrySolver<ChemistryModel>
 {
-    // Private Data
-
-        dictionary coeffsDict_;
-
-        mutable autoPtr<ODESolver> odeSolver_;
-
-        // Solver data
-        mutable scalarField cTp_;
-
 
 public:
 
     //- Runtime type information
-    TypeName("ode");
+    TypeName("none");
 
 
     // Constructors
 
         //- Construct from thermo
-        ode(typename ChemistryModel::reactionThermo& thermo);
+        flameletNoChemistrySolver(typename ChemistryModel::reactionThermo& thermo);
 
 
     //- Destructor
-    virtual ~ode();
+    virtual ~flameletNoChemistrySolver();
 
 
     // Member Functions
@@ -99,7 +90,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "ode.C"
+    #include "flameletNoChemistrySolver.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

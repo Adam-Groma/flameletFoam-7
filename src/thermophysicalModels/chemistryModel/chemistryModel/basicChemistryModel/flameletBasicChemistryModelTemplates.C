@@ -53,11 +53,11 @@ Foam::autoPtr<ChemistryModel> Foam::flameletBasicChemistryModel::New
             << "Template parameter based chemistry solver selection is no "
             << "longer supported. Please create a chemistryType dictionary"
             << "instead." << endl << endl << "For example, the entry:" << endl
-            << "    chemistrySolver ode<FlameletStandardChemistryModel<"
-            << "rhoChemistryModel,sutherlandspecie<janaf<perfectGas>,"
-            << "sensibleInternalEnergy>>" << endl << endl << "becomes:" << endl
+            << "    flameletChemistrySolver flameletOde<FlameletStandardChemistryModel<"
+            << "rhoChemistryModel,sutherlandspecie<janaf<flameletPerfectGas>,"
+            << "flameletSensibleInternalEnergy>>" << endl << endl << "becomes:" << endl
             << "    chemistryType" << endl << "    {" << endl
-            << "        solver ode;" << endl << "        method standard;"
+            << "        solver flameletOde;" << endl << "        method standard;"
             << endl << "    }" << exit(FatalError);
     }
 
@@ -68,8 +68,8 @@ Foam::autoPtr<ChemistryModel> Foam::flameletBasicChemistryModel::New
     (
         chemistryTypeDict.found("solver")
       ? chemistryTypeDict.lookup("solver")
-      : chemistryTypeDict.found("chemistrySolver")
-      ? chemistryTypeDict.lookup("chemistrySolver")
+      : chemistryTypeDict.found("flameletChemistrySolver")
+      ? chemistryTypeDict.lookup("flameletChemistrySolver")
       : chemistryTypeDict.lookup("solver") // error if neither entry is found
     );
 

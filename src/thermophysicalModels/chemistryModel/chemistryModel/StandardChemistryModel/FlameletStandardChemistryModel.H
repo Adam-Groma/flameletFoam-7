@@ -39,7 +39,7 @@ SourceFiles
 #define FlameletStandardChemistryModel_H
 
 #include "FlameletBasicChemistryModel.H"
-#include "Reaction.H"
+#include "FlameletReaction.H"
 #include "ODESystem.H"
 #include "volFields.H"
 #include "simpleMatrix.H"
@@ -81,7 +81,7 @@ protected:
         PtrList<volScalarField>& Y_;
 
         //- Reactions
-        const PtrList<Reaction<ThermoType>>& reactions_;
+        const PtrList<FlameletReaction<ThermoType>>& reactions_;
 
         //- Thermodynamic data of the species
         const PtrList<ThermoType>& specieThermo_;
@@ -134,7 +134,7 @@ public:
     // Member Functions
 
         //- The reactions
-        inline const PtrList<Reaction<ThermoType>>& reactions() const;
+        inline const PtrList<FlameletReaction<ThermoType>>& reactions() const;
 
         //- Thermodynamic data of the species
         inline const PtrList<ThermoType>& specieThermo() const;

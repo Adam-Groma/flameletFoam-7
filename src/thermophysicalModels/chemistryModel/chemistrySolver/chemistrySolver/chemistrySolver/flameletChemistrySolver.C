@@ -23,39 +23,24 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "noChemistrySolver.H"
-#include "addToRunTimeSelectionTable.H"
+#include "flameletChemistrySolver.H"
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template<class ChemistryModel>
-Foam::noChemistrySolver<ChemistryModel>::noChemistrySolver
+Foam::flameletChemistrySolver<ChemistryModel>::flameletChemistrySolver
 (
     typename ChemistryModel::reactionThermo& thermo
 )
 :
-    chemistrySolver<ChemistryModel>(thermo)
+    ChemistryModel(thermo)
 {}
 
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
 template<class ChemistryModel>
-Foam::noChemistrySolver<ChemistryModel>::~noChemistrySolver()
-{}
-
-
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-
-template<class ChemistryModel>
-void Foam::noChemistrySolver<ChemistryModel>::solve
-(
-    scalarField&,
-    scalar&,
-    scalar&,
-    scalar&,
-    scalar&
-) const
+Foam::flameletChemistrySolver<ChemistryModel>::~flameletChemistrySolver()
 {}
 
 

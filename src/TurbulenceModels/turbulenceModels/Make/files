@@ -12,12 +12,12 @@ $(LESdelta)/maxDeltaxyz/flameletMaxDeltaxyz.C
 $(LESdelta)/IDDESDelta/flameletIDDESDelta.C
 
 
-/*LESfilters = LES/LESfilters*/
+LESfilters = LES/LESfilters
 
-/*$(LESfilters)/LESfilter/flameletLESfilter.C*/
-/*$(LESfilters)/simpleFilter/flameletSimpleFilter.C*/
-/*$(LESfilters)/laplaceFilter/flameletLaplaceFilter.C*/
-/*$(LESfilters)/anisotropicFilter/flameletAnisotropicFilter.C*/
+$(LESfilters)/LESfilter/flameletLESfilter.C
+$(LESfilters)/simpleFilter/flameletSimpleFilter.C
+$(LESfilters)/laplaceFilter/flameletLaplaceFilter.C
+$(LESfilters)/anisotropicFilter/flameletAnisotropicFilter.C
 
 
 /* Turbulence BCs */
@@ -63,16 +63,16 @@ RASBCs = RAS/derivedFvPatchFields
 $(RASBCs)/turbulentMixingLengthDissipationRateInlet/flameletTurbulentMixingLengthDissipationRateInletFvPatchScalarField.C
 $(RASBCs)/turbulentMixingLengthFrequencyInlet/flameletTurbulentMixingLengthFrequencyInletFvPatchScalarField.C
 
-/*
+
 generalizedNewtonianViscosityModels = laminar/generalizedNewtonian/generalizedNewtonianViscosityModels
-$(generalizedNewtonianViscosityModels)/generalizedNewtonianViscosityModel/generalizedNewtonianViscosityModel.C
-$(generalizedNewtonianViscosityModels)/generalizedNewtonianViscosityModel/generalizedNewtonianViscosityModelNew.C
-$(generalizedNewtonianViscosityModels)/CrossPowerLaw/CrossPowerLaw.C
-$(generalizedNewtonianViscosityModels)/BirdCarreau/BirdCarreau.C
-$(generalizedNewtonianViscosityModels)/Casson/Casson.C
-$(generalizedNewtonianViscosityModels)/HerschelBulkley/HerschelBulkley.C
-$(generalizedNewtonianViscosityModels)/powerLaw/powerLaw.C
-$(generalizedNewtonianViscosityModels)/strainRateFunction/strainRateFunction.C
-*/
+$(generalizedNewtonianViscosityModels)/generalizedNewtonianViscosityModel/flameletGeneralizedNewtonianViscosityModel.C
+$(generalizedNewtonianViscosityModels)/generalizedNewtonianViscosityModel/flameletGeneralizedNewtonianViscosityModelNew.C
+$(generalizedNewtonianViscosityModels)/CrossPowerLaw/flameletCrossPowerLaw.C
+$(generalizedNewtonianViscosityModels)/BirdCarreau/flameletBirdCarreau.C
+$(generalizedNewtonianViscosityModels)/Casson/flameletCasson.C
+$(generalizedNewtonianViscosityModels)/HerschelBulkley/flameletHerschelBulkley.C
+$(generalizedNewtonianViscosityModels)/powerLaw/flameletPowerLaw.C
+$(generalizedNewtonianViscosityModels)/strainRateFunction/flameletStrainRateFunction.C
+
 
 LIB = $(FOAM_USER_LIBBIN)/libflameletTurbulenceModels

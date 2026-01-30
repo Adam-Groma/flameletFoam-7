@@ -43,7 +43,7 @@ SourceFiles
 #define flameletDynamicLagrangian_H
 
 #include "flameletLESeddyViscosity.H"
-#include "simpleFilter.H"
+#include "flameletSimpleFilter.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -70,9 +70,9 @@ protected:
 
         dimensionedScalar theta_;
 
-        simpleFilter simpleFilter_;
-        autoPtr<LESfilter> filterPtr_;
-        LESfilter& filter_;
+        flameletSimpleFilter simpleFilter_;
+        autoPtr<flameletLESfilter> filterPtr_;
+        flameletLESfilter& filter_;
 
         dimensionedScalar flm0_;
         dimensionedScalar fmm0_;

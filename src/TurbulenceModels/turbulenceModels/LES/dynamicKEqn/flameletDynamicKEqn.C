@@ -181,7 +181,7 @@ flameletDynamicKEqn<BasicTurbulenceModel>::flameletDynamicKEqn
     ),
 
     simpleFilter_(this->mesh_),
-    filterPtr_(LESfilter::New(this->mesh_, this->coeffDict())),
+    filterPtr_(flameletLESfilter::New(this->mesh_, this->coeffDict())),
     filter_(filterPtr_())
 {
     bound(k_, this->kMin_);

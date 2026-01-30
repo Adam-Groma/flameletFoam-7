@@ -57,7 +57,7 @@ SourceFiles
 #define flameletDynamicKEqn_H
 
 #include "flameletLESeddyViscosity.H"
-#include "simpleFilter.H"
+#include "flameletSimpleFilter.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -86,9 +86,9 @@ protected:
 
         // Filters
 
-            simpleFilter simpleFilter_;
-            autoPtr<LESfilter> filterPtr_;
-            LESfilter& filter_;
+            flameletSimpleFilter simpleFilter_;
+            autoPtr<flameletLESfilter> filterPtr_;
+            flameletLESfilter& filter_;
 
 
     // Protected Member Functions

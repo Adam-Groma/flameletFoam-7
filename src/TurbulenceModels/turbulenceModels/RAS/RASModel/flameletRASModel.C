@@ -131,8 +131,8 @@ Foam::flameletRASModel<BasicTurbulenceModel>::flameletRASModel
             small
         )
     ),
-    varZ_(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("thermo").varZ()),
-    Chi_(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("thermo").Chi())
+    varZ_(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("flameletThermo").varZ()),
+    Chi_(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("flameletThermo").Chi())
 {
     // Force the construction of the mesh deltaCoeffs which may be needed
     // for the construction of the derived models and BCs
@@ -235,7 +235,7 @@ void Foam::flameletRASModel<BasicTurbulenceModel>::correctVarZ()
           	  fvm::ddt(this->rho_, varZ_)
             + fvm::div(this->phi_, varZ_)
             - fvm::laplacian(DZEff(), varZ_)
-            - 2.0*DZEff()*magSqr(fvc::grad(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("thermo").Z()))
+            - 2.0*DZEff()*magSqr(fvc::grad(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("flameletThermo").Z()))
             + Cchi_*this->rho_*this->epsilon()/this->k()*varZ_
         )
     );

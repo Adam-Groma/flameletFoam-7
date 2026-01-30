@@ -46,7 +46,7 @@ Description
     \endverbatim
 
 See also
-    Foam::LESModels::Smagorinsky
+    Foam::LESModels::flameletSmagorinsky
 
 SourceFiles
     flameletWALE.C

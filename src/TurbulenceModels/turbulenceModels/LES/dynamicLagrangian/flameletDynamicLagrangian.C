@@ -118,7 +118,7 @@ flameletDynamicLagrangian<BasicTurbulenceModel>::flameletDynamicLagrangian
     ),
 
     simpleFilter_(U.mesh()),
-    filterPtr_(LESfilter::New(U.mesh(), this->coeffDict())),
+    filterPtr_(flameletLESfilter::New(U.mesh(), this->coeffDict())),
     filter_(filterPtr_()),
 
     flm0_("flm0", flm_.dimensions(), 0.0),

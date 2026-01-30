@@ -155,8 +155,8 @@ Foam::flameletLESModel<BasicTurbulenceModel>::flameletLESModel
         )
     ),
 
-    varZ_(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("thermo").varZ()),
-    Chi_(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("thermo").Chi())
+    varZ_(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("flameletThermo").varZ()),
+    Chi_(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("flameletThermo").Chi())
 {
     // Force the construction of the mesh deltaCoeffs which may be needed
     // for the construction of the derived models and BCs
@@ -263,7 +263,7 @@ void Foam::flameletLESModel<BasicTurbulenceModel>::correctVarZ()
 	        	  fvm::ddt(this->rho_, varZ_)
 	            + fvm::div(this->phi_, varZ_)
 	            - fvm::laplacian(DZEff(), varZ_)
-	            - 2.0*DZEff()*magSqr(fvc::grad(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("thermo").Z()))
+	            - 2.0*DZEff()*magSqr(fvc::grad(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("flameletThermo").Z()))
 	            + 2.0*this->rho_*Chi_
 	        )
 	    );
@@ -277,7 +277,7 @@ void Foam::flameletLESModel<BasicTurbulenceModel>::correctVarZ()
 	}
 	else
 	{
-	    varZ_ = CvarZ_ * sqr(delta()) * magSqr(fvc::grad(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("thermo").Z()));
+	    varZ_ = CvarZ_ * sqr(delta()) * magSqr(fvc::grad(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("flameletThermo").Z()));
 	    varZ_.correctBoundaryConditions();
 	}
 
@@ -291,12 +291,12 @@ void Foam::flameletLESModel<BasicTurbulenceModel>::correctChi()
 {
 	if (transportVarZ_)
 	{
-	    Chi_ = this->mu()/(Sc_*this->rho_)*magSqr(fvc::grad(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("thermo").Z())) + Cchi_*DZt()*varZ_/(2.0*this->rho_*sqr(delta()));
+	    Chi_ = this->mu()/(Sc_*this->rho_)*magSqr(fvc::grad(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("flameletThermo").Z())) + Cchi_*DZt()*varZ_/(2.0*this->rho_*sqr(delta()));
 	    Chi_.correctBoundaryConditions();
 	}
 	else
 	{
-	    Chi_ = Cchi_ * DZEff()/this->rho_ * magSqr(fvc::grad(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("thermo").Z()));
+	    Chi_ = Cchi_ * DZEff()/this->rho_ * magSqr(fvc::grad(this->mesh().template lookupObjectRef<flameletRhoReactionThermo>("flameletThermo").Z()));
 	    Chi_.correctBoundaryConditions();
 	}
 

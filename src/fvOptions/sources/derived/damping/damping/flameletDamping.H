@@ -28,7 +28,7 @@ Description
     Base fvOption for flameletDamping functions.
 
 See also
-    Foam::fv::isotropicDamping
+    Foam::fv::flameletIsotropicDamping
     Foam::fv::flameletVerticalDamping
 
 SourceFiles

@@ -99,7 +99,7 @@ Usage
 
 See also
     Foam::fv::flameletDamping
-    Foam::fv::isotropicDamping
+    Foam::fv::flameletIsotropicDamping
 
 SourceFiles
     flameletVerticalDamping.C
